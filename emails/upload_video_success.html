@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success Video Upload</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+
+        a {
+            color: #B1B1B1 !important;
+        }
+
+        body {
+            background-color: #F7F7F7;
+            color: #333338 !important;
+            padding: 3%;
+        }
+
+        .logo {
+            margin-bottom: 24px;
+        }
+
+        #wrapper {
+            background-color: #FFFFFF;
+            color: #333338 !important;
+            padding: 40px 36px;
+            max-width: 640px;
+            margin: 0 auto;
+            border-radius: 10px !important;
+
+        }
+
+        /* .content {
+            display: flex;
+            flex-direction: column;
+        } */
+        /* .content-item {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        } */
+        .logo {
+            margin-bottom: 24px;
+        }
+
+        .logo img {
+            max-width: 160px !important;
+        }
+
+        .otp-recipient {
+            color: #B1B1B1 !important;
+        }
+
+        .recipient {
+            color: #333338 !important;
+            font-weight: 600;
+            font-size: 16px !important;
+        }
+
+        .success_info {
+            color: #333338 !important;
+            font-weight: 700 !important;
+            font-size: 18px !important;
+        }
+
+        .how-to {
+            color: #333338 !important;
+            font-weight: 600;
+            font-size: 16px !important;
+            margin-top: 14px !important;
+        }
+
+        .otp-description {
+            width: 100%;
+            color: #333338 !important;
+            font-weight: 400;
+            margin-top: 14px;
+            margin-bottom: 14px;
+        }
+
+        .warnings {
+            /* color: #a0a0a0 !important; */
+            font-weight: 400 !important;
+            margin-top: 4px !important;
+        }
+
+        .otp-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0;
+        }
+
+        .otp-number {
+            background-color: #23FF2C;
+            padding: 8px 24px;
+            color: #064608;
+            border-radius: 2px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .highlight-image img {
+            width: 100% ;
+            border-radius: 20px !important;
+            height: 280px !important;
+            object-fit: cover;
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .my-12 {
+            margin: 12px 0 !important;
+        }
+
+        .list {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .list li {
+            list-style-type: none !important;
+        }
+
+        .warning {
+            margin-top: 16px;
+            font-size: 14px !important;
+            color: #575353;
+            width: 100% ;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .otp-description {
+                width: 100% !important;
+                color: #333338 !important;
+                font-weight: 400;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div className="logo">
+            <img src="new-logo.png" alt="" />
+        </div>
+        <div className="content">
+            <div className="content-item">
+                <span className="recipient">Hi [first name] [last name],</span>
+                <p className="success-info">Your video upload was successful!</p>
+                <p className="otp-description">To improve your chances to win, it's important you share your video link with
+                    all of your friends. To improve your chances to win Be sure to ask them to vote for you often.
+                </p>
+                <span className="how-to">How to share your video.</span>
+                <p className="warnings">Just click on the dot menu below your video and select ‘share’. Share it with all
+                    your friends using your favorite social media platform, email or text message.
+                </p>
+                <div className="highlight-image">
+                    <img src="highlights.png" alt="" />
+                </div>
+                <div className="my-12">
+                    <span className="how-to">Upload another video! </span>
+                <p className="warnings">
+                    The more videos you upload the more votes you will get. Additional video uploads are Rp. 50,000. Upload your next video here. 
+                </p>
+                </div>
+                <div>
+                    <span className="how-to">Perform as the opening act at wePOP!
+                    </span>
+                    <p className="warnings">
+                        Get the most votes for your music video and win the grand prize... a once-in-a-lifetime opportunity to perform as the opening act at the wePOP concert. Win everything from the weekly winner prize package, plus…
+                    </p>
+                    <ul className="list">
+                        <li>Rp.100,000,000 cash!</li>
+                        <li>Professional photo session with the event artists.
+                        </li>
+                        <li>Accommodation and round-trip transport from anywhere in Indonesia for you and your band.
+                        </li>
+                    </ul>
+                </div>
+                <div className="warning">
+                    <span className="">If you have any questions please contact customer support at contact@abracadabra.events</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

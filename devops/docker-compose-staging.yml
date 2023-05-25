@@ -1,0 +1,9 @@
+version: "3.3"
+
+services:
+  fe-abracadabra-v2-staging:
+    container_name: fe-abracadabra-v2-staging
+    restart: always
+    build: ../
+    ports:
+      - 3044:3000

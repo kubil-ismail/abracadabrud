@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runner Up</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+        a {
+            color: #B1B1B1 !important;
+        }
+        body {
+            background-color: #F7F7F7;
+            color: #333338 !important;
+            padding: 3%;
+        }
+        #wrapper {
+            background-color: #FFFFFF;
+            color: #333338 !important;
+            padding: 48px 28px;
+            max-width: 640px;
+            margin: 0 auto;
+            border-radius: 10px !important;
+
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo {
+            margin-bottom: 24px;
+        }
+        .logo img {
+            max-width: 200px;
+        }
+        .box {
+            margin: 32px 0px;
+        }
+        .box-item-description {
+            background-color: #F8F8F8;
+            border-radius: 8px;
+            padding: 28px;
+            margin-top: 24px;
+        }
+        .box-item-description table tr td {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .virtual-account {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .virtual-account img {
+            max-width: 48px;
+            width: 100%;
+        }
+        /* .item-description {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .item-description h3 {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .info-item {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            align-items: center;
+            gap: 32px;
+        } */
+        .title-detail {
+            margin: 8px 0;
+        }
+        .title-detail h3 {
+            font-weight: 800;
+            font-size: 18px;
+            color: #333338 !important;
+        }
+        .title-detail span {
+            font-weight: 400;
+            font-size: 12px;
+            color: #B1B1B1 !important;
+        }
+        .name-items {
+            color: #FF00FE;
+        }
+        .method-name {
+            color: #00F8EF;
+        }
+        .for {
+            font-weight: 400;
+            color: #B1B1B1 !important;
+        }
+        .info-item h3 {
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .order-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .title-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500 !important;
+        }
+        .order-item {
+            display: flex;
+            gap: 32px;
+            margin: 24px 0px;
+        }
+        .order-item .item-name {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .img-container {
+            width: 164px;
+            height: 107px;
+            min-width: 124px;
+            min-height: 67px;
+            overflow: hidden;
+        }
+        .img-container img {
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border: 12px;
+        }
+        .order-item {
+            display: flex;
+            gap: 32px;
+            margin: 24px 0px;
+        }
+        .order-item .item-name {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        /* .img-container {
+            width: 164px;
+            height: 107px;
+            overflow: hidden;
+        }
+        .img-container img {
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border: 12px;
+        } */
+        .warning span {
+            display: block;
+            margin: 32px 0px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #B1B1B1 !important;
+        }
+        .warning a {
+            color: #0011ff !important;
+        }
+        .social-media {
+            display: flex;
+            justify-content: end;
+            margin-top: 24px;
+        }
+        .social-media-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .social-media span {
+            text-align: right;
+        }
+        .social-media-items {
+            display: flex;
+            gap: 12px;
+        }
+        .social-media-items i {
+            font-size: 24px
+        }
+        .social-media-items a {
+            color: #333338 !important;
+        }
+        .method-payment {
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+        }
+        .method-payment img {
+            width: 32px;
+        }
+        .title-detail span {
+            font-size: 12px;
+            font-weight: 400 !important;
+        }
+        .main-title {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            color: #333338 !important;
+            letter-spacing: -1px;
+        }
+        .desc {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: #616161 !important;
+            margin-top: 12px;
+        }
+        .desc-info {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            color: #616161 !important;
+            margin-top: 16px;
+        }
+        .further-info {
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            color: #616161 !important;
+            margin-top: 16px;
+        }
+        .icon-success {
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            width: 100%;
+            padding: 32px 0px;
+        }
+        .icon-success img {
+            width: 104px;
+            margin: 0 auto;
+        }
+        .flex-1 {
+            flex: 1 1 0%;
+        }
+        .flex-none {
+            flex: none;
+        }
+        .bold {
+            font-weight: 600 !important;
+        }
+        .box p {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: block;
+            color: #888888;
+        }
+        .box .item-name {
+            font-weight: 600;
+            color: #333338 !important;
+        }
+        .payment-with span {
+            font-weight: 600;
+            margin: 28px;
+            display: block;
+        }
+        /* .payment-with-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        } */
+        .payment-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            
+        }
+        .payment-info span {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+        }
+        .remark-name {
+            font-size: 14px;
+            font-weight: 400;
+            margin: 16px 0px;
+        }
+        .remark-name .name {
+            font-weight: 600 !important;
+            color: #333338 !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div className="logo">
+            <img src="./new-logo.png" alt="" />
+        </div>
+        <div className="content">
+            <p className="remark-name">Congratulations, <span className="name">[first name] [last name],</span> </p>
+            <h3 className="main-title">You are among the top 3 candidates for the week [date] to [date] to win 2 free concert tickets to attend [event] on [event date] including transportation to and from anywhere in Indonesia.
+            </h3>
+            <h3 className="desc">This is an automatically generated winner announcement email. A member of the abracadabra team will reach out to you within the next 24 hours to confirm your identity. Please be on standby to receive our video call.
+            </h3>
+            <span className="further-info">If you have further questions or need assistance please email contact@abracadabra.events.
+            </span>
+        </div>
+    </div>
+</body>
+</html>

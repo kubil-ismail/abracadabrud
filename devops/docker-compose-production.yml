@@ -1,0 +1,9 @@
+version: "3.3"
+
+services:
+  fe-abracadabra-v2-production:
+    container_name: fe-abracadabra-v2-production
+    restart: always
+    build: ../
+    ports:
+      - 3022:3000

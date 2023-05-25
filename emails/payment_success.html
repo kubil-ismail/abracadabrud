@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success Payments</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+            padding: 0;
+            margin: 0;
+            border: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+        a {
+            color: #B1B1B1 !important;
+        }
+        body {
+            background-color: #F7F7F7;
+            color: #333338 !important;
+            padding: 3%;
+        }
+        #wrapper {
+            background-color: #FFFFFF;
+            color: #333338 !important;
+            padding: 48px 28px;
+            max-width: 640px;
+            margin: 0 auto;
+            border-radius: 10px !important;
+
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo {
+            margin-bottom: 24px;
+        }
+        .logo img {
+            max-width: 200px;
+        }
+        .box {
+            margin: 24px 0px;
+        }
+        .box-item-description {
+            background-color: #F8F8F8;
+            border-radius: 8px;
+            padding: 28px;
+        }
+        .box-item-description table tr td {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .virtual-account {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .virtual-account img {
+            max-width: 48px;
+            width: 100%;
+        }
+        /* .item-description {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .item-description h3 {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .info-item {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            align-items: center;
+            gap: 32px;
+        } */
+        .title-detail {
+            margin: 8px 0;
+        }
+        .title-detail h3 {
+            font-weight: 800;
+            font-size: 18px;
+            color: #333338 !important;
+        }
+        .title-detail span {
+            font-weight: 400;
+            font-size: 12px;
+            color: #B1B1B1 !important;
+        }
+        .name-items {
+            color: #FF00FE;
+        }
+        .method-name {
+            color: #00F8EF;
+        }
+        .for {
+            font-weight: 400;
+            color: #B1B1B1 !important;
+        }
+        .info-item h3 {
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .order-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .title-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500 !important;
+        }
+        .order-item {
+            display: flex;
+            gap: 32px;
+            margin: 24px 0px;
+        }
+        .order-item .item-name {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .img-container {
+            width: 164px;
+            height: 107px;
+            min-width: 124px;
+            min-height: 67px;
+            overflow: hidden;
+        }
+        .img-container img {
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border: 12px;
+        }
+        .order-item {
+            display: flex;
+            gap: 32px;
+            margin: 24px 0px;
+        }
+        .order-item .item-name {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        /* .img-container {
+            width: 164px;
+            height: 107px;
+            overflow: hidden;
+        }
+        .img-container img {
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center;
+            border: 12px;
+        } */
+        .warning span {
+            display: block;
+            margin: 32px 0px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #B1B1B1 !important;
+        }
+        .warning a {
+            color: #0011ff !important;
+        }
+        .social-media {
+            display: flex;
+            justify-content: end;
+            margin-top: 24px;
+        }
+        .social-media-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .social-media span {
+            text-align: right;
+        }
+        .social-media-items {
+            display: flex;
+            gap: 12px;
+        }
+        .social-media-items i {
+            font-size: 24px
+        }
+        .social-media-items a {
+            color: #333338 !important;
+        }
+        .method-payment {
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+        }
+        .method-payment img {
+            width: 32px;
+        }
+        .title-detail span {
+            font-size: 12px;
+            font-weight: 400 !important;
+        }
+        .main-title {
+            text-align: center;
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            color: #216B25 !important;
+            letter-spacing: -1px;
+            margin: 0px;
+        }
+        .icon-success {
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            width: 100%;
+            padding: 32px 0px;
+        }
+        .icon-success img {
+            width: 104px;
+            margin: 0 auto;
+        }
+        .flex-1 {
+            flex: 1 1 0%;
+        }
+        .flex-none {
+            flex: none;
+        }
+        .bold {
+            font-weight: 600 !important;
+        }
+        .box p {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: block;
+            color: #888888;
+        }
+        .box .item-name {
+            font-weight: 600;
+            color: #333338 !important;
+        }
+        .payment-with span {
+            font-weight: 600;
+            margin: 28px;
+            display: block;
+        }
+        /* .payment-with-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        } */
+        .payment-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            
+        }
+        .payment-info span {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+        }
+        .remark-name {
+            font-size: 14px;
+            font-weight: 400;
+            margin: 16px 0px;
+        }
+        .remark-name .name {
+            font-weight: 600 !important;
+            color: #333338 !important;
+        }
+
+        .prize h3 {
+            font-size: 16px;
+            font-weight: 500 !important;
+        }
+
+        .prize-title h3 {
+            font-size: 16px;
+            font-weight: 600 !important;
+            margin: 16px 0px 4px 0px;
+        }
+        .prize-title span {
+            font-size: 14px;
+            font-weight: 400 !important;
+            margin: 16px 0px 4px 0px;
+        }
+        table tr td {
+            padding-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div className="logo">
+            <img src="./new-logo.png" alt="" />
+        </div>
+        <div className="content">
+            <p className="remark-name">Hi, <span className="name">[first name] [last name],</span> </p>
+            <h3 className="main-title">Your payment has been completed. Thank you!
+            </h3>
+            <!-- <div className="icon-success">
+                <img src="./asset/success-icon.png" alt="item-thumbnail" className="" />
+            </div> -->
+            <div className="box">
+                <!-- <p>Selamat pembayaran <span className="item-name">Upload Video</span> kamu berhasil, berikut detail pembayaranmu:</p> -->
+                <div className="box-item-description">
+                    <table width="100%" cellpadding="0">
+                        <tr>
+                            <td>Description</td>
+                            <td> Premium Membership - Valid from [date] to [date].</td>
+                        </tr>
+                        <tr>
+                            <td>Amount received</td>
+                            <td>
+                                IDR [amount]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Payment date:</td>
+                            <td>[date]</td>
+                        </tr>
+                        <tr>
+                            <td>Invoice Number:</td>
+                            <td>[invoice number]</td>
+                        </tr>
+                        <tr>
+                            <td>Payment method:</td>
+                            <td>[payment method]</td>
+                        </tr>
+                        <tr>
+                            <td>Account:</td>
+                            <td>[account number]</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div className="prize">
+                <h3 className="">As a Premium Member, you will get:</h3>
+                <div className="prize-include">
+                    <div className="prize-title">
+                        <h3>200 points every week!</h3>
+                        <span>Get 200 points instantly each week when you upgrade your membership.</span>
+                    </div>
+                    <div className="prize-title">
+                        <h3>Double every point you collect.</h3>
+                        <span>Collect more points and increase your chances to win.</span>
+                    </div>
+                    <div className="prize-title">
+                        <h3>Receive exclusive content and wePOP concert updates.</h3>
+                        <span>Get exclusive access to backstage photos and videos as performers rehearse and prepare for the big event.</span>
+                    </div>
+                    <div className="prize-title">
+                        <h3>Unlock exciting gifts from wePOP sponsors.</h3>
+                        <span>Get exclusive premium member prizes and gifts from wePOP sponsors.</span>
+                    </div>
+
+                </div>
+
+            </div>
+            <div className="warning">
+                <span className="">If you have any questions please contact customer support at contact@abracadabra.events</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
