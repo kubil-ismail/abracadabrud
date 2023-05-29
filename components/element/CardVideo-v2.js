@@ -21,9 +21,11 @@ import ModalFilterVideo from './modal/ModalFilterVideo';
 import ButtonShare from './ButtonShare';
 import { setMultipleSponsorPlayed, clearSponsorPlayed } from 'core/redux/reducers/globalSlice';
 import { getCookie } from 'cookies-next';
+import { useTranslation } from 'react-i18next';
 
 export default function CardVideo() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [total, setTotal] = useState(1);
   const [page, setPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
@@ -297,7 +299,7 @@ export default function CardVideo() {
                   loading="lazy"
                 />
                 <h3 className="text-lg font-semibold text-center">
-                  The video you are looking for is not available.
+                  {t('The video you are looking for is not available.')}
                 </h3>
               </>
             ) : (
@@ -422,7 +424,7 @@ export default function CardVideo() {
                                 />
                                 <span>&middot;</span>
                                 <span className="">
-                                  {moment(item?.video?.created_at).fromNow()}
+                                  {t(moment(item?.video?.created_at).fromNow())}
                                 </span>
                               </div>
                               <EllipsisText

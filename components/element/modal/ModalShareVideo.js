@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { setModal } from '../../../core/redux/reducers/modalSlice';
 import ModalShare from './ModalShare';
+import EllipsisText from 'react-ellipsis-text/lib/components/EllipsisText';
 
 export default function ModalShareVideo({ dataUpload, name }) {
   const [modalShow, setModalShow] = useState(false);
@@ -97,8 +98,13 @@ Register using this link
                 {t('Get your friends to watch and vote for your video! The video with the most votes wins! The grand prize will put you on stage as the opening act for the main event with RP. 100,000,000 in your pocket!')}
               </span>
               <div className="flex justify-between items-center gap-3">
-                <div className="flex items-center gap-3">
-                  <h3 className="font-bold text-base md:text-xl">{user?.my_referal_code}</h3>
+                <div className="flex-1 flex items-center gap-3">
+                  <h3 className="font-bold text-sm md:text-xl">
+                  <EllipsisText
+                    text={user?.my_referal_code ?? ''}
+                    length={16}
+                      />
+                    </h3>
                   {/* <MdContentCopy className="cursor-pointer" /> */}
                   <Image
                   src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
@@ -111,7 +117,7 @@ Register using this link
                 </div>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#FF00FE] text-[#23FF2C] text-base focus:outline-none font-semibold rounded-md"
+                  className="flex-0 px-5 py-2 bg-[#FF00FE] text-[#23FF2C] text-base focus:outline-none font-semibold rounded-md"
                   form="form-des"
                   // onClick={onClickShare}
                   onClick={() => setModalShow(true)}

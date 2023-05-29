@@ -129,15 +129,7 @@ export default function OtpConfirmModal({ onClose }) {
   const [confirmOtpForgotPassword, { isSuccess: isSuccessConfirmForgotPassword }] =
     useConfirmOtpForgotPasswordMutation();
 
-  const [
-    resendOtp,
-    {
-      isLoading: isLoadingResend,
-      isSuccess: isSuccessResend,
-      isError: isErrorResend,
-      error: errorResend
-    }
-  ] = useResendOtpMutation();
+  const [resendOtp] = useResendOtpMutation();
 
   const [
     forgotPassword,

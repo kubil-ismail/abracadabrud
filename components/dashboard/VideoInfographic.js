@@ -56,9 +56,14 @@ export default function VideoInfographic() {
               playing
               className="aspect-video rounded-t-[16px] overflow-hidden"
             />
+          </div>
+          <div className="bg-zinc-800 p-4 md:p-5 flex flex-col space-y-1 rounded-b-[16px] h-full">
+            <h3 className="text-base md:text-lg font-extrabold w-full uppercase md:w-[90%]">
+              {t('How to vote, share and win amazing prizes!')}
+            </h3>
             <button
               type="button"
-              className="absolute bottom-3 md:bottom-4 right-6"
+              className="flex justify-end w-full"
               onClick={() => setModalShareShow(true)}>
               <img
                 src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/share-icon.svg`}
@@ -71,12 +76,7 @@ export default function VideoInfographic() {
                 }}
               />
             </button>
-          </div>
-          <div className="bg-zinc-800 p-4 md:p-5 flex flex-col space-y-2 rounded-b-[16px] h-full">
-            <h3 className="text-base md:text-lg font-extrabold w-full uppercase">
-              {t('How to vote, share and win amazing prizes!')}
-            </h3>
-            <p className="text-base font-light flex flex-col space-y-2 md:w-full w-[93%]">
+            {/* <p className="text-base font-light flex flex-col space-y-2 md:w-full w-[93%]">
               <span className="text-[14px]">
                 {t(
                   'Attend the concert and meet your idol! Airfare and accommodation paid. Backstage tour, and selfies with the artists.'
@@ -92,7 +92,7 @@ export default function VideoInfographic() {
                   'Share this video with your friends and earn 5 points for everyone that registered joins the competition.'
                 )}
               </span>
-            </p>
+            </p> */}
           </div>
         </div>
         {/* <div className="flex flex-col h-full relative">

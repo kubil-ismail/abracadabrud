@@ -13,7 +13,7 @@ import Paramcrypt from 'lib/Paramcrypt';
 import { setData } from 'core/redux/reducers/paymentsSlice';
 import { useTranslation } from 'react-i18next';
 import { isAndroid } from 'react-device-detect';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 import SSServices from 'core/services/ServerSide/ssServices';
 import getCredential from 'core/services/helpers/getCredential';
 
@@ -24,10 +24,10 @@ export default function Checkout(props) {
   const { t } = useTranslation();
   const { payment_for } = useSelector((state) => state.payments);
   const paymentMethods = props?.data?.[3]?.data ?? [];
-  const dataVideo = props?.dataGlobal?.[0]?.data ?? [];
-  const dataMembership = props?.dataGlobal?.[1]?.data ?? [];
-  const dataPoints = props?.dataGlobal?.[2]?.data ?? [];
   const [isLoading, setIsLoading] = useState(true);
+  const { token } = useSelector((state) => state.authentication);
+
+  console.log('props', props);
 
   useEffect(() => {
     const ios = () => {
@@ -49,52 +49,8 @@ export default function Checkout(props) {
     if (ios()) {
       setIsIos(true);
     }
-  }, []);
 
-  useEffect(() => {
-    const pendingVideo = dataVideo;
-    const pendingMembership = dataMembership;
-    const pendingPoints = dataPoints;
-
-    if (payment_for === 'video_upload' && pendingVideo?.transaction?.status === 1) {
-      setCookie(
-        'payment',
-        JSON.stringify({ video_id: pendingVideo?.video_id, id: pendingVideo?.id, payment_for })
-      );
-      dispatch(setData(pendingVideo));
-      router.replace(
-        `/checkout/order-summary/${Paramcrypt.encode(
-          pendingVideo?.id ?? new Date().toDateString()
-        )}`
-      );
-    } else if (payment_for === 'membership' && pendingMembership?.transaction?.status === 1) {
-      setCookie(
-        'payment',
-        JSON.stringify({
-          user_contest_membership_id: pendingMembership?.user_contest_membership_id,
-          id: pendingMembership?.id,
-          payment_for
-        })
-      );
-      dispatch(setData(pendingMembership));
-
-      router.replace(
-        `/checkout/order-summary/${Paramcrypt.encode(
-          pendingMembership?.id ?? new Date().toDateString()
-        )}`
-      );
-    } else if (payment_for === 'points' && pendingPoints?.transaction?.status === 1) {
-      setCookie(
-        'payment',
-        JSON.stringify({ payment_for }));
-      dispatch(setData(pendingPoints));
-
-      router.replace(
-        `/checkout/order-summary/${Paramcrypt.encode(
-          pendingPoints?.id ?? new Date().toDateString()
-        )}`
-      );
-    } else {
+    if (paymentMethods.length > 0) {
       setIsLoading(false);
     }
   }, []);
@@ -154,7 +110,7 @@ export const getServerSideProps = async ({ req }) => {
     config = [],
     request,
     global = [];
-  const { isAuthenticated, token, _userId } = getCredential({ req });
+  const { isAuthenticated, token, _userId, payment } = getCredential({ req });
 
   if (isAuthenticated && token) {
     config = [
@@ -172,43 +128,90 @@ export const getServerSideProps = async ({ req }) => {
 
   const data = await Promise.all([...config, ...request]);
 
-  if (data?.[4]?.data?.filter((item) => item.status === 1).length > 0) {
-    global = [
-      ...global,
-      SSServices.getPaymentVideoId({
-        id: data?.[4]?.data.filter((item) => item.status === 1)[0]?.id,
-        token
-      })
-    ];
+  const pendingVideo = await data?.[4]?.data?.filter((item) => item.status === 1)[0] ?? {};
+  const pendingMembership = await data?.[5]?.data?.filter((item) => item.status === 1)[0] ?? {};
+  const pendingBuyPoints = await data?.[6]?.data?.filter((item) => item.status === 1)[0] ?? {};
+
+  global = await Promise.all([
+    SSServices.getPaymentVideoId({ token, id: pendingVideo?.id }),
+    SSServices.getPaymentMembershipId({ token, id: pendingMembership?.id }),
+    SSServices.getPaymentBuyPointsId({ token, id: pendingBuyPoints?.id })
+  ]);
+
+  // global = [
+  //   SSServices.getPaymentVideoId({ token, id: pendingVideo?.id }),
+  //   SSServices.getPaymentMembershipId({ token, id: pendingMembership?.id }),
+  //   SSServices.getPaymentBuyPointsId({ token, id: pendingBuyPoints?.id })
+  // ];
+
+  // const globalData = await Promise.all(global);
+
+  const props = {
+    title: 'Checkout | Abracadbara Starquest',
+    data,
+    global,
+    bottomConfig: {
+      myPoints: data?.[2] ?? {},
+      allEvents: data?.[0] ?? {},
+      membershipStatus: membershipStatus ?? {}
+    }
   }
 
-  if (data?.[5]?.data?.filter((item) => item.status === 1).length > 0) {
-    global = [
-      ...global,
-      SSServices.getPaymentMembershipId({
-        id: data?.[5]?.data.filter((item) => item.status === 1)[0]?.id,
-        token
-      })
-    ];
+  if (global?.[0]?.data?.transaction?.status === 1) {
+    return {
+      redirect: {
+        destination: `/checkout/order-summary/${Paramcrypt.encode(
+          pendingVideo?.id ?? new Date().toDateString()
+        )}`,
+        permanent: false
+      },
+      props: { ...props }
+    }
+  } else if (global?.[1]?.data?.transaction?.status === 1) {
+    // setCookie(
+    //   'payment',
+    //   JSON.stringify({
+    //     user_contest_membership_id: pendingMembership?.user_contest_membership_id,
+    //     id: pendingMembership?.id,
+    //     'membership'
+    //   })
+    // );
+    // dispatch(setData(global?.[1]?.data));
+    return {
+      redirect: {
+        destination: `/checkout/order-summary/${Paramcrypt.encode(
+          pendingMembership?.id ?? new Date().toDateString()
+        )}`,
+        permanent: false
+      },
+      props: { ...props }
+    }
+  } else if (global?.[2]?.data?.transaction?.status === 1) {
+    // setCookie(
+    //   'payment',
+    //   JSON.stringify({
+    //     user_contest_membership_id: pendingBuyPoints?.user_contest_membership_id,
+    //     id: pendingBuyPoints?.id,
+    //     'points'
+    //   })
+    // );
+    // dispatch(setData(global?.[2]?.data));
+    return {
+      redirect: {
+        destination: `/checkout/order-summary/${Paramcrypt.encode(
+          pendingBuyPoints?.id ?? new Date().toDateString()
+        )}`,
+        permanent: false
+      },
+      props: { ...props }
+    }
   }
-
-  if (data?.[6]?.data?.filter((item) => item.status === 1).length > 0) {
-    global = [
-      ...global,
-      SSServices.getPaymentBuyPointsId({
-        id: data?.[6]?.data.filter((item) => item.status === 1)[0]?.id,
-        token
-      })
-    ];
-  }
-
-  const dataGlobal = await Promise.all([...global]);
 
   return {
     props: {
       title: 'Checkout | Abracadbara Starquest',
       data,
-      dataGlobal,
+      global,
       bottomConfig: {
         myPoints: data?.[2] ?? {},
         allEvents: data?.[0] ?? {},

@@ -56,9 +56,28 @@ export default function Layout(props) {
             backgroundPosition: 'center',
             backgroundSize: 'cover'
           }}>
-          <div className="container px-4 pt-24 pb-32 md:max-w-[78rem] md:m-auto">{children}</div>
+          <div className="container px-4 pt-24 pb-32 md:max-w-[78rem] md:m-auto">
+            {process.env.NEXT_PUBLIC_IS_PRELAUNCH ? (
+              <div className="flex justify-center items-center h-[70vh] blank-screen">
+                <div>
+                  <div className="flex justify-center items-center mb-4">
+                    <img
+                      src="https://d15lge196g4aho.cloudfront.net/assets/images/prizes-awesome.webp"
+                      width="50%"
+                    />
+                  </div>
+                  <h1 className="text-lg font-semibold text-center">Hold up, let them cook.</h1>
+                  <h1 className="text-lg font-semibold text-center">The magic is on thir way</h1>
+                </div>
+              </div>
+            ) : (
+              children
+            )}
+          </div>
         </div>
-        <MenuBar {...{ ...props, ...{ membershipStatus } }} />
+        {!process.env.NEXT_PUBLIC_IS_PRELAUNCH && (
+          <MenuBar {...{ ...props, ...{ membershipStatus } }} />
+        )}
         <EmptyVoteModal />
       </div>
     </>

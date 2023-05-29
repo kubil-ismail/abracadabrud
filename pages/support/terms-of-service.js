@@ -1,3 +1,4 @@
+import ModalShareVideo from 'components/element/modal/ModalShareVideo';
 import ContentTermsOfService from 'components/support/ContentTermsOfService';
 import HeaderSupport from 'components/support/HeaderSupport';
 import SSServices from 'core/services/ServerSide/ssServices';
@@ -6,7 +7,7 @@ import getLayouts from 'utils/getLayouts';
 
 export default function TermsOfService({ termsOfService }) {
   return (
-    <div className="flex flex-col space-y-8 md:space-y-12 overflow-hidden">
+    <div className="flex flex-col space-y-8 md:space-y-12 break-words">
       <HeaderSupport />
       <ContentTermsOfService content={termsOfService} />
     </div>

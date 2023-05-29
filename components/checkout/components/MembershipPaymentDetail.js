@@ -6,13 +6,15 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { isAndroid } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { guidePayments } from 'store/master.data';
 import PaymentsGuide from './PaymentsGuide';
+import { setRefetchNotifications } from 'core/redux/reducers/notificationSlice';
 
 const MembershipPayment = (props) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const { data, payment_for, isQris } = useSelector((state) => state.payments);
   const { user, token } = useSelector((state) => state.authentication);
@@ -118,6 +120,7 @@ const MembershipPayment = (props) => {
               router.replace('/my-account?tab=membership#transaction');
             }, 3000);
           }
+          dispatch(setRefetchNotifications(true));
         });
       }, 3000);
       return () => clearInterval(interval);
@@ -176,7 +179,9 @@ const MembershipPayment = (props) => {
       )}
 
       {(data?.payment_type === 'ewallet' || data?.payment_method?.payment_type === 'ewallet') &&
-        data?.how_to_pay?.find((res) => res?.name === 'generate-qr-code') && (
+        (data?.how_to_pay?.find((res) => res?.name === 'generate-qr-code') ||
+          paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'generate-qr-code')
+        ) && (
           <div className="flex flex-col space-y-5 max-w-2xl md:m-auto">
             <p className="text-center">{t('How To Pay:')}</p>
             <div className="flex flex-col space-y-5">
@@ -238,8 +243,8 @@ const MembershipPayment = (props) => {
       )}
 
       {/* check if not mandiri account */}
-      {(data?.payment_type ?? data?.payment_method?.payment_type) === 'virtual_account' &&
-        (data?.payment_code ?? data?.payment_method?.payment_code) !== 'va_mandiri' && (
+      {(data?.payment_type || data?.payment_method?.payment_type) === 'virtual_account' &&
+        (data?.payment_code || data?.payment_method?.payment_code) !== 'va_mandiri' && (
           <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
@@ -256,7 +261,7 @@ const MembershipPayment = (props) => {
               </div>
               <div className="flex items-center gap-4">
                 <span className="text-xs md:text-sm flex flex-col gap-5">
-                  {data?.how_to_pay[0]?.va_number}
+                  {data?.how_to_pay?.[0]?.va_number || paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.va_number}
                 </span>
 
                 <Image
@@ -266,7 +271,9 @@ const MembershipPayment = (props) => {
                   height={18}
                   className="cursor-pointer"
                   onClick={() => {
-                    navigator.clipboard.writeText(data?.how_to_pay[0]?.va_number);
+                    navigator.clipboard.writeText(data?.how_to_pay?.[0]?.va_number ||
+                      paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.va_number
+                    );
                     toast.success(t('Success copy virtual account to clipboard'));
                   }}
                 />
@@ -283,8 +290,8 @@ const MembershipPayment = (props) => {
           </div>
         )}
 
-      {(data?.payment_type ?? data?.payment_method?.payment_type) === 'virtual_account' &&
-        (data?.payment_code ?? data?.payment_method?.payment_code) === 'va_mandiri' && (
+      {(data?.payment_type || data?.payment_method?.payment_type) === 'virtual_account' &&
+        (data?.payment_code || data?.payment_method?.payment_code) === 'va_mandiri' && (
           <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
@@ -371,23 +378,28 @@ const MembershipPayment = (props) => {
           ))}
 
       {/* Pay with gopay */}
-      {(data?.payment_name ?? data?.payment_method?.payment_name) === 'Gopay' &&
-        data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect') &&
+      {(data?.payment_name === 'Gopay' || data?.payment_method?.payment_name === 'Gopay') &&
+        (data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+          paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url) &&
         !isQris && (
           <>
             <Link
-              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
+              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+                paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
               className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
               {t('Pay with Gopay')}
             </Link>
           </>
         )}
 
-      {(data?.payment_name ?? data?.payment_method?.payment_name) === 'ShopeePay' &&
-        data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect') && (
+      {(data?.payment_name === 'ShopeePay' || data?.payment_method?.payment_name === 'ShopeePay') &&
+        (data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+          paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url) &&
+        (
           <>
             <Link
-              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
+              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+                paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
               className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
               {t('Pay with Shopeepay')}
             </Link>

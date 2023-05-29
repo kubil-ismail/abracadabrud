@@ -55,19 +55,6 @@ export default function Home(props) {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (user && token && user?.ftv_view === 0) {
-      service.post(`${process.env.NEXT_PUBLIC_SITE_URL}/api/ftv`).then(() => {
-        setCookie('ftv_view', 'true');
-        dispatch(setFtvProfile(1));
-      });
-    }
-
-    if ((user && user?.ftv_view === 1) || getCookie('ftv_view')) {
-      dispatch(setFtvProfile(1));
-    }
-  }, [user]);
-
   return (
     <>
       <Head>

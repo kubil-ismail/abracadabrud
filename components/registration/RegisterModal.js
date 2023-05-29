@@ -107,6 +107,10 @@ export default function RegisterModal({ onClose }) {
     const { name, value } = e.target;
 
     if (name === 'fullname') {
+      // can only contain letters, spaces
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
       if (value.length < 3 && value.length > 0) {
         setRegisterError((registerError) => ({
           ...registerError,
@@ -195,7 +199,7 @@ export default function RegisterModal({ onClose }) {
     }
 
     if (name === 'referalCode') {
-      if (value && (value.length > 20 || value.length < 10)) {
+      if (value && (value.length > 20 || value.length < 5)) {
         setRegisterError((registerError) => ({
           ...registerError,
           referalCode: `${t('Invalid referral code')}`
@@ -261,7 +265,7 @@ export default function RegisterModal({ onClose }) {
         phone: mobile,
         password,
         password_confirmation: confirmPassword,
-        referal_code: referalCode,
+        referal_code: referalCode ? `${atob(referalCode)}ACADABRA0` : '',
         pref_language: lang
       });
 
@@ -300,23 +304,24 @@ export default function RegisterModal({ onClose }) {
 
   useEffect(() => {
     if (isErrorCompleteProfile) {
+      console.log('errorCompleteProfile', errorCompleteProfile);
       if (errorCompleteProfile?.data?.errors?.username) {
         errorCompleteProfile?.data?.errors?.username.map((error) => {
           setRegisterError((registerError) => ({ ...registerError, username: error }));
         });
-        document.getElementById('username').focus();
+        document.getElementById('username')?.focus();
       }
       if (errorCompleteProfile?.data?.errors?.phone) {
         errorCompleteProfile?.data?.errors?.phone.map((error) => {
           setRegisterError((registerError) => ({ ...registerError, mobile: error }));
         });
-        document.getElementById('mobile').focus();
+        document.getElementById('mobile')?.focus();
       }
       if (errorCompleteProfile?.data?.errors?.referal_code) {
         errorCompleteProfile?.data?.errors?.referal_code.map((error) => {
           setRegisterError((registerError) => ({ ...registerError, referalCode: error }));
         });
-        document.getElementById('referalCode').focus();
+        document.getElementById('referalCode')?.focus();
       }
       // dispatch(authenticationApi.util.resetApiState('completeBasicProfile'));
     }

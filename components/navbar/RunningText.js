@@ -2,19 +2,19 @@ import Marquee from 'react-fast-marquee';
 import service from 'core/services/publicService';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import parse from 'html-react-parser';
 
 export default function RunningText({ text }) {
   const [data, setData] = useState([]);
   const router = useRouter();
+
   useEffect(() => {
     service
-      .get('/running-text')
+      .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/running-text`)
       .then((res) => {
-        setData(res?.data?.data);
+        setData(res?.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => { });
   }, [router.pathname]);
 
   return (
@@ -26,11 +26,9 @@ export default function RunningText({ text }) {
               <span
                 className="text-xs font-medium block pr-1"
                 key={`marque_item_${index}`}
-                dangerouslySetInnerHTML={{ __html: `${item.text}` }}></span>
-
-              <span
-                dangerouslySetInnerHTML={{ __html: `&#x2022;` }}
-                style={{ marginRight: '10px', marginLeft: '5px' }}></span>
+                style={{ whiteSpace: 'nowrap' }}>
+                {parse(item?.text)}
+              </span>
             </>
           ))}
         </Marquee>

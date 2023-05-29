@@ -45,12 +45,12 @@ export default function ThreeDotVideo({
     setIsOpen(true);
   }
 
-  const { data: favoriteHistory } = useGetFavoritesHistoryQuery(
-    { id: idVideo },
-    {
-      skip: stillLoading || !open || !isAuthenticated
-    }
-  );
+  // const { data: favoriteHistory } = useGetFavoritesHistoryQuery(
+  //   { id: idVideo },
+  //   {
+  //     skip: stillLoading || !open || !isAuthenticated
+  //   }
+  // );
 
   useEffect(() => {
     if (isSuccessAddFavorite) {
@@ -137,10 +137,10 @@ THANKS!
         aria-label="more"
         onClick={() => setOpen(!open)}>
         <Image
-        src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/more.png`}
-        alt="chevron"
-        width={28}
-        height={28}
+          src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/more.png`}
+          alt="chevron"
+          width={28}
+          height={28}
         />
       </Popover.Button>
       <Transition

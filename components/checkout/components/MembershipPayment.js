@@ -153,7 +153,16 @@ const MembershipPayment = ({ timer, countDown }) => {
           {isLoadingMembership || isLoadingPaymentMembershipId ? 'Loading...' : timer}
         </h3>
         <span className="text-xs font-light">
-          Please complete the payment with the information below before{' '}
+            {t('Please complete the payment with the information below before')} {' '}
+            {new Date(paymentMembershipId?.data?.transaction?.expired_at).toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              hour12: true
+            })}
+          {/* Please complete the payment with the information below before{' '}
           {new Date(paymentMembershipId?.data?.transaction?.expired_at).toLocaleString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -161,7 +170,7 @@ const MembershipPayment = ({ timer, countDown }) => {
             hour: 'numeric',
             minute: 'numeric',
             hour12: true
-          })}
+          })} */}
         </span>
       </div>
       {paymentMembershipId?.data?.payment_method?.payment_type === 'virtual_account' && (

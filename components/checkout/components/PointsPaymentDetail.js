@@ -6,13 +6,15 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { isAndroid } from 'react-device-detect';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { guidePayments } from 'store/master.data';
 import PaymentsGuide from './PaymentsGuide';
+import { setRefetchNotifications } from 'core/redux/reducers/notificationSlice';
 
 const PointsPayment = (props) => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const { t } = useTranslation();
     const { data, payment_for, isQris } = useSelector((state) => state.payments);
     const { user, token } = useSelector((state) => state.authentication);
@@ -103,6 +105,7 @@ const PointsPayment = (props) => {
                             router.replace('/my-account?tab=points#transaction');
                         }, 3000);
                     }
+                    dispatch(setRefetchNotifications(true));
                 });
             }, 3000);
             return () => clearInterval(interval);

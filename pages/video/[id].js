@@ -1,9 +1,8 @@
 // import { useGetShowVideoQuery } from 'core/services/rtk/MembershipsServices';
 import { useRouter } from 'next/router';
 import { setCookie } from 'cookies-next';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useGetShowVideoQuery } from 'core/services/rtk/EventServices';
 import { setReferralCode } from 'core/redux/reducers/authenticationSlice';
 import getLayouts from 'utils/getLayouts';
 import CardVideo from 'components/element/CardVideo';
@@ -101,7 +100,7 @@ export async function getServerSideProps({ query, req }) {
     global;
   const { isAuthenticated, token } = getCredential({ req });
 
-  global = [SSServices.getShowVideo(id)];
+  global = [SSServices.getShowVideo(atob(id))];
 
   if (isAuthenticated && token) {
     config = [

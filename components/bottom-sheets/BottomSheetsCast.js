@@ -68,7 +68,7 @@ export default function BottomSheetsCast(props) {
             <span
               className={
                 available_vote?.toString().split('')?.length <= 2 &&
-                vote_use?.toString().split('')?.length <= 2
+                  vote_use?.toString().split('')?.length <= 2
                   ? 'font-medium text-xl md:text-2xl'
                   : 'font-medium text-[15px]'
               }>
@@ -84,7 +84,7 @@ export default function BottomSheetsCast(props) {
             <small
               className={
                 available_vote?.toString().split('')?.length <= 2 &&
-                vote_use?.toString().split('')?.length <= 2
+                  vote_use?.toString().split('')?.length <= 2
                   ? 'font-medium text-xl md:text-2xl'
                   : 'font-medium text-[15px]'
               }>

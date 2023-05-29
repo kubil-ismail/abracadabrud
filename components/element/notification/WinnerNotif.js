@@ -1,8 +1,10 @@
 
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function WinnerNotification({ data }) {
+  const { t } = useTranslation();
 
   //   const typeName = type === 'membership' ? 'membership' : 'video';
 

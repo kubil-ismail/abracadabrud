@@ -20,13 +20,14 @@ import ErrorMessage from '../error/ErrorMessage';
 import InputMember from './InputMember';
 import ModalShareVideo from 'components/element/modal/ModalShareVideo';
 import { useTranslation } from 'react-i18next';
+import { setCredentials } from 'core/redux/reducers/authenticationSlice';
 
 export default function FormUpload() {
   const firstInput = useRef();
   const timestampRef = useRef(Date.now()).current;
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { isAuthenticated } = useSelector((state) => state.authentication);
+  const { isAuthenticated, user } = useSelector((state) => state.authentication);
   const { modalShareVideo } = useSelector((state) => state.modal);
   const { allEvents: dataEvent } = useSelector((state) => state.global);
   const router = useRouter();
@@ -84,18 +85,6 @@ export default function FormUpload() {
     {},
     {
       refetchOnMountOrArgChange: true
-    }
-  );
-
-  const {
-    data: dataMe,
-    error: errorMe,
-    isLoading: isLoadingMe
-  } = useMeQuery(
-    { sessionId: timestampRef },
-    {
-      refetchOnMountOrArgChange: true,
-      skip: !isAuthenticated
     }
   );
 
@@ -342,15 +331,15 @@ export default function FormUpload() {
 
   // me
   useEffect(() => {
-    if (dataMe?.user?.contestant?.artist_band_name) {
+    if (user) {
       setDataContestant({
         ...dataContestant,
-        artist_band_name: dataMe?.user?.contestant?.artist_band_name
+        artist_band_name: user?.contestant?.artist_band_name
       });
 
-      setCountMembers(dataMe?.user?.contestant?.members?.length);
+      setCountMembers(user?.contestant?.members?.length);
     }
-  }, [dataMe]);
+  }, [user]);
 
   // events
   useEffect(() => {
@@ -416,7 +405,9 @@ export default function FormUpload() {
   // success handling
   useEffect(() => {
     if (isSuccessContestantProfile && isSuccessUpload) {
+      console.log('dataContestantProfile', dataContestantProfile);
       dispatch(setModal({ name: 'modalShareVideo', value: true }));
+      dispatch(setCredentials(dataContestantProfile));
     }
   }, [isSuccessContestantProfile, isSuccessUpload]);
 
@@ -566,9 +557,9 @@ export default function FormUpload() {
               onChange={(e) => {
                 handleChanges(e);
               }}
-              disabled={dataMe?.user?.contestant?.artist_band_name ? true : false}
+              disabled={user?.contestant?.artist_band_name ? true : false}
             />
-            {dataMe?.user?.contestant?.artist_band_name && (
+            {user?.contestant?.artist_band_name && (
               <p className="text-xs text-white font-light">
                 {t('*Name changes must be made in the account page')}
               </p>
@@ -596,8 +587,8 @@ export default function FormUpload() {
                     key={i}
                     index={index}
                     setMember={setMemberArray}
-                    value1={dataMe?.user?.contestant?.members?.[index]?.name ?? ''}
-                    value2={dataMe?.user?.contestant?.members?.[index]?.email ?? ''}
+                    value1={user?.contestant?.members?.[index]?.name ?? ''}
+                    value2={user?.contestant?.members?.[index]?.email ?? ''}
                     onClose={(e) => {
                       // create array of member names
 
@@ -608,7 +599,7 @@ export default function FormUpload() {
               })}
           </div>
           <div
-            className="flex justify-end items-center gap-1 justify-end mt-2 cursor-pointer"
+            className="flex justify-end items-center gap-1 mt-2 cursor-pointer"
             onClick={(e) => {
               addInput(e);
             }}>

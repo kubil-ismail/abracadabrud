@@ -135,7 +135,16 @@ const VideoPayment = ({ timer, countDown }) => {
           {isLoadingSummary || isLoadingPaymentVideoId ? 'Loading...' : timer}
         </h3>
         <span className="text-xs md:text-sm font-light">
-          Please complete the payment with the information below before{' '}
+          {t('Please complete the payment with the information below before')} {' '}
+          {new Date(paymentVideoId?.data?.transaction?.expired_at).toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              hour12: true
+            })}
+          {/* Please complete the payment with the information below before{' '}
           {new Date(paymentVideoId?.data?.transaction?.expired_at).toLocaleString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -143,7 +152,7 @@ const VideoPayment = ({ timer, countDown }) => {
             hour: 'numeric',
             minute: 'numeric',
             hour12: true
-          })}
+          })} */}
         </span>
       </div>
       {paymentVideoId?.data?.payment_method?.payment_type === 'virtual_account' && (

@@ -3,6 +3,7 @@ import ModalShare from './modal/ModalShare';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { encryptId } from 'lib/Aes.v2';
 
 export default function ButtonShare({ idVideo, artistName, caption, userID }) {
   const { basePath } = useRouter();
@@ -14,16 +15,19 @@ export default function ButtonShare({ idVideo, artistName, caption, userID }) {
     
     It's Easy! Click this link, vote for me now, and you too can win amazing weekly prizes:
     THANKS!
-    `
+    `;
   useEffect(() => {
     if (user && isAuthenticated) {
       setUrl(
-        `${window.location.origin}${basePath}/video/${idVideo}?referral=${user?.my_referal_code}`
+        `${window.location.origin}${basePath}/video/${encryptId(idVideo)}?referral=${encryptId(
+          user?.my_referal_code.replace('ACADABRA0', '')
+        )}`
       );
     } else {
-      setUrl(`${window.location.origin}${basePath}/video/${idVideo}`);
+      setUrl(`${window.location.origin}${basePath}/video/${encryptId(idVideo)}`);
     }
   }, [user, idVideo]);
+
   return (
     <>
       {showModal && (

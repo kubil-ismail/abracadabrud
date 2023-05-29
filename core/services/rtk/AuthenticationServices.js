@@ -109,24 +109,33 @@ export const authenticationApi = createApi({
     }),
     resendOtp: builder.mutation({
       query: ({ identity }) => ({
-        url: '/auth/register/otp/resend',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/register/otp/resend`,
         method: 'POST',
-        body: { identifier: identity }
+        body: { payload: encrypt({ identifier: identity }) }
       }),
       transformResponse: (response) => {
         if (response.data) {
           return response.data;
         }
         return response;
+      },
+      transformErrorResponse: (response) => {
+        if (response?.data && response?.data?.encrypt) {
+          return decrypt(response?.data?.result);
+        }
+
+        return response;
       }
     }),
     resendOtpChanged: builder.mutation({
       query: ({ email, password }) => ({
-        url: `/me/profile/change-email`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/me/profile/change-email`,
         method: 'POST',
         body: {
-          new_email: email,
-          password
+          payload: encrypt({
+            new_email: email,
+            password
+          })
         }
       }),
       transformResponse: (response) => {
@@ -188,6 +197,13 @@ export const authenticationApi = createApi({
           })
         }
       }),
+      transformErrorResponse: (response) => {
+        if (response?.data && response?.data?.encrypt) {
+          return { data: decrypt(response?.data?.result) };
+        }
+
+        return response;
+      },
       transformResponse: (response) => {
         if (response?.encrypt) {
           return decrypt(response?.result)?.data;
@@ -365,6 +381,13 @@ export const authenticationApi = createApi({
           })
         }
       }),
+      transformResponse: (response) => {
+        if (response?.encrypt) {
+          return decrypt(response?.result);
+        }
+
+        return response;
+      },
       transformErrorResponse: (response) => {
         if (response?.data && response?.data?.encrypt) {
           return { data: decrypt(response?.data?.result) };

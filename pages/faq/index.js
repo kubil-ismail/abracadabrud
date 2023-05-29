@@ -17,6 +17,7 @@ import EveryWeekWinner from 'components/faq/EveryWeekWinner';
 import UsePointToVote from 'components/faq/UsePointToVote';
 import { useGetEventMembershipQuery } from 'core/services/rtk/MembershipServices';
 import BuyPoints from 'components/faq/BuyPoints';
+import ExtraPoints from 'components/faq/ExtraPoints';
 
 export default function Faq(props) {
   const router = useRouter();
@@ -46,7 +47,8 @@ export default function Faq(props) {
       <div className="flex flex-col gap-6">
         <BenefitMembership {...props} />
       </div>
-      <BuyPoints {...props} />
+      {/* <BuyPoints {...props} /> */}
+      <ExtraPoints {...props} />
     </div>
   );
 }

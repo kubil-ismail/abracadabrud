@@ -1,6 +1,8 @@
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 export default function VoteNotif({ data }) {
+  const { t } = useTranslation();
 
   //   const typeName = type === 'membership' ? 'membership' : 'video';
 
@@ -43,8 +45,12 @@ export default function VoteNotif({ data }) {
               </div>
               <div className="">
                 <span className="text-xs">
-                  You received {data?.data?.total_vote} {data?.data?.total_vote >= 2 ? "Votes" : "vote"} from{' '}
-                  {data?.payload?.voted_by?.username}
+                  {
+                    `${t('You received')} ${data?.data?.total_vote} ${data?.data?.total_vote >= 2 ? "Votes" : "vote"} ${t('from')} ${data?.payload?.voted_by?.username} `
+                    // t(`You received ${data?.data?.total_vote} ${data?.data?.total_vote >= 2 ? "Votes" : "vote"} from
+                    // ${data?.payload?.voted_by?.username}`)
+                  }
+                  
                 </span>
               </div>
             </div>

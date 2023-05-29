@@ -4,12 +4,17 @@ import getLayouts from 'utils/getLayouts';
 import { useRouter } from 'next/router';
 import getCredential from 'core/services/helpers/getCredential';
 import SSServices from 'core/services/ServerSide/ssServices';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCookie } from 'cookies-next';
+import Paramcrypt from 'lib/Paramcrypt';
 
 export default function OrderSummary(props) {
   const { payment_for } = useSelector((state) => state.payments);
   const [allEvents, memberships, myPoints, paymentsMembership, paymentVideoUser, paymentPoints, paymentDetail] =
     props.data;
+  // const [dataVideo, dataMembership, dataPoints] = props.global;
+  console.log('props', props);
+  const dispatch = useDispatch();
 
   // const detail = () => {
   //   if (payment_for === 'membership' || payment_for === 'membership_detail') {
@@ -42,31 +47,31 @@ export default function OrderSummary(props) {
 
 OrderSummary.getLayout = (page, props) => getLayouts(page, 'base', props);
 
-export const getServerSideProps = async ({ req }) => {
+export const getServerSideProps = async ({ req, params }) => {
   try {
     let membershipStatus,
       config = [],
       request,
       paymentDetail;
     const { isAuthenticated, token, _userId, payment } = getCredential({ req });
-
+    console
     if (isAuthenticated && token) {
       const paymentJSON = JSON.parse(payment);
 
       // fetch by payment membership / video / points
       if (paymentJSON?.payment_for === 'video_upload' || paymentJSON?.payment_for === 'video_upload_detail') {
         paymentDetail = SSServices.getPaymentVideoId({
-          id: paymentJSON?.id,
+          id: Paramcrypt.decode(params?.data),
           token
         })
       } else if (paymentJSON?.payment_for === 'membership' || paymentJSON?.payment_for === 'membership_detail') {
         paymentDetail = SSServices.getPaymentMembershipId({
-          id: paymentJSON?.id,
+          id: Paramcrypt.decode(params?.data),
           token
         });
       } else if (paymentJSON?.payment_for === 'points') {
         paymentDetail = SSServices.getPaymentBuyPointsId({
-          id: paymentJSON?.id,
+          id: Paramcrypt.decode(params?.data),
           token
         });
       }

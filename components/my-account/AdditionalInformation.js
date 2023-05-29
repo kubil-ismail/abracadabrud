@@ -3,23 +3,19 @@ import { pointApi } from 'core/services/rtk/MeServices';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { toast } from 'react-toastify';
 import { additionalInformationSchema } from 'utils/schemaValidation';
-import {
-  useMeQuery,
-  useUpdateAdditionalInformationMutation
-} from 'core/services/rtk/AuthenticationServices';
+import { useUpdateAdditionalInformationMutation } from 'core/services/rtk/AuthenticationServices';
 import { useGetGenresQuery } from 'core/services/rtk/EventServices';
 import ErrorMessage from '../error/ErrorMessage';
 
 export default function AdditionalInformation({ me }) {
   const router = useRouter();
   const { t } = useTranslation();
-  const { isAuthenticated, token } = useSelector((state) => state.authentication);
   const [
     updateAdditionalInformation,
     {
@@ -37,6 +33,9 @@ export default function AdditionalInformation({ me }) {
   const [options, setOptions] = useState([]);
 
   const dispatch = useDispatch();
+  const [favoriteMusicGenresErr, setFavoriteMusicGenresErr] = useState('');
+  const [genderErr, setGenderErr] = useState('');
+  const firstItem = useRef();
 
   const formik = useFormik({
     initialValues: {
@@ -54,7 +53,13 @@ export default function AdditionalInformation({ me }) {
         favoriteMusicGenres: JSON.parse(values?.favoriteMusicGenres ?? [])
       };
 
-      updateAdditionalInformation(parsing);
+      const isValidGender = formik.values.gender || formik.values.gender !== '-';
+
+      const isValidGenre = JSON.parse(formik.values.favoriteMusicGenres)?.length;
+
+      if (isValidGender && isValidGenre) {
+        updateAdditionalInformation(parsing);
+      }
     }
   });
 
@@ -166,7 +171,9 @@ export default function AdditionalInformation({ me }) {
           </Disclosure.Button>
           <Disclosure.Panel className="text-xs sm:text-sm py-8 md:py-10">
             <form onSubmit={formik.handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-8 text-slate-50">
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-8 text-slate-50"
+                ref={firstItem}>
                 <div className="flex flex-col space-y-3">
                   <label className="text-base font-semibold">{t('Preferred Language')}</label>
                   <Select
@@ -212,6 +219,14 @@ export default function AdditionalInformation({ me }) {
                     onChange={(e) => {
                       const value = e?.map((item) => item?.value);
 
+                      if (value?.length) {
+                        setFavoriteMusicGenresErr('');
+                      }
+
+                      if (!value?.length) {
+                        setFavoriteMusicGenresErr('Genre is required');
+                      }
+
                       formik.setFieldValue('favoriteMusicGenres', JSON.stringify(value));
                     }}
                     value={options?.filter((item) =>
@@ -236,7 +251,8 @@ export default function AdditionalInformation({ me }) {
                   />
                   <ErrorMessage
                     message={t(
-                      formik.touched.favoriteMusicGenres && formik?.errors?.favoriteMusicGenres
+                      (formik.touched.favoriteMusicGenres && formik?.errors?.favoriteMusicGenres) ||
+                        favoriteMusicGenresErr
                     )}
                   />
                 </div>
@@ -300,7 +316,10 @@ export default function AdditionalInformation({ me }) {
                         name="gender"
                         value="M"
                         defaultChecked={formik.values.gender === 'M'}
-                        onClick={(e) => formik.setFieldValue('gender', e.target.value)}
+                        onClick={(e) => {
+                          formik.setFieldValue('gender', e.target.value);
+                          setGenderErr('');
+                        }}
                       />
                       <label className="text-xs" htmlFor="Male">
                         {t('Male')}
@@ -313,7 +332,10 @@ export default function AdditionalInformation({ me }) {
                         name="gender"
                         value="F"
                         defaultChecked={formik.values.gender === 'F'}
-                        onClick={(e) => formik.setFieldValue('gender', e.target.value)}
+                        onClick={(e) => {
+                          formik.setFieldValue('gender', e.target.value);
+                          setGenderErr('');
+                        }}
                       />
                       <label className="text-xs" htmlFor="Female">
                         {t('Female')}
@@ -326,7 +348,10 @@ export default function AdditionalInformation({ me }) {
                         name="gender"
                         value="O"
                         defaultChecked={formik.values.gender === 'O'}
-                        onClick={(e) => formik.setFieldValue('gender', e.target.value)}
+                        onClick={(e) => {
+                          formik.setFieldValue('gender', e.target.value);
+                          setGenderErr('');
+                        }}
                       />
                       <label className="text-xs" htmlFor="Other">
                         {t('Other')}
@@ -339,14 +364,19 @@ export default function AdditionalInformation({ me }) {
                         name="gender"
                         value="P"
                         defaultChecked={formik.values.gender === 'P'}
-                        onClick={(e) => formik.setFieldValue('gender', e.target.value)}
+                        onClick={(e) => {
+                          formik.setFieldValue('gender', e.target.value);
+                          setGenderErr('');
+                        }}
                       />
                       <label className="text-xs text-center" htmlFor="Prefer-not-to-say">
                         {t('Prefer not to say')}
                       </label>
                     </div>
                   </div>
-                  <ErrorMessage message={t(formik.touched.gender && formik?.errors?.gender)} />
+                  <ErrorMessage
+                    message={t((formik.touched.gender && formik?.errors?.gender) || genderErr)}
+                  />
                 </div>
                 <div className="md:col-span-2 flex flex-col space-y-3">
                   <label className="text-base font-semibold">{t('About You')}</label>
@@ -366,7 +396,20 @@ export default function AdditionalInformation({ me }) {
                     type="submit"
                     className={`px-5 py-2 text-[#4100FF] bg-[#23FF2C] font-bold text-base w-32 rounded-md ${
                       !formik.isValid && 'cursor-not-allowed'
-                    }`}>
+                    }`}
+                    onClick={() => {
+                      if (!JSON.parse(formik.values.favoriteMusicGenres)?.length) {
+                        setFavoriteMusicGenresErr('Genre is required');
+                      }
+
+                      if (!formik.values.gender || formik.values.gender === '-') {
+                        setGenderErr('Gender is required');
+                      }
+
+                      if (formik.errors !== {}) {
+                        firstItem.current.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}>
                     {additionalInformationLoading ? 'Loading...' : `${t('Save')}`}
                   </button>
                 </div>

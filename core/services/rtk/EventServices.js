@@ -285,17 +285,24 @@ export const eventApi = createApi({
     }),
     cancelVideoPayment: builder.mutation({
       query: ({ video_contest_id }) => ({
-        url: `/payments/video/cancel`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/video/cancel`,
         method: 'POST',
-        body: { video_payment_id: video_contest_id }
+        body: { payload: encrypt({ video_payment_id: video_contest_id }) }
       }),
+      transformErrorResponse: (response) => {
+        if (response?.data && response?.data?.encrypt) {
+          return decrypt(response?.data?.result);
+        }
+
+        return response;
+      },
       invalidatesTags: ['PaymentVideo']
     }),
     cancelPointsPayment: builder.mutation({
       query: ({ buy_points_payment_id }) => ({
-        url: `/payments/buy-points/cancel`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/points/cancel`,
         method: 'POST',
-        body: { buy_points_payment_id }
+        body: { payload: encrypt({ buy_points_payment_id: buy_points_payment_id }) }
       }),
       invalidatesTags: ['PaymentVideo']
     }),
@@ -340,9 +347,9 @@ export const eventApi = createApi({
     }),
     cancelMembershipPayment: builder.mutation({
       query: ({ membership_id }) => ({
-        url: `/payments/membership/cancel`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/membership/cancel`,
         method: 'POST',
-        body: { membership_payment_id: membership_id }
+        body: { payload: encrypt({ membership_payment_id: membership_id }) }
       }),
       invalidatesTags: ['PaymentMembership']
     }),

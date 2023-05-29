@@ -7,7 +7,7 @@ import ContentOfficialRules from 'components/support/ContentOfficialRules';
 export default function OfficialRules({ officialRules }) {
 
   return (
-    <div className="flex flex-col space-y-8 md:space-y-12 overflow-hidden">
+    <div className="flex flex-col space-y-8 md:space-y-12 break-words">
       <HeaderSupport />
       <ContentOfficialRules content={officialRules} />
     </div>

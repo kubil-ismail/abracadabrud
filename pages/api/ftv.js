@@ -4,22 +4,15 @@ import getCredential from 'core/services/helpers/getCredential';
 import { encrypt } from 'lib/Aes.v2';
 
 export default function handler(req, res) {
-  const { _token } = getCredential({ req }) || {};
 
-  if (req.method !== 'POST') {
+  if (req.method !== 'GET') {
     res.status(400).json({
       message: 'Page not found'
     });
   }
 
   axios
-    .post(
-      `${process.env.NEXT_PUBLIC_BASE_API_URL}/ftv`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${_token}` }
-      }
-    )
+    .get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/ftv`)
     .then((result) => {
       res.status(200).json({
         result: encrypt(result?.data),

@@ -8,7 +8,7 @@ import getCredential from 'core/services/helpers/getCredential';
 
 export default function PrivacyPolicy({ privacyPolicy }) {
   return (
-    <div className="flex flex-col space-y-8 md:space-y-12 overflow-hidden">
+    <div className="flex flex-col space-y-8 md:space-y-12 break-words">
       <HeaderSupport />
       <ContentPrivacyPolicy content={privacyPolicy} />
     </div>

@@ -148,21 +148,39 @@ const SSServices = {
       return error;
     }
   },
-  getPaymentMembershipId: async ({ id, token }) => {
+  getPaymentMembershipId: async ({ id, token, client }) => {
     try {
-      const { data } = await ssApiService.get(`/payments/membership/${id}`, {
+      const url = client
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/membership/${id}`
+        : `/payments/membership/${id}`;
+
+      const { data } = await ssApiService.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
+      if (data?.encrypt) {
+        return decrypt(data?.result);
+      }
+
       return data;
     } catch (error) {
       return error;
     }
   },
-  getPaymentVideoId: async ({ id, token }) => {
+  getPaymentVideoId: async ({ id, token, client }) => {
     try {
-      const { data } = await ssApiService.get(`/payments/video/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const url = client
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/video/${id}`
+        : `/payments/video/${id}`;
+
+      const { data } = await ssApiService.get(url, {
+        headers: { Authorization: client ? null : `Bearer ${token}` }
       });
+
+      if (data?.encrypt) {
+        return decrypt(data?.result);
+      }
+
       return data;
     } catch (error) {
       return error;
@@ -174,14 +192,9 @@ const SSServices = {
         ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/video`
         : `/payments/video?user_id=${id}`;
 
-      const { data } = await ssApiService.get(
-        url,
-        client
-          ? {}
-          : {
-              headers: { Authorization: `Bearer ${token}` }
-            }
-      );
+      const { data } = await ssApiService.get(url, {
+        headers: { Authorization: client ? null : `Bearer ${token}` }
+      });
 
       if (data?.encrypt) {
         return decrypt(data?.result);
@@ -192,11 +205,20 @@ const SSServices = {
       return error;
     }
   },
-  getPaymentBuyPointsId: async ({ id, token }) => {
+  getPaymentBuyPointsId: async ({ id, token, client }) => {
     try {
-      const { data } = await ssApiService.get(`/payments/buy-points/${id}`, {
+      const url = client
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/buy-points/${id}`
+        : `/payments/buy-points/${id}`;
+
+      const { data } = await ssApiService.get(url, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
+      if (data?.encrypt) {
+        return decrypt(data?.result);
+      }
+
       return data;
     } catch (error) {
       return error;
@@ -210,9 +232,7 @@ const SSServices = {
 
       const { data } = await ssApiService.get(
         url,
-        client
-          ? {}
-          : { headers: { Authorization: `Bearer ${token}` } }
+        client ? {} : { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (data?.encrypt) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -11,9 +11,11 @@ import SSServices from 'core/services/ServerSide/ssServices';
 import moment from 'moment';
 import Image from 'next/image';
 import { getCookie } from 'cookies-next';
+import { setRefetchNotifications } from 'core/redux/reducers/notificationSlice';
 
 const VideoPayment = (props) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { data, payment_for, isQris } = useSelector((state) => state.payments);
   const { token, user } = useSelector((state) => state.authentication);
   const [timer_2, setTimer_2] = useState('Loading...');
@@ -108,6 +110,7 @@ const VideoPayment = (props) => {
             toast.error(t('Payment canceled, redirect to profile...'));
             router.replace(`/my-account?tab=video#transaction`);
           }
+          dispatch(setRefetchNotifications(true));
         });
       }, 3000);
       return () => clearInterval(interval);

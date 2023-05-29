@@ -35,10 +35,10 @@ export default function BuyPoints(props) {
         }
 
         // harus sudah membership
-        if (props?.bottomConfig?.membershipStatus?.memberships?.length === 0) {
-            toast.error(t('Please upgrade your membership first'));
-            return;
-        }
+        // if (props?.bottomConfig?.membershipStatus?.memberships?.length === 0) {
+        //     toast.error(t('Please upgrade your membership first'));
+        //     return;
+        // }
 
         // harus belum beli points di minggu ini
         if (!can_buy_points) {
@@ -48,14 +48,15 @@ export default function BuyPoints(props) {
         dispatch(setPaymentFor('points'));
         router.push('/checkout');
     };
+
     return (
         <div className="flex flex-col space-y-5" id="buy-points">
-            <button className="bg-[#FF00FE] text-white rounded-[20px] py-3 px-5 font-bold text-xl disabled:opacity-50"
+            {/* <button className="bg-[#FF00FE] text-white rounded-[20px] py-3 px-5 font-bold text-xl disabled:opacity-50"
                 onClick={checkoutPoints}
                 disabled={!can_buy_points}
             >
                 {t('Buy Points (testing)')}
-            </button>
+            </button> */}
         </div>
     );
 }

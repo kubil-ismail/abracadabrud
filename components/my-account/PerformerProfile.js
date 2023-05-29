@@ -13,6 +13,7 @@ import { useUpdatePerformerProfileMutation } from 'core/services/rtk/Authenticat
 import { useGetGenresQuery } from 'core/services/rtk/EventServices';
 import ErrorMessage from '../error/ErrorMessage';
 import InputMember from '../upload-video/InputMember';
+import { useSelector } from 'react-redux';
 
 export default function PerformerProfile({ me }) {
   const [options, setOptions] = useState([]);
@@ -24,6 +25,7 @@ export default function PerformerProfile({ me }) {
   const [dataMe, setDataMe] = useState(me);
 
   const { data: dataGenres, isSuccess: successGenres } = useGetGenresQuery();
+  const state = useSelector((state) => state);
 
   const [
     updatePerformerProfile,
@@ -54,6 +56,8 @@ export default function PerformerProfile({ me }) {
       updatePerformerProfile(parsing);
     }
   });
+
+  const [genreErr, setGenreErr] = useState('');
 
   // add input
   const addInput = (e) => {
@@ -122,11 +126,14 @@ export default function PerformerProfile({ me }) {
   useEffect(() => {
     if (successUpdatePerformerProfile) {
       toast.success(t('Success update your Performer profile'));
+
       dispatch(
         setCredentials({
           user: dataUpdatePerformerProfile?.data?.user
         })
       );
+
+      setGenreErr("")
     }
 
     if (errorUpdatePerformerProfile) {
@@ -228,7 +235,9 @@ export default function PerformerProfile({ me }) {
                     }}
                   />
                   <ErrorMessage
-                    message={t(formik?.touched?.genre_ids && formik?.errors?.genre_ids)}
+                    message={t(
+                      (formik?.touched?.genre_ids && formik?.errors?.genre_ids) || genreErr
+                    )}
                   />
                 </div>
                 <div className="md:col-span-2 flex flex-col space-y-3">
@@ -312,10 +321,12 @@ export default function PerformerProfile({ me }) {
                 <div className="md:col-span-2 flex justify-end">
                   <button
                     type="submit"
-                    className={`px-5 py-2 text-[#4100FF] bg-[#23FF2C] font-bold text-base w-32 rounded-md ${
-                      (!formik.isValid || loadingUpdatePerformerProfile) && 'cursor-not-allowed'
-                    }`}
-                    disabled={loadingUpdatePerformerProfile || !formik.isValid}>
+                    onClick={() => {
+                      if (!JSON.parse(formik.values.genre_ids)?.length) {
+                        setGenreErr('Genre is required');
+                      }
+                    }}
+                    className={`px-5 py-2 text-[#4100FF] bg-[#23FF2C] font-bold text-base w-32 rounded-md`}>
                     {loadingUpdatePerformerProfile ? 'Loading...' : `${t('Save')}`}
                   </button>
                 </div>

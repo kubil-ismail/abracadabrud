@@ -75,7 +75,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-            <button type="button" className={isAuthenticated ? 'hidden' : 'text-xs text-[#23FF2C] font-bold uppercase text-center'} onClick={() => dispatch(setModal({ name: 'modalRegister', value: true }))} >{t('Click Here')}</button>
+            <button type="button" className={isAuthenticated ? 'hidden' : 'text-sm text-[#23FF2C] font-bold uppercase text-center'} onClick={() => dispatch(setModal({ name: 'modalRegister', value: true }))} >{t('Click Here')}</button>
           </div>
         </div>
         <div className="grid grid-cols-2 space-y-4">
@@ -85,7 +85,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-            <button type="button" className="text-xs text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/sponsor')} >{t('Click Here')}</button>
+            <button type="button" className="text-sm text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/sponsor')} >{t('Click Here')}</button>
           </div>
           <div className="">
             <div className="flex flex-col space-y-2">
@@ -129,7 +129,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-            <button type="button" className="text-xs text-[#23FF2C] font-bold uppercase text-center" onClick={() => setShowShareModal(true)} >{t('Click Here')}</button>
+            <button type="button" className="text-sm text-[#23FF2C] font-bold uppercase text-center" onClick={() => setShowShareModal(true)} >{t('Click Here')}</button>
           </div>
         </div>
         <div className="grid grid-cols-2 space-y-3">
@@ -139,7 +139,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-                        <button type="button" className="text-xs text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/my-account/#completeProfile')}>{t('Click Here')}</button>
+              <button type="button" className="text-sm text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/my-account/#completeProfile')}>{t('Click Here')}</button>
           </div>
           <div className="">
             <div className="flex flex-col space-y-2">
@@ -183,7 +183,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-                        <button type="button" className="text-xs text-[#23FF2C] font-bold uppercase text-center" onClick={() => isAuthenticated ? router.push('/survey-question') :  dispatch(setModal({ name: 'modalLogin', value: true })) } >{t('Click Here')}</button>
+                        <button type="button" className="text-sm text-[#23FF2C] font-bold uppercase text-center" onClick={() => isAuthenticated ? router.push('/survey-question') :  dispatch(setModal({ name: 'modalLogin', value: true })) } >{t('Click Here')}</button>
           </div>
         </div>
         <div className="grid grid-cols-2 space-y-2">
@@ -193,7 +193,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-                        <button type="button" className="text-xs text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/faq/#memberships')} >{t('Click Here')}</button>
+                        <button type="button" className="text-sm text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/faq/#memberships')} >{t('Click Here')}</button>
           </div>
           <div className="">
             <div className="flex flex-col space-y-2">
@@ -235,7 +235,7 @@ export default function WaysGetPoint() {
               alt=""
               className="w-48 md:w-64 md:m-auto"
             />
-                        <button type="button" className="text-xs text-[#23FF2C] font-bold uppercase text-center">{t('Click Here')}</button>
+                        <button type="button" className="text-sm text-[#23FF2C] font-bold uppercase text-center" onClick={() => router.push('/faq/#extra_points')}>{t('Click Here')}</button>
           </div>
         </div>
         {/* <div className="grid grid-cols-2 gap-3">

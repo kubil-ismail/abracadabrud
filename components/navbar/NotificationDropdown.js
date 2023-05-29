@@ -12,6 +12,7 @@ import service from 'core/services/publicService';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import EmptyNotification from 'components/empty-placeholder/EmptyNotification';
+import { setRefetchNotifications } from 'core/redux/reducers/notificationSlice';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -58,16 +59,13 @@ export default function NotificationDropdown() {
   const handleNextTransaction = (next) => {
     setIsLoadingTransaction(true);
     service
-      .get(`/notifications?page=${next}&page_size=${pageSize}&types=payment`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(({ data }) => {
+      .get(
+        `${process.env.NEXT_PUBLIC_SITE_URL}/api/notifications/payment?page=${next}&page_size=${pageSize}&types=payment`
+      )
+      .then((data) => {
         setTransactions([...transactions, ...(data?.data?.data ?? [])]);
         setLastPageTransaction(data?.data?.last_page);
         setPageTransaction(next);
-        console.log(data?.un_has_read)
         setUnHasRead(data?.un_has_read);
       })
       .finally(() => {
@@ -78,12 +76,10 @@ export default function NotificationDropdown() {
   const handleNextAnnouncement = (next) => {
     setIsLoadingAnnouncement(true);
     service
-      .get(`/notifications?page=${next}&page_size=${pageSize}&types=vote`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(({ data }) => {
+      .get(
+        `${process.env.NEXT_PUBLIC_SITE_URL}/api/notifications/vote?page=${next}&page_size=${pageSize}&types=vote`
+      )
+      .then((data) => {
         setAnnouncements([...announcements, ...(data?.data?.data ?? [])]);
         setLastPageAnnouncement(data?.data?.last_page);
         setPageAnnouncement(next);
@@ -94,29 +90,18 @@ export default function NotificationDropdown() {
       });
   };
 
-  const { pathname, query } = router;
+  const { refetchNotifications } = useSelector((state) => state.notifications);
 
+  // setRefetchNotifications to true when page change
   useEffect(() => {
-    setTransactions([]);
-    setAnnouncements([]);
-    setPageTransaction(1);
-    setPageAnnouncement(1);
-    setLastPageTransaction(1);
-    setLastPageAnnouncement(1);
-    setIsLoadingTransaction(false);
-    setIsLoadingAnnouncement(false);
-    setUnHasRead(0);
+    if (router.pathname === '/checkout/order-summary/[data]') {
+      return;
+    }
 
-    if (token) {
-      setIsLoadingTransaction(true);
-      setIsLoadingAnnouncement(true);
+    if (token && isAuthenticated) {
       service
-        .get(`/notifications?page=1&page_size=${pageSize}&types=payment`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(({ data }) => {
+        .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/notifications/payment?page=1&page_size=${pageSize}&types=payment`)
+        .then((data) => {
           setTransactions(data?.data?.data ?? []);
           setLastPageTransaction(data?.data?.last_page);
           setUnHasRead(data?.un_has_read);
@@ -126,12 +111,8 @@ export default function NotificationDropdown() {
         });
 
       service
-        .get(`/notifications?page=1&page_size=${pageSize}&types=vote`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(({ data }) => {
+        .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/notifications/vote?page=1&page_size=${pageSize}&types=vote`)
+        .then((data) => {
           setAnnouncements(data?.data?.data ?? []);
           setLastPageAnnouncement(data?.data?.last_page);
           setUnHasRead(data?.un_has_read);
@@ -140,7 +121,53 @@ export default function NotificationDropdown() {
           setIsLoadingAnnouncement(false);
         });
     }
-  }, [isAuthenticated]);
+  }, [router.pathname, open, isAuthenticated, token, unHasRead]);
+
+  useEffect(() => {
+    if (router.pathname === '/checkout/order-summary/[data]') {
+      return;
+    }
+    setTransactions([]);
+    setAnnouncements([]);
+    setPageTransaction(1);
+    setPageAnnouncement(1);
+    setLastPageTransaction(1);
+    setLastPageAnnouncement(1);
+    setIsLoadingTransaction(false);
+    setIsLoadingAnnouncement(false);
+    setIsLoadingTransaction(true);
+    setIsLoadingAnnouncement(true);
+
+    if (!isAuthenticated) {
+      setUnHasRead(0);
+    }
+
+    if (refetchNotifications) {
+      service
+        .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/notifications/payment?page=1&page_size=${pageSize}&types=payment`)
+        .then((data) => {
+          setTransactions(data?.data?.data ?? []);
+          setLastPageTransaction(data?.data?.last_page);
+          setUnHasRead(data?.un_has_read);
+        })
+        .finally(() => {
+          setIsLoadingTransaction(false);
+        });
+
+      dispatch(setRefetchNotifications(false));
+    }
+
+    service
+      .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/notifications/vote?page=1&page_size=${pageSize}&types=vote`)
+      .then((data) => {
+        setAnnouncements(data?.data?.data ?? []);
+        setLastPageAnnouncement(data?.data?.last_page);
+        setUnHasRead(data?.un_has_read);
+      })
+      .finally(() => {
+        setIsLoadingAnnouncement(false);
+      });
+  }, [refetchNotifications]);
 
   return (
     <Popover className="relative">
@@ -150,11 +177,11 @@ export default function NotificationDropdown() {
           onClick={() => {
             setOpen(!open);
           }}>
-          {unHasRead > 0 &&
+          {unHasRead > 0 && (
             <span className="absolute top-0 -right-2 h-4 w-4 rounded-full bg-[#FF00FE] text-cyan-900 flex justify-center items-center items text-[10px]">
-              {(unHasRead > 9 ? '9+' : unHasRead)}
+              {unHasRead > 9 ? '9+' : unHasRead}
             </span>
-          }
+          )}
           <Image
             src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/notifications.png`}
             alt="bell"
@@ -227,7 +254,9 @@ export default function NotificationDropdown() {
                                     <VoteNotif data={item} />
                                   )
                                 )
-                              ) : (<EmptyNotification />)}
+                              ) : (
+                                <EmptyNotification />
+                              )}
                               {/* more */}
                               <div className="flex justify-center items-center items pt-2">
                                 {pageAnnouncement < lastPageAnnouncement && (
@@ -257,18 +286,23 @@ export default function NotificationDropdown() {
                                 </div>
                               )}
                               {transactions?.length > 0 ? (
-                                transactions
-                                  .map((item) =>
-                                    item?.title?.includes('Waiting') ? (
+                                transactions.map((item) =>
+                                  (item?.title?.includes('Waiting') ||
+                                    ((item?.title?.includes('cancelled')) || item?.body?.includes('cancelled'))) ||
+                                    (item?.title?.includes('expired') || item?.body?.includes('expired'))
+                                    ? (
                                       <WaitingPayments data={item} />
-                                    ) : item?.title?.includes('paid') || item?.title?.includes('Successful') ? (
+                                    ) : item?.title?.includes('paid') ||
+                                      (item?.title?.includes('Successful') ||
+                                        item?.title?.includes('Successfully')
+                                      ) ? (
                                       <SuccessPayments data={item} />
                                     ) : item?.title?.includes('active') ? (
                                       <MembershipActive data={item} />
                                     ) : (
                                       ''
                                     )
-                                  )
+                                )
                               ) : (
                                 <EmptyNotification />
                               )}

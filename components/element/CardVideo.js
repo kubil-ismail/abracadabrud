@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import ButtonShare from './ButtonShare';
 import { setMultipleSponsorPlayed, clearSponsorPlayed } from 'core/redux/reducers/globalSlice';
 import { getCookie } from 'cookies-next';
+import { useTranslation } from 'react-i18next';
 
 export default function CardVideo({
   username,
@@ -41,6 +42,7 @@ export default function CardVideo({
   // const [page, setPage] = useState(1);
   // const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { basePath } = useRouter();
   const [likeList, setLikeList] = useState([]);
   const [votedList, setVotedList] = useState([]);
@@ -174,7 +176,7 @@ THANKS!
               <div className="flex space-x-1 items-center text-xs font-normal">
                 <Username name={bandName} fontStyle="text-xs font-normal mb-0" />
                 <span>&middot;</span>
-                <span className="">{moment(date).fromNow()}</span>
+                <span className="">{t(moment(date).fromNow())}</span>
               </div>
               <EllipsisText
                 text={caption ?? 'Unknown'}

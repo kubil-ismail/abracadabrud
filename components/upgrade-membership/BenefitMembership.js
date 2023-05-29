@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { setCookie } from 'cookies-next';
 
 export default function BenefitMembership(props) {
   const memberships = props?.bottomConfig?.membershipStatus?.memberships ?? [];
@@ -26,7 +27,7 @@ export default function BenefitMembership(props) {
   const router = useRouter();
 
   // ongoing events
-  const { isAuthenticated } = useSelector((state) => state.authentication);
+  const { isAuthenticated, token } = useSelector((state) => state.authentication);
 
   useEffect(() => {
     if (events?.data?.data[0]) {
@@ -62,32 +63,38 @@ export default function BenefitMembership(props) {
                 {t('Your Membership is Active')}
               </span>
             </div>
-            <p className="text-xs md:text-sm font-normal">
+            {/* <p className="text-xs md:text-sm font-normal">
               {t('Your membership is active until')}{' '}
               <span className="text-[#23FF2C] font-bold">
                 {moment(memberships[0]?.expiry_date).format('LLL')}
               </span>
-            </p>
+            </p> */}
           </div>
         ) : (
           <button
             type="button"
             className={`p-3 bg-[#6CFF00] text-[#0000FF] rounded-[10px] w-full md:max-w-md md:m-auto md:block font-semibold text-lg ${process.env.NEXT_PUBLIC_IS_PRELAUNCH && 'btn-disabled-green'
               }`}
-            disabled={!events || process.env.NEXT_PUBLIC_IS_PRELAUNCH}
+            disabled={process.env.NEXT_PUBLIC_IS_PRELAUNCH}
             onClick={() => {
               if (!process.env.NEXT_PUBLIC_IS_PRELAUNCH) {
-                // if (!events?.data?.data.length > 0) {
-                //   toast.error(t("Can't upgrade membership because no available event right now"));
-                //   return;
-                // }
-
-                if (isAuthenticated) {
-                  dispatch(setPaymentFor('membership'));
-                  router.push('/checkout');
-                } else {
-                  dispatch(setModal({ name: 'modalLogin', value: 'true' }));
+                if (!isAuthenticated || !token) {
+                  dispatch(setModal({ name: 'modalLogin', value: true }));
+                  return;
                 }
+                console.log('events', props);
+                // harus ada event ongoing
+                if (!events?.data?.data[0] && !events?.last_event) {
+                  toast.error(t('There is no event'));
+                  return;
+                }
+
+                dispatch(setPaymentFor('membership'));
+                setCookie('payment', JSON.stringify({
+                  payment_for: 'membership',
+                  event_id: events?.data?.data[0]?.id || events?.last_event?.id,
+                }));
+                router.push('/checkout');
               }
             }}>
             {t('Upgrade Membership Now!')}
@@ -194,16 +201,23 @@ export default function BenefitMembership(props) {
             disabled={!events || process.env.NEXT_PUBLIC_IS_PRELAUNCH}
             onClick={() => {
               if (!process.env.NEXT_PUBLIC_IS_PRELAUNCH) {
-                // if (events?.data?.data.length === 0) {
-                //   toast.error(t("Can't upgrade membership because no available event right now"));
-                //   return;
-                // }
-                if (isAuthenticated) {
-                  dispatch(setPaymentFor('membership'));
-                  router.push('/checkout');
-                } else {
-                  dispatch(setModal({ name: 'modalLogin', value: 'true' }));
+                if (!isAuthenticated || !token) {
+                  dispatch(setModal({ name: 'modalLogin', value: true }));
+                  return;
                 }
+
+                // harus ada event ongoing
+                if (!events?.data?.data[0] && !events?.last_event) {
+                  toast.error(t('There is no event'));
+                  return;
+                }
+
+                dispatch(setPaymentFor('membership'));
+                setCookie('payment', JSON.stringify({
+                  payment_for: 'membership',
+                  event_id: events?.data?.data[0]?.id || events?.last_event?.id,
+                }));
+                router.push('/checkout');
               }
             }}>
             {t('Upgrade Membership Now!')}

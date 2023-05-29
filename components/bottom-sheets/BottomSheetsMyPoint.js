@@ -6,9 +6,10 @@ import EventMyPoint from '../element/EventMyPoints';
 import {
   useGetHistoryPointQuery,
   useGetMyEventsQuery,
-  useGetCurrentEventQuery
+  useGetCurrentEventQuery,
+  pointApi
 } from 'core/services/rtk/MeServices';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function BottomSheetsMyPoint(props) {
   const timestampRef = useRef(Date.now()).current;
@@ -18,6 +19,8 @@ export default function BottomSheetsMyPoint(props) {
   const [historyPointDatas, setHistoryPointDatas] = useState([]);
   const { isAuthenticated } = useSelector((state) => state.authentication);
   const { myPoint } = useSelector((state) => state.points);
+  const dataEvents = useSelector((state) => state.global.allEvents);
+  const dispatch = useDispatch();
 
   const { data } = useGetMyEventsQuery(
     {},
@@ -27,22 +30,16 @@ export default function BottomSheetsMyPoint(props) {
     }
   );
 
-  const { data: dataHistoryPoint, isLoading: dataHistoryPointLoading } = useGetHistoryPointQuery(
+  const { data: dataHistoryPoint,
+    isLoading: dataHistoryPointLoading
+  } = useGetHistoryPointQuery(
     {
       page: pageHistoryPoint,
       pageSize: 10,
       sessionId: timestampRef
     },
     {
-      skip: !isAuthenticated || !open
-    }
-  );
-
-  const { data: dataEvents } = useGetCurrentEventQuery(
-    {},
-    {
-      skip: !isAuthenticated,
-      refetchOnFocus: true
+      skip: !isAuthenticated || !open,
     }
   );
 
@@ -59,6 +56,14 @@ export default function BottomSheetsMyPoint(props) {
   useEffect(() => {
     if (!isAuthenticated) setHistoryPointDatas([]);
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (open) {
+      dispatch(pointApi.util.invalidateTags('HistoryPoint'));
+      setPageHistoryPoint(1);
+      setHistoryPointDatas([]);
+    }
+  }, [open]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -104,7 +109,7 @@ export default function BottomSheetsMyPoint(props) {
             {dataEvents && (
               <div className="flex flex-col gap-3">
                 <h3 className="text-[14px] font-bold mb-2">Event List</h3>
-                <EventMyPoint data={dataEvents} />
+                <EventMyPoint data={dataEvents} total={myPoints} />
               </div>
             )}
             <div className="flex flex-col gap-3">

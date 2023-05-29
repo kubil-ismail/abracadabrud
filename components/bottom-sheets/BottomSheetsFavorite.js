@@ -19,18 +19,18 @@ export default function BottomSheetsFavorite({ total = 0, idVideo, stillLoading,
   const [isFavorite, setIsFavorite] = useState(isActive || false);
   const { user, isAuthenticated } = useSelector((state) => state.authentication);
   const [addFavorite, { isSuccess: isSuccessAddFavorite, isLoading }] = useAddFavoriteMutation();
-  const {
-    data: favoritesHistory,
-    isFetching,
-    isError
-  } = useGetFavoritesHistoryQuery(
-    {
-      id: idVideo
-    },
-    {
-      skip: stillLoading || !open
-    }
-  );
+  // const {
+  //   data: favoritesHistory,
+  //   isFetching,
+  //   isError
+  // } = useGetFavoritesHistoryQuery(
+  //   {
+  //     id: idVideo
+  //   },
+  //   {
+  //     skip: stillLoading || !open
+  //   }
+  // );
 
   useEffect(() => {
     setTotalFavorite(total);
@@ -92,7 +92,7 @@ export default function BottomSheetsFavorite({ total = 0, idVideo, stillLoading,
           }).format(totalFavorite)
         }</button>
       </div>
-      <BottomSheet
+      {/* <BottomSheet
         open={open}
         onDismiss={() => setOpen(false)}
         header={
@@ -129,7 +129,7 @@ export default function BottomSheetsFavorite({ total = 0, idVideo, stillLoading,
             <EmptyFavoriteVideo />
           ) : null}
         </div>
-      </BottomSheet>
+      </BottomSheet> */}
     </div >
   );
 }

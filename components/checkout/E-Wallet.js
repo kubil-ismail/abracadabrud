@@ -10,7 +10,7 @@ export default function Ewallet({ paymentMethods, isPhone }) {
   return (
     <div className="flex flex-col gap-5">
       <h3 className="text-base font-bold">{t('E-Wallet')}</h3>
-      <div className="flex flex-wrap space-x-2 md:space-x-5 space-y-2 md:space-y-0 justify-center pb-2">
+      <div className="flex flex-wrap gap-2 md:gap-5 justify-center pb-2">
         {paymentMethods
           ?.filter((item) => item.payment_type === 'ewallet')
           ?.filter((item) =>

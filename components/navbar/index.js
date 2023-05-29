@@ -67,7 +67,7 @@ export default function Navbar(props) {
 
   useEffect(() => {
     setIsShowFilter(router.pathname === '/');
-  }, [router])
+  }, [router]);
 
   useEffect(() => {
     if (openSidebar) {
@@ -80,30 +80,30 @@ export default function Navbar(props) {
   const handleLogout = () => {
     deleteCookie('ftv_view');
     dispatch(clearSponsorPlayed());
-    dispatch(logout()),
-      setOpenSidebar(false),
-      toast.success(t('Logout Success'));
+    dispatch(logout()), setOpenSidebar(false), toast.success(t('Logout Success'));
     dispatch(setMemberships([]));
     deleteCookie('payment');
     dispatch(pointApi.util.resetApiState());
     dispatch(resetModal());
-  }
+  };
 
   const handleModal = () => {
     setOpenModal(false);
     setOpenSidebar(false);
-  }
+  };
 
   return (
     <div className="bg-[#282828] fixed top-0 right-0 left-0 z-40">
       <div className="flex justify-between items-center w-full px-4 py-5 text-slate-50 md:max-w-[78rem] md:m-auto lg:px-0">
         <div className="flex space-x-3 items-center flex-1">
           <div className="">
-            <AiOutlineMenu
-              size={22}
-              className="cursor-pointer"
-              onClick={() => setOpenSidebar(!openSidebar)}
-            />
+            {!process.env.NEXT_PUBLIC_IS_PRELAUNCH && (
+              <AiOutlineMenu
+                size={22}
+                className="cursor-pointer"
+                onClick={() => setOpenSidebar(!openSidebar)}
+              />
+            )}
           </div>
           <LoginModal />
           <ChangeEmailModal />
@@ -248,7 +248,7 @@ export default function Navbar(props) {
                               isActiveMemberships={
                                 memberships?.length > 0 &&
                                 dataMembershipStatus?.message ===
-                                'Membership already paid and active'
+                                  'Membership already paid and active'
                               }
                             />
                             <div className="flex flex-col">
@@ -307,7 +307,7 @@ export default function Navbar(props) {
                                 <div>
                                   <Disclosure.Button
                                     className="flex w-full justify-between text-left text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
-                                  // key={data.id}
+                                    // key={data.id}
                                   >
                                     <span className="text-base text-slate-50 cursor-pointer hover:text-[#FF00CA] transition-all delay-100 ease-in-out">
                                       FAQ
@@ -427,7 +427,9 @@ export default function Navbar(props) {
                             className="cursor-pointer"
                             onClick={() => (
                               dispatch(setModal({ name: 'modalLogout', value: true })),
-                              setOpenSidebar(false)
+                              setOpenSidebar(false),
+                              deleteCookie('token'),
+                              deleteCookie('ftv_view')
                             )}>
                             <span className="text-base cursor-pointer hover:text-[#FF00CA] transition-all delay-100 ease-in-out">
                               {t('Logout')}
@@ -448,7 +450,7 @@ export default function Navbar(props) {
               className="w-36"
               width="100%"
               height="100%"
-            // loading="lazy"
+              // loading="lazy"
             />
           </Link>
         </div>
@@ -463,6 +465,6 @@ export default function Navbar(props) {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

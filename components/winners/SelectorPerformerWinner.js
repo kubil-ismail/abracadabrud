@@ -45,8 +45,7 @@ export default function SelectorPerformerWinner({ eventId }) {
               <div className="flex flex-col items-center text-[#FF00FE]">
                 <h3 className="text-[44px] font-extrabold">Lucky Draw</h3>
                 <span className="font-semibold text-sm text-center">
-                  {moment(item?.event_contest?.start_date).format('DD MMMM YYYY')} -{' '}
-                  {moment(item?.event_contest?.end_date).format('DD MMMM YYYY')}
+                  10 Juni 2023 - 16 Juni 2023
                 </span>
               </div>
               <div className="relative flex flex-col space-y-4 items-center">
@@ -84,7 +83,7 @@ export default function SelectorPerformerWinner({ eventId }) {
               </span>
             </div>
           </div>
-        ))}
+         ))}
     </>
   );
 }

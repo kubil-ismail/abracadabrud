@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import UserInfo from './UserInfo';
 import service from 'core/services/publicService';
-import EmptyVoted from '../empty-placeholder/EmptyVoted';
-import { useSelector } from 'react-redux';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import moment from 'moment';
 import Username from 'components/element/Username';
@@ -23,11 +20,11 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
   useEffect(() => {
     if (open) {
       service
-        .get(`videos/${idVideo}/get-votes?page=1`)
+        .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/videos/${idVideo}/get-votes?page=1`)
         .then(({ data }) => {
-          setDatas(data?.data?.data ?? []);
+          setDatas(data?.data ?? []);
           setPage(1);
-          setTotalData(data?.data?.last_page);
+          setTotalData(data?.last_page);
           setIsError(false);
         })
         .catch(() => setIsError(true))
@@ -38,11 +35,11 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
   const handleNextPage = (next) => {
     setIsLoading(true);
     service
-      .get(`videos/${idVideo}/get-votes?page=${next}`)
+      .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/videos/${idVideo}/get-votes?page=${next}`)
       .then(({ data }) => {
-        setDatas([...datas, ...data?.data?.data]);
+        setDatas([...datas, ...data?.data]);
         setPage(next);
-        setTotalData(data?.data?.last_page);
+        setTotalData(data?.last_page);
       })
       .finally(() => setIsLoading(false));
   };
@@ -57,33 +54,42 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
         className="flex space-x-2 items-center text-sm cursor-pointer"
         onClick={() => setOpen(!open)}>
         <img
-          src={isActive ? `${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/vote-icon-active.svg` : `${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/vote-icon.svg`}
+          src={
+            isActive
+              ? `${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/vote-icon-active.svg`
+              : `${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/vote-icon.svg`
+          }
           alt="vote-icon"
           className="w-[16px] flex-0"
           loading="lazy"
           width="100%"
           height="100%"
         />
-        <button className="flex-1 text-small">{
-          new Intl.NumberFormat(locale, {
+        <button className="flex-1 text-small">
+          {new Intl.NumberFormat(locale, {
             notation: totalVote >= 10000 ? 'compact' : 'standard',
             compactDisplay: 'short',
             roundingMode: totalVote >= 10000 ? 'floor' : 'halfExpand',
             trailingZeroDisplay: 'stripIfInteger',
             maximumFractionDigits: 1
-          }).format(totalVote)
-        }</button>
+          }).format(totalVote)}
+        </button>
       </div>
       <BottomSheet
         open={open}
         onDismiss={() => setOpen(false)}
-        header={<div className="font-semibold py-2 text-base">History{` (${new Intl.NumberFormat(locale, {
-          notation: totalVote >= 10000 ? 'compact' : 'standard',
-          compactDisplay: 'short',
-          roundingMode: totalVote >= 10000 ? 'floor' : 'halfExpand',
-          trailingZeroDisplay: 'stripIfInteger',
-          maximumFractionDigits: 1
-        }).format(totalVote)})`}</div>}
+        header={
+          <div className="font-semibold py-2 text-base">
+            History
+            {` (${new Intl.NumberFormat(locale, {
+              notation: totalVote >= 10000 ? 'compact' : 'standard',
+              compactDisplay: 'short',
+              roundingMode: totalVote >= 10000 ? 'floor' : 'halfExpand',
+              trailingZeroDisplay: 'stripIfInteger',
+              maximumFractionDigits: 1
+            }).format(totalVote)})`}
+          </div>
+        }
         snapPoints={({ maxHeight }) => 0.8 * maxHeight}>
         <div className="flex flex-col space-y-5 p-4" id="bottomVote">
           {isFetching && (
