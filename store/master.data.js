@@ -192,10 +192,10 @@ export const guidePayments = [
     isQris: true,
     guide_name: 'QR Code',
     guide_list: [
-      { id: 1, title: '1. Open your Gojek or other e-wallet app.' },
+      { id: 1, title: '1. Open the application that has a QRIS scan feature' },
       { id: 2, title: '2. Scan the QR code on your monitor.' },
       { id: 3, title: '3. Confirm payment in the app.' },
-      { id: 4, title: '4. Payment completed.' }
+      { id: 4, title: '4. Payment completed.'}
     ]
   },
   {
@@ -205,7 +205,17 @@ export const guidePayments = [
       { id: 1, title: '1. Click Pay now.' },
       { id: 2, title: '2. The Gojek app will open.' },
       { id: 3, title: '3. Confirm payment in the app.' },
-      { id: 4, title: '4. Payment completed.' }
+      { id: 4, title: '4. Payment completed.'}
+    ]
+  },
+  {
+    payment_code: 'ewallet_gopay',
+    guide_name: 'QR Code',
+    guide_list: [
+      { id: 1, title: '1. Open the application that has a QRIS scan feature' },
+      { id: 2, title: '2. Scan the QR code on your monitor.' },
+      { id: 3, title: '3. Confirm payment in the app.' },
+      { id: 4, title: '4. Payment completed.'}
     ]
   },
   {

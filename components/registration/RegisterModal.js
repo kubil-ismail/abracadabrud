@@ -290,8 +290,10 @@ export default function RegisterModal({ onClose }) {
   useEffect(() => {
     if (isErrorRegister) {
       setErrCount(errCount + 1);
+
       errorRegister?.data?.errors?.email.map((error) => {
         setRegisterError((registerError) => ({ ...registerError, email: error }));
+        document.getElementById('email').focus();
       });
     }
   }, [isErrorRegister]);
@@ -304,7 +306,6 @@ export default function RegisterModal({ onClose }) {
 
   useEffect(() => {
     if (isErrorCompleteProfile) {
-      console.log('errorCompleteProfile', errorCompleteProfile);
       if (errorCompleteProfile?.data?.errors?.username) {
         errorCompleteProfile?.data?.errors?.username.map((error) => {
           setRegisterError((registerError) => ({ ...registerError, username: error }));
@@ -459,7 +460,7 @@ export default function RegisterModal({ onClose }) {
                       className={
                         `
                       w-full text-sm bg-white px-4 py-3 text-zinc-900 rounded-md focus:outline-none
-                      ` + (registerError.email ? 'border-2 border-red-500' : '')
+                      ` + (registerError.password ? 'border-2 border-red-500' : '')
                       }
                       placeholder={t('Enter a password')}
                       name="password"
@@ -486,9 +487,8 @@ export default function RegisterModal({ onClose }) {
                     <input
                       type={seePassword2 ? 'text' : 'password'}
                       className={
-                        `
-                      w-full text-sm bg-white px-4 py-3 text-zinc-900 rounded-md focus:outline-none
-                      ` + (registerError.email ? 'border-2 border-red-500' : '')
+                        `w-full text-sm bg-white px-4 py-3 text-zinc-900 rounded-md focus:outline-none
+                      ` + (registerError.password ? 'border-2 border-red-500' : '')
                       }
                       placeholder={t('Enter password again')}
                       name="confirmPassword"

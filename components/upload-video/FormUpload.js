@@ -651,6 +651,8 @@ export default function FormUpload() {
           </div>
         </div>
       </form>
+
+      {console.log('dataUpload', dataUpload)}
       {modalShareVideo && (
         <ModalShareVideo dataUpload={dataUpload} name={dataContestant.artist_band_name} />
       )}

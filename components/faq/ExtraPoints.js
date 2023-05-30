@@ -5,7 +5,7 @@ import { setModal } from 'core/redux/reducers/modalSlice';
 import { toast } from 'react-toastify';
 import { setPaymentFor, setPointsFee, setPointsId } from 'core/redux/reducers/paymentsSlice';
 import { useEffect } from 'react';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 export default function ExtraPoints(props) {
   const { t } = useTranslation();
@@ -48,6 +48,7 @@ export default function ExtraPoints(props) {
       return;
     }
     dispatch(setPaymentFor('points'));
+    deleteCookie('payment');
     setCookie('payment', JSON.stringify({ payment_for: 'points' }));
     router.push('/checkout');
   };

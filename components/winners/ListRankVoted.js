@@ -172,9 +172,10 @@ THANKS!
         ))}
       </div>
       {loading && <LoadingPodium />}
+      <div className="flex flex-col space-y-3">
       {current < last && (
         <button
-          className="text-slate-50 text-sm m-auto p-3 border border-slate-50 rounded-md focus:outline-none"
+          className="my-1 text-slate-50 text-sm m-auto p-3 border border-slate-50 rounded-md focus:outline-none"
           onClick={() => {
             if (current < last) {
               handleNextPage(current + 1);
@@ -193,6 +194,7 @@ THANKS!
           {t('Get more votes!')}
         </button>
       )}
+      </div>
     </div>
   );
 }

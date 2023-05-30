@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import DisableEventModal from 'components/navbar/DisableEventModal';
 import { toast } from 'react-toastify';
 import { logout } from 'core/redux/reducers/authenticationSlice';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 import SSServices from 'core/services/ServerSide/ssServices';
 
 export default function MenuBar(props) {
@@ -63,7 +63,7 @@ export default function MenuBar(props) {
               .then((nested) => {
                 // check pending payment
                 const pending = nested?.data?.find((_result) => _result?.status === 1);
-
+                deleteCookie('payment');
                 setCookie(
                   'payment',
                   JSON.stringify({

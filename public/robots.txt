@@ -1,9 +1,8 @@
 # *
 User-agent: *
 Allow: /
+Allow: /referral/*
+Allow: /video/*
 
-# Host
-Host: https://dev.fe.abracadabra-starquest.events
 
-# Sitemaps
-Sitemap: https://dev.fe.abracadabra-starquest.events/sitemap.xml
+

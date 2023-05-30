@@ -211,6 +211,13 @@ export const eventApi = createApi({
           payload: encrypt({ contest_id, artist_id, genre_ids, video_url, caption })
         }
       }),
+      transformResponse: (response) => {
+        if (response?.encrypt) {
+          return decrypt(response?.result);
+        }
+
+        return response;
+      },
       invalidatesTags: ['Video']
     }),
     enrollUserToAllEvents: builder.mutation({
@@ -300,7 +307,7 @@ export const eventApi = createApi({
     }),
     cancelPointsPayment: builder.mutation({
       query: ({ buy_points_payment_id }) => ({
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/points/cancel`,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/payments/buy-points/cancel`,
         method: 'POST',
         body: { payload: encrypt({ buy_points_payment_id: buy_points_payment_id }) }
       }),

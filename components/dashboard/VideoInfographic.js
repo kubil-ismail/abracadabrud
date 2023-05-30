@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ReactPlayer from 'react-player/youtube';
+import { encryptId } from 'lib/Aes.v2';
 
 export default function VideoInfographic() {
   const { t } = useTranslation();
@@ -22,7 +23,11 @@ export default function VideoInfographic() {
 
   useEffect(() => {
     if (user && isAuthenticated) {
-      setUrl(`${window.location.origin}${basePath}/referral/${user?.my_referal_code}`);
+      setUrl(
+        `${window.location.origin}${basePath}/referral/${encryptId(
+          user?.my_referal_code.replace('ACADABRA0', '')
+        )}`
+      );
     } else {
       setUrl(`${window.location.origin}${basePath}`);
     }

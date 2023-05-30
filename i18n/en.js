@@ -1072,7 +1072,7 @@ const en = {
   '5 year ago': '5 years ago',
   'The video you are looking for is not available.': 'The video you are looking for is not available.',
   'There is no event': 'There is no event',
-
+  '1. Open the application that has a QRIS scan feature': '1. Open the application that has a QRIS scan feature',
 };
 
 export default en;

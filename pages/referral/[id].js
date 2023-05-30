@@ -8,9 +8,10 @@ import Head from 'next/head';
 import SSServices from 'core/services/ServerSide/ssServices';
 import getCredential from 'core/services/helpers/getCredential';
 
-export default function Referral({ seo }) {
+export default function Referral(props) {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [seo] = props?.data ?? [];
 
   React.useEffect(() => {
     if (router.query?.id) {

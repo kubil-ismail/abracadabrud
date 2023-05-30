@@ -39,14 +39,17 @@ export default function ModalShare({ show, name, captions, onHide, text, quote, 
 // Caranya gampang! Klik tautan ini, kasih vote kamu, dan kamu juga bisa menangkan hadiah mingguan yang keren
 // Makasih ya!
 // `
-  const shareTextMe = `
-  Halo, saya ${name},
+//   const shareTextMe = `
+//   Halo, saya ${name},
 
-  Lihat video musikku yang berjudul ${captions} - ${name} Tolong untuk vote videoku sesering mungkin, agar aku bisa memenangkan kompetisi dan kesempatan untuk tampil di acara konser wePOP pada tanggal 6 Agustus 2023 di JIEXPO Kemayoran.
+//   Lihat video musikku yang berjudul ${captions} - ${name} Tolong untuk vote videoku sesering mungkin, agar aku bisa memenangkan kompetisi dan kesempatan untuk tampil di acara konser wePOP pada tanggal 6 Agustus 2023 di JIEXPO Kemayoran.
   
-  Caranya mudah! Klik tautan ini, lalu tekan tombol Vote dan Kirim. Kamu juga bisa memenangkan hadiah mingguan yang menakjubkan.
+//   Caranya mudah! Klik tautan ini, lalu tekan tombol Vote dan Kirim. Kamu juga bisa memenangkan hadiah mingguan yang menakjubkan.
   
-  Terima kasih.
+//   Terima kasih.
+// `
+  const shareTextMe = `
+  Vote videoku ini, dan bantu aku untuk memenangkan kesempatan tampil di konser wePOP. Caranya mudah. Klik link ini, dapatkan poin gratis dan pakai untuk vote videoku. Kamu juga dapat menang hadiah keren setiap minggu!
 `
 //   const shareTextOther = `Hey, 
 // Check out abracadabra, a cool new music platform where Indonesian performers are competing to perform as the opening act at the wePOP concert. You can upload your music video, vote for other videos, and win amazing prizes. 
@@ -62,10 +65,12 @@ export default function ModalShare({ show, name, captions, onHide, text, quote, 
 
 // Daftar lewat link ini sekarang!`
 
-const shareTextOther = `Hey, 
-Ayo daftar ke abracadabra, platform yang keren banget! Musisi-musisi akan berkompetisi untuk tampil bersama Artis Idola di konser wePOP.
+// const shareTextOther = `Hey, 
+// Ayo daftar ke abracadabra, platform yang keren banget! Musisi-musisi akan berkompetisi untuk tampil bersama Artis Idola di konser wePOP.
 
-Hadiahnya ada uang tunai, tiket konser, akomodasi, tur di backstage...  dan banyak lagi!`
+// Hadiahnya ada uang tunai, tiket konser, akomodasi, tur di backstage...  dan banyak lagi!`
+
+const shareTextOther = `Cek abracadabra! Platform musik yang keren tempat musisi dan penyanyi berbakat bersaing untuk kesempatan tampil di konser wePOP. Pilih video musik favoritmu,menangkan tiket konser VIP, "meet n greet" berikut hotel dan tiket pesawat serta lainnya! Klik: `;
 
 
 
@@ -88,7 +93,7 @@ Hadiahnya ada uang tunai, tiket konser, akomodasi, tur di backstage...  dan bany
     } else {
       navigator.clipboard.writeText(
         text = `
-        ${shareTextOther}${url} now!
+        ${shareTextOther}${url}
         `,
       );
       setShareText(shareTextOther);

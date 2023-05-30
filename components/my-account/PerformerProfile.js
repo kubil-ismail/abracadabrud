@@ -133,7 +133,7 @@ export default function PerformerProfile({ me }) {
         })
       );
 
-      setGenreErr("")
+      setGenreErr('');
     }
 
     if (errorUpdatePerformerProfile) {
@@ -188,7 +188,11 @@ export default function PerformerProfile({ me }) {
                   <label className="text-base font-semibold">{t('Band / Artist Name')}</label>
                   <input
                     type="text"
-                    className="text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md"
+                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${
+                      formik?.touched?.artist_band_name &&
+                      formik?.errors?.artist_band_name &&
+                      'border-2 border-red-500'
+                    }`}
                     placeholder={t('Enter your band/artist name')}
                     name="artist_band_name"
                     value={formik?.values?.artist_band_name}
@@ -205,7 +209,10 @@ export default function PerformerProfile({ me }) {
                     {t("Band / Artist Music's Genree")}
                   </label>
                   <Select
-                    className="custom-select"
+                    className={`custom-select ${
+                      ((formik?.touched?.genre_ids && formik?.errors?.genre_ids) || genreErr) &&
+                      'border-2 border-red-500 rounded-lg'
+                    }`}
                     options={options}
                     closeMenuOnScroll
                     value={options?.filter((item) =>
@@ -215,6 +222,15 @@ export default function PerformerProfile({ me }) {
                     )}
                     onChange={(e) => {
                       const value = e?.map((item) => item?.value);
+
+                      if (value?.length) {
+                        setGenreErr('');
+                      }
+
+                      if (!value?.length) {
+                        setGenreErr('Genre is required');
+                      }
+
                       formik?.setFieldValue('genre_ids', JSON.stringify(value));
                     }}
                     isMulti
@@ -245,7 +261,7 @@ export default function PerformerProfile({ me }) {
                     {t('Band / Artist Information')}
                   </label>
                   <textarea
-                    className="text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md"
+                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${formik?.touched.description && formik?.errors?.description && "border-2 border-red-500"}`}
                     placeholder={t('Tell us about you or your band.')}
                     name="description"
                     value={formik?.values?.description}

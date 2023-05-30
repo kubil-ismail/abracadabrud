@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 export default function BenefitMembership(props) {
   const memberships = props?.bottomConfig?.membershipStatus?.memberships ?? [];
@@ -90,6 +90,7 @@ export default function BenefitMembership(props) {
                 }
 
                 dispatch(setPaymentFor('membership'));
+                deleteCookie('payment');
                 setCookie('payment', JSON.stringify({
                   payment_for: 'membership',
                   event_id: events?.data?.data[0]?.id || events?.last_event?.id,
@@ -213,6 +214,7 @@ export default function BenefitMembership(props) {
                 }
 
                 dispatch(setPaymentFor('membership'));
+                deleteCookie('payment');
                 setCookie('payment', JSON.stringify({
                   payment_for: 'membership',
                   event_id: events?.data?.data[0]?.id || events?.last_event?.id,

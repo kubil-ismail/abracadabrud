@@ -63,7 +63,7 @@ export default function BottomSheetsCast(props) {
         className="flex flex-col gap-1 items-center item-pointer"
         aria-hidden
         onClick={() => setOpen(!open)}>
-        <div className="h-[31px] flex items-center gap-1">
+        <div className="h-[31px] flex items-center flex-wrap gap-1">
           {isAuthenticated && data?.remaining ? (
             <span
               className={

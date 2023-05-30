@@ -157,7 +157,9 @@ export const getServerSideProps = async ({ req }) => {
     }
   }
 
-  if (global?.[0]?.data?.transaction?.status === 1) {
+  const paymentJSON = JSON.parse(payment ?? '{}');
+
+  if (global?.[0]?.data?.transaction?.status === 1 && paymentJSON?.payment_for === 'video_upload') {
     return {
       redirect: {
         destination: `/checkout/order-summary/${Paramcrypt.encode(
@@ -167,7 +169,7 @@ export const getServerSideProps = async ({ req }) => {
       },
       props: { ...props }
     }
-  } else if (global?.[1]?.data?.transaction?.status === 1) {
+  } else if (global?.[1]?.data?.transaction?.status === 1 && paymentJSON?.payment_for === 'membership') {
     // setCookie(
     //   'payment',
     //   JSON.stringify({
@@ -186,7 +188,7 @@ export const getServerSideProps = async ({ req }) => {
       },
       props: { ...props }
     }
-  } else if (global?.[2]?.data?.transaction?.status === 1) {
+  } else if (global?.[2]?.data?.transaction?.status === 1 && paymentJSON?.payment_for === 'points') {
     // setCookie(
     //   'payment',
     //   JSON.stringify({

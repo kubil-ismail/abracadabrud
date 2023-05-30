@@ -5,6 +5,7 @@ import { setModal } from 'core/redux/reducers/modalSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import ModalShare from 'components/element/modal/ModalShare';
+import { encryptId } from 'lib/Aes.v2';
 
 export default function WaysGetPoint() {
   const { t } = useTranslation();
@@ -24,7 +25,11 @@ export default function WaysGetPoint() {
 
   useEffect(() => {
     if (user && isAuthenticated) {
-      setUrl(`${window.location.origin}${basePath}/referral/${user?.my_referal_code}`);
+      setUrl(
+        `${window.location.origin}${basePath}/referral/${encryptId(
+          user?.my_referal_code.replace('ACADABRA0', '')
+        )}`
+      );
     } else {
       setUrl(`${window.location.origin}${basePath}`);
     }

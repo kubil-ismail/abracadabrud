@@ -10,6 +10,7 @@ import ReactPlayer from 'react-player';
 import Link from 'next/link';
 import { setCredentials } from 'core/redux/reducers/authenticationSlice';
 import parse from 'html-react-parser';
+import { encryptId } from 'lib/Aes.v2';
 
 export default function CardInfographic() {
   const [isHidden, setIsHidden] = useState(true);
@@ -31,7 +32,11 @@ export default function CardInfographic() {
 
   useEffect(() => {
     if (user && isAuthenticated) {
-      setUrl(`${window.location.origin}${basePath}/referral/${user?.my_referal_code}`);
+      setUrl(
+        `${window.location.origin}${basePath}/referral/${encryptId(
+          user?.my_referal_code.replace('ACADABRA0', '')
+        )}`
+      );
     } else {
       setUrl(`${window.location.origin}${basePath}`);
     }
@@ -45,7 +50,7 @@ export default function CardInfographic() {
           setType(res?.type);
           setData(res?.data);
           setIsHidden(false);
-          setCookie('ftv_view', true)
+          setCookie('ftv_view', true);
         })
         .catch(() => {
           setIsHidden(true);
@@ -63,7 +68,7 @@ export default function CardInfographic() {
             setType(res?.type);
             setData(res?.data);
             setIsHidden(false);
-            setCookie('ftv_view', true)
+            setCookie('ftv_view', true);
           })
           .catch(() => {
             setIsHidden(true);
@@ -72,7 +77,7 @@ export default function CardInfographic() {
         service
           .post(`${process.env.NEXT_PUBLIC_SITE_URL}/api/set-ftv`)
           .then((res) => {
-            setCookie('ftv_view', true)
+            setCookie('ftv_view', true);
             dispatch(setCredentials(res?.data));
           })
           .catch(() => {
@@ -104,9 +109,7 @@ export default function CardInfographic() {
     <>
       <div
         className={
-          isHidden
-            ? 'hidden'
-            : 'rounded-[23px] overflow-hidden py-7 m-auto relative mx-auto'
+          isHidden ? 'hidden' : 'rounded-[23px] overflow-hidden py-7 m-auto relative mx-auto'
         }>
         <div className="flex justify-end mb-2">
           <Image
@@ -119,17 +122,10 @@ export default function CardInfographic() {
           />
           {/* <RiCloseFill size={32} className="cursor-pointer"  /> */}
         </div>
-        {type === 'youtube_video' && (
-          <ReactPlayer
-            url={data?.content}
-            playing={true}
-          />
-        )}
+        {type === 'youtube_video' && <ReactPlayer url={data?.content} playing={true} />}
 
         {type === 'file' && (
-          <Link
-            href={data?.target_url}
-            target="_blank">
+          <Link href={data?.target_url} target="_blank">
             <img
               src={isMobileDevice ? data?.content?.mobile_image : data?.content?.desktop_image}
               style={{
@@ -147,7 +143,7 @@ export default function CardInfographic() {
                 onHide={() => setShowShareModal(false)}
               />
             )}
-          </Link >
+          </Link>
         )}
 
         {type === 'text_editor' && (

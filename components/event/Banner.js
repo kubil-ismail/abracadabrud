@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ModalShare from 'components/element/modal/ModalShare';
-import Image from 'next/image';
+import { encryptId } from 'lib/Aes.v2';
 
 export default function BannerEvent() {
   const { basePath, asPath, push } = useRouter();
@@ -30,7 +30,11 @@ export default function BannerEvent() {
 
   useEffect(() => {
     if (user && isAuthenticated) {
-      setUrl(`${window.location.origin}${basePath}/referral/${user?.my_referal_code}`);
+      setUrl(
+        `${window.location.origin}${basePath}/referral/${encryptId(
+          user?.my_referal_code.replace('ACADABRA0', '')
+        )}`
+      );
     } else {
       setUrl(`${window.location.origin}${basePath}`);
     }

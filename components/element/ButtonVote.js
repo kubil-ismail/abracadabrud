@@ -27,6 +27,14 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
   const { allEvents: events } = useSelector((state) => state.global);
   const [addVotes, { isLoading, isError, error: errorAddVotes, isSuccess }] = useAddVotesMutation();
 
+  const isToastOpen = () => {
+    if (document.querySelector('.Toastify__toast--success')) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (isSuccess) {
       handleVote(vote);
@@ -35,7 +43,12 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
       });
       setOpen(!open);
       setVote(1);
-      toast.success(t('Success vote video'));
+      if (!isToastOpen()) {
+        toast.success(t('Success vote video'));
+      } else {
+        toast.dismiss();
+        toast.success(t('Success vote video'));
+      }
     }
   }, [isSuccess]);
 

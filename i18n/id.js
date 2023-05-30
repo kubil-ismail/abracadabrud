@@ -1063,6 +1063,8 @@ const id = {
   '5 year ago': '5 tahun yang lalu',
   'The video you are looking for is not available.': 'Video yang kamu cari tidak tersedia.',
   'There is no event': 'Tidak ada event yang sedang berjalan',
+  '1. Open the application that has a QRIS scan feature': '1. Buka aplikasi pembayaran yang memiliki fitur scan QRIS.',
+
 
 
 

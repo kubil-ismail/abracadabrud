@@ -25,7 +25,8 @@ export default function Sponsor() {
   const hasNextPage = () => {
     const pagination = page;
     if (pagination) {
-      const nextPage = getNextPage({ currentPage: pagination, totalData: 12, pageSize: 3 });
+      // const nextPage = getNextPage({ currentPage: pagination, totalData: 12, pageSize: 3 });
+      const nextPage = getNextPage({ currentPage: pagination, totalData: 6, pageSize: 3 });
       return nextPage;
     }
   };
