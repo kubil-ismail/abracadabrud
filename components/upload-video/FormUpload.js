@@ -252,10 +252,11 @@ export default function FormUpload() {
           artist_band_name: 'Artist/Band name must be at least 3 characters'
         });
       } else if (value.length > 50) {
-        setErrorContestant({
-          ...errorContestant,
-          artist_band_name: 'Artist/Band name must be at most 50 characters'
-        });
+        return;
+        // setErrorContestant({
+        //   ...errorContestant,
+        //   artist_band_name: 'Artist/Band name must be at most 50 characters'
+        // });
       } else {
         setErrorContestant({
           ...errorContestant,
@@ -337,7 +338,7 @@ export default function FormUpload() {
         artist_band_name: user?.contestant?.artist_band_name
       });
 
-      setCountMembers(user?.contestant?.members?.length);
+      setCountMembers(user?.contestant?.members?.length || 0);
     }
   }, [user]);
 
@@ -577,7 +578,7 @@ export default function FormUpload() {
             <label className="text-base text-slate-50 font-semibold mb-1">
               {t('Add band members (Optional)')}{' '}
             </label>
-            {[...new Array(countMembers)]
+            {[...new Array(countMembers ?? 0)]
               ?.map((data, i) => i.toString())
               ?.filter((res) => (deletedMembers?.find((_res) => _res === res) ? null : res))
               ?.map((i) => {

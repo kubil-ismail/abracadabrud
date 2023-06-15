@@ -19,8 +19,9 @@ import { toast } from 'react-toastify';
 import { deleteCookie, setCookie } from 'cookies-next';
 
 export default function BenefitMembership(props) {
+  const [isLoading, setIsLoading] = useState(false);
   const memberships = props?.bottomConfig?.membershipStatus?.memberships ?? [];
-  const events = props?.bottomConfig?.allEvents ?? [];
+  const { allEvents: events } = useSelector((state) => state.global);
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -30,20 +31,22 @@ export default function BenefitMembership(props) {
   const { isAuthenticated, token } = useSelector((state) => state.authentication);
 
   useEffect(() => {
-    if (events?.data?.data[0]) {
+    if (events?.data?.data?.[0]) {
       dispatch(setEvents(events?.data?.data[0]));
       dispatch(setContestId(events?.data?.data[0]?.current_contest?.id));
       dispatch(setEventId(events?.data?.data[0]?.id));
       dispatch(setMembershipFee(events?.data?.data[0]?.memberships[0]?.price));
       dispatch(setMembershipId(events?.data?.data[0]?.memberships[0]?.membership_id));
+      return;
     }
 
-    if (events?.data?.data.length === 0 && events?.last_event) {
+    if (!events?.data?.data?.[0] && events?.last_event?.id) {
       dispatch(setEvents(events?.last_event));
       dispatch(setContestId(events?.last_event?.event_contest_id));
       dispatch(setMembershipFee(events?.last_event?.membership?.price));
       dispatch(setMembershipId(events?.last_event?.membership?.id));
       dispatch(setEventId(events?.last_event?.id));
+      return;
     }
   }, [events]);
 
@@ -63,12 +66,12 @@ export default function BenefitMembership(props) {
                 {t('Your Membership is Active')}
               </span>
             </div>
-            {/* <p className="text-xs md:text-sm font-normal">
+            <p className="text-xs md:text-sm font-normal">
               {t('Your membership is active until')}{' '}
               <span className="text-[#23FF2C] font-bold">
                 {moment(memberships[0]?.expiry_date).format('LLL')}
               </span>
-            </p> */}
+            </p>
           </div>
         ) : (
           <button
@@ -84,12 +87,13 @@ export default function BenefitMembership(props) {
                 }
                 console.log('events', props);
                 // harus ada event ongoing
-                if (!events?.data?.data[0] && !events?.last_event) {
+                if (!events?.data?.data[0] && !events?.last_event?.id) {
                   toast.error(t('There is no event'));
                   return;
                 }
 
                 dispatch(setPaymentFor('membership'));
+                dispatch(setData({}));
                 deleteCookie('payment');
                 setCookie('payment', JSON.stringify({
                   payment_for: 'membership',
@@ -102,7 +106,7 @@ export default function BenefitMembership(props) {
           </button>
         )}
       </div>
-      <div className="flex items-center justify-center w-full">
+      {/* <div className="flex items-center justify-center w-full">
         <img
           src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/verified.png`}
           alt="verified"
@@ -122,8 +126,9 @@ export default function BenefitMembership(props) {
         <button type="button" onClick={handlePremiumAccess} className="underline">
           {t('click here.')}
         </button>
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 space-y-5 md:my-4 md:items-center">
+      </h3> */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 space-y-5 md:my-4 md:items-center">
         <div className="flex flex-col space-y-3 items-center text-center">
           <img
             src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/content-exclusive.png`}
@@ -158,10 +163,10 @@ export default function BenefitMembership(props) {
             alt=""
             className="w-48 md:w-64"
           />
-          <h3 className="font-extrabold text-2xl text-[#FF00FE] w-3/4 opacity-50">
+          <h3 className="font-extrabold text-2xl text-[#FF00FE] w-3/4">
             {t('500 points')}
           </h3>
-          <span className="font-semibold text-base text-[#23FF2C] w-3/4 opacity-50">
+          <span className="font-semibold text-base text-[#23FF2C] w-3/4">
             {t('Get 500 free points when you upgrade your membership.')}
           </span>
         </div>
@@ -179,6 +184,27 @@ export default function BenefitMembership(props) {
           </span>
         </div>
       </div>
+      <div className="flex items-center justify-center w-full">
+        <img
+          src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/verified.png`}
+          alt="verified"
+          className="w-12"
+          loading="lazy"
+        />
+      </div>
+      <div className="flex flex-col items-center text-[#FF00FE] ">
+        <h3 className="font-extrabold text-2xl">{t('Premium')}</h3>
+        <h3 className="font-extrabold text-2xl">{t('Membership')}</h3>
+        <span className="font-semibold text-2xl">{t('Rp 29,900 /week')}</span>
+      </div>
+      <h3 className="font-semibold text-slate-50 text-center md:w-1/2 md:m-auto md:inline-block">
+        {t(
+          'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info'
+        )}{' '}
+        <button type="button" onClick={handlePremiumAccess} className="underline">
+          {t('click here.')}
+        </button>
+      </h3>
       <div className="md:mt-5">
         {memberships?.length > 0 ? (
           // your membership is active
@@ -208,12 +234,13 @@ export default function BenefitMembership(props) {
                 }
 
                 // harus ada event ongoing
-                if (!events?.data?.data[0] && !events?.last_event) {
+                if (!events?.data?.data[0] && !events?.last_event?.id) {
                   toast.error(t('There is no event'));
                   return;
                 }
 
                 dispatch(setPaymentFor('membership'));
+                dispatch(setData({}));
                 deleteCookie('payment');
                 setCookie('payment', JSON.stringify({
                   payment_for: 'membership',

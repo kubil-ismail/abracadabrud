@@ -42,9 +42,12 @@ export default function MyFavoriteVideos({ voteList }) {
     }
   }, [dataFavoriteVideo]);
 
+  console.log('voteList', voteList);
+
   React.useEffect(() => {
     setVoteVideo(voteList);
   }, [voteList]);
+
 
   return (
         <Disclosure>
@@ -157,7 +160,7 @@ export default function MyFavoriteVideos({ voteList }) {
               setIsLoading(true);
             }}
             disabled={isLoading}>
-            {isLoading ? 'Loading...' : 'Load More'}
+            {isLoading ? 'Loading...' : `${t('Load More')}`}
           </button>
         </div>
       )}

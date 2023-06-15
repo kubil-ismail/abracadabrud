@@ -35,6 +35,11 @@ export default function CardSummary({ stillLoading, paymentMethods }) {
     setIsLoading(true);
     SSServices.checkoutMembership({ datas: payload, token: selector?.token, client: true })
       .then((result) => {
+        if (result?.message === "You already have a pending payment") {
+          toast.error(t('You already have a pending payment'));
+          router.replace(`/my-account?tab=membership#transaction`);
+          return;
+        }
         deleteCookie('payment');
         setCookie(
           'payment',
@@ -56,6 +61,11 @@ export default function CardSummary({ stillLoading, paymentMethods }) {
     setIsLoading(true);
     SSServices.checkoutVideo({ datas: payload, token: selector?.token, client: true })
       .then((result) => {
+        if (result?.message === "You already have a pending payment") {
+          toast.error(t('You already have a pending payment'));
+          router.replace(`/my-account?tab=video#transaction`);
+          return;
+        }
         deleteCookie('payment');
         setCookie(
           'payment',
@@ -74,6 +84,11 @@ export default function CardSummary({ stillLoading, paymentMethods }) {
     setIsLoading(true);
     SSServices.checkoutPoints({ datas: payload, token: selector?.token, client: true })
       .then((result) => {
+        if (result?.message === "You already have a pending payment") {
+          toast.error(t('You already have a pending payment'));
+          router.replace(`/my-account?tab=points#transaction`);
+          return;
+        }
         deleteCookie('payment');
         setCookie(
           'payment',
@@ -98,6 +113,17 @@ export default function CardSummary({ stillLoading, paymentMethods }) {
     }
   }, [payment_for, video_upload_fee, membership_fee, points_fee]);
 
+  const rupiahConvert = (number) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    }).format(number);
+  }
+
+  // random token
+  const token_id = Math.random().toString(36).substr(2, 9);
+
   return (
     <div className="flex flex-col space-y-5 px-5 p-8 rounded-lg bg-[#2B2B2B]">
       <div className="flex flex-col space-y-7">
@@ -108,19 +134,24 @@ export default function CardSummary({ stillLoading, paymentMethods }) {
             {paymentMethodsId
               ? isQris
                 ? 'QRIS'
-                : paymentMethods?.find((item) => item.id === paymentMethodsId)?.payment_name
+                : isUsingCC
+                  ? 'Credit Card'
+                  : paymentMethods?.find((item) => item.id === paymentMethodsId)?.payment_name
               : '-'}
           </span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm font-reguler">
-            {payment_for === 'membership' ? `${t('Extra Points Fee')}` : `${t('Video Upload Fee')}`}
+            {(payment_for === 'membership') ? `${t('Upgrade Membership Fee')}` :
+              (payment_for === 'video_upload') ? `${t('Video Upload Fee')}` :
+                (payment_for === 'points') ? `${t('Extra Points Fee')}` : '-'
+            }
           </span>
-          <span className="text-sm font-semibold">Rp. {fee}</span>
+          <span className="text-sm font-semibold">{rupiahConvert(fee)}</span>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-sm font-bold">Total</span>
-          <span className="text-sm font-bold">Rp. {fee}</span>
+          <span className="text-sm font-bold">{rupiahConvert(fee)}</span>
         </div>
         <div className="mt-5">
           {isLoading || !paymentMethodsId ? (
@@ -153,38 +184,33 @@ export default function CardSummary({ stillLoading, paymentMethods }) {
               type="button"
               className="px-8 py-2 w-full bg-[#FF00FE] text-[#0000FF] hover:bg-[#6CFF00] transition-all ease-linear hover:text-slate-50 rounded-md text-sm font-semibold flex items-center justify-center"
               onClick={() => {
-                if (isUsingCC && tokenCC === '') {
-                  toast.error(
-                    t('Please fill your credit card details & agree to the terms and conditions')
-                  );
-                  return;
-                } else if (isUsingCC && tokenCC !== '') {
-                  // DISABLE FOR TEMPORARY
-                  if (payment_for === 'membership') {
-                    toast.error(t('Credit card under maintenance'));
-                  } else {
-                    toast.error(t('Credit card under maintenance'));
-                  }
-                } else {
-                  if (payment_for === 'membership' || payment_for === 'membership_detail') {
-                    _checkoutMembership({
-                      payment_method_id: paymentMethodsId,
-                      event_contest_id: event_contest_id,
-                      membership_id: membership_id
-                    });
-                  } else if (payment_for === 'video_upload' || payment_for === 'video_upload_detail') {
-                    _checkoutVideo({
-                      payment_method_id: paymentMethodsId,
-                      event_contest_id: event_contest_id
-                    });
-                  } else if (payment_for === 'points') {
-                    _checkoutPoints({
-                      payment_method_id: paymentMethodsId,
-                      event_contest_id: event_contest_id,
-                      // TODO: remove amount: "any" when backend ready
-                      amount: "any"
-                    });
-                  }
+                if (payment_for === 'membership' || payment_for === 'membership_detail') {
+                  _checkoutMembership({
+                    payment_method_id: paymentMethodsId,
+                    event_contest_id: event_contest_id,
+                    membership_id: membership_id,
+                    data: {
+                      token_id
+                    }
+                  });
+                } else if (payment_for === 'video_upload' || payment_for === 'video_upload_detail') {
+                  _checkoutVideo({
+                    payment_method_id: paymentMethodsId,
+                    event_contest_id: event_contest_id,
+                    data: {
+                      token_id
+                    }
+                  });
+                } else if (payment_for === 'points') {
+                  _checkoutPoints({
+                    payment_method_id: paymentMethodsId,
+                    event_contest_id: event_contest_id,
+                    // TODO: remove amount: "any" when backend ready
+                    amount: "any",
+                    data: {
+                      token_id
+                    }
+                  });
                 }
               }}
               disabled={isLoading || !paymentMethodsId}>

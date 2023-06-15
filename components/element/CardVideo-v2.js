@@ -22,8 +22,10 @@ import ButtonShare from './ButtonShare';
 import { setMultipleSponsorPlayed, clearSponsorPlayed } from 'core/redux/reducers/globalSlice';
 import { getCookie } from 'cookies-next';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/router';
 
 export default function CardVideo() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [total, setTotal] = useState(1);
@@ -204,6 +206,19 @@ export default function CardVideo() {
     }
   }, [filterContent]);
 
+  useEffect(() => {
+    if (router?.query?.search) {
+      dispatch(
+        setFilterContent({
+          type: 'search',
+          value: router?.query?.search
+        })
+      );
+
+      // router.replace('/', undefined, { shallow: true });
+    }
+  }, []);
+
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   // on resize
   const handleResize = () => {
@@ -278,19 +293,21 @@ export default function CardVideo() {
               }
             }}
             endMessage={
-              isLoading && (
+              isLoading && datas?.filter((res) => !res.ads_id).length && datas?.length ? (
                 <div className="px-3 py-3 mt-5 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
                   loading...
                 </div>
-              )
+              ) : null
             }
             hasMore={total > 1}
             loader={
-              <div className="px-3 py-3 mt-5 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
-                loading...
-              </div>
+              datas?.length && datas?.filter((res) => !res.ads_id).length ? (
+                <div className="px-3 py-3 mt-5 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200">
+                  loading...
+                </div>
+              ) : null
             }>
-            {datas?.length === 0 || (datas?.length === 1 && datas[0]?.ads_id) ? (
+            {datas?.length === 0 || datas?.filter((res) => !res.ads_id).length === 0 ? (
               <>
                 <img
                   src="/assets/images/warnings.png"
@@ -324,7 +341,7 @@ export default function CardVideo() {
                           />
                         </div>
                       ) : (
-                        <div className="mb-[50px] w-full md:h-[320px] md:aspect-video rounded-[23px]">
+                        <div className="mb-[28px] md:mb-[40px] w-full md:h-[320px] md:aspect-video rounded-[23px]">
                           <SponsorVideo
                             video={item?.ads?.video_url}
                             title={item?.ads?.name}
@@ -417,7 +434,7 @@ export default function CardVideo() {
                                         item?.video?.uploader?.name ??
                                         'Unknown'
                                       }
-                                      length={18}
+                                      length={20}
                                     />
                                   }
                                   fontStyle="text-xs font-normal mb-0"
@@ -427,11 +444,13 @@ export default function CardVideo() {
                                   {t(moment(item?.video?.created_at).fromNow())}
                                 </span>
                               </div>
+                              <span className="w-full">
                               <EllipsisText
                                 text={item?.video?.caption ?? 'Unknown'}
-                                length={28}
-                                className="text-base md:text-[18px] font-extrabold m-0"
-                              />
+                                length={44}
+                                className="text-base md:text-[18px] font-bold m-0"
+                              />                                
+                              </span>
                             </div>
                           </div>
                           <div className="flex-0">

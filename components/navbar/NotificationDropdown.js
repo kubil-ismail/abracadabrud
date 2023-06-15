@@ -13,6 +13,14 @@ import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import EmptyNotification from 'components/empty-placeholder/EmptyNotification';
 import { setRefetchNotifications } from 'core/redux/reducers/notificationSlice';
+import { logout } from 'core/redux/reducers/authenticationSlice';
+import { deleteCookie } from 'cookies-next';
+import { toast } from 'react-toastify';
+import { resetModal, setModal } from 'core/redux/reducers/modalSlice';
+import EllipsisText from 'react-ellipsis-text';
+import { clearSponsorPlayed } from 'core/redux/reducers/globalSlice';
+import { pointApi } from 'core/services/rtk/MeServices';
+import { setMemberships } from 'core/redux/reducers/membershipsSlice';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -106,6 +114,20 @@ export default function NotificationDropdown() {
           setLastPageTransaction(data?.data?.last_page);
           setUnHasRead(data?.un_has_read);
         })
+        .catch((err) => {
+          if (err.response?.status === 401) {
+            deleteCookie('ftv_view')
+            deleteCookie('_token')
+            deleteCookie('_userId')
+            deleteCookie('token')
+            dispatch(clearSponsorPlayed())
+            dispatch(logout())
+            dispatch(setMemberships([]))
+            deleteCookie('payment')
+            dispatch(pointApi.util.resetApiState())
+            dispatch(resetModal())
+          }
+        })
         .finally(() => {
           setIsLoadingTransaction(false);
         });
@@ -135,8 +157,6 @@ export default function NotificationDropdown() {
     setLastPageAnnouncement(1);
     setIsLoadingTransaction(false);
     setIsLoadingAnnouncement(false);
-    setIsLoadingTransaction(true);
-    setIsLoadingAnnouncement(true);
 
     if (!isAuthenticated) {
       setUnHasRead(0);
@@ -198,8 +218,8 @@ export default function NotificationDropdown() {
         leave="transition ease-in duration-150"
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-1">
-        <Popover.Panel className="fixed right-4 md:right-8 mt-3 w-[80%] md:max-w-sm transform px-3 sm:px-0 shadow-lg bg-[#323234] rounded-md min-h-[420px] focus:outline-none">
-          <div className="relative z-100 bg-[#323234] text-slate-50 pt-2 px-2 md:px-3 pb-1 mt-2 rounded-md h-[380px] overflow-hidden">
+        <Popover.Panel className="fixed right-4 md:right-8 mt-3 w-[80%] md:max-w-md transform px-3 sm:px-0 shadow-lg bg-[#323234] rounded-md min-h-[440px] md:min-h-[480px] focus:outline-none">
+          <div className="relative z-100 bg-[#323234] text-slate-50 pt-2 px-2 md:px-3 pb-1 mt-2 rounded-md h-[410px] overflow-hidden">
             <div>
               <div className="container flex justify-between mt-4 mb-5 px-3">
                 <h3 className="text-lg font-semibold">{t('Notification')}</h3>
@@ -207,7 +227,7 @@ export default function NotificationDropdown() {
                   {unHasRead > 0 && (
                     <button
                       type="button"
-                      className="focus:outline-none hover:underline text-[#FF00FE] text-sm font-semibold"
+                      className="focus:outline-none hover:underline text-[#FF00FE] text-xs font-semibold"
                       onClick={() => {
                         markAllAsRead();
                       }}>
@@ -272,7 +292,7 @@ export default function NotificationDropdown() {
                                       }
                                     }}
                                     disabled={isLoadingAnnouncement}>
-                                    {isLoadingAnnouncement ? 'Loading...' : 'More'}
+                                    {isLoadingAnnouncement ? 'Loading...' : `${t('More')}`}
                                   </button>
                                 )}
                               </div>
@@ -321,7 +341,7 @@ export default function NotificationDropdown() {
                                       }
                                     }}
                                     disabled={isLoadingTransaction}>
-                                    {isLoadingTransaction ? 'Loading...' : 'More'}
+                                    {isLoadingTransaction ? 'Loading...' : `${t('More')}`}
                                   </button>
                                 )}
                               </div>

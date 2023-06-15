@@ -83,8 +83,8 @@ export default function SocialMediaAccounts({ me }) {
                     placeholder={t('Enter Instagram Account Name')}
                     value={form?.instagram}
                     onChange={(event) =>
-                      event?.target?.value?.length > 0 &&
-                      event?.target?.value?.length < 50 &&
+                      event?.target?.value?.length >= 0 &&
+                      event?.target?.value?.length <= 50 &&
                       setForm({ ...form, instagram: event?.target?.value })
                     }
                   />
@@ -103,8 +103,8 @@ export default function SocialMediaAccounts({ me }) {
                     placeholder={t('Enter Tiktok Account Name')}
                     value={form?.tiktok}
                     onChange={(event) =>
-                      event?.target?.value?.length > 0 &&
-                      event?.target?.value?.length < 50 &&
+                      event?.target?.value?.length >= 0 &&
+                      event?.target?.value?.length <= 50 &&
                       setForm({ ...form, tiktok: event?.target?.value })
                     }
                   />
@@ -121,8 +121,8 @@ export default function SocialMediaAccounts({ me }) {
                     placeholder={t('Enter Twitter Account Name')}
                     value={form?.twitter}
                     onChange={(event) =>
-                      event?.target?.value?.length > 0 &&
-                      event?.target?.value?.length < 50 &&
+                      event?.target?.value?.length >= 0 &&
+                      event?.target?.value?.length <= 50 &&
                       setForm({ ...form, twitter: event?.target?.value })
                     }
                   />
@@ -139,8 +139,8 @@ export default function SocialMediaAccounts({ me }) {
                     placeholder={t('Enter Facebook Account Name')}
                     value={form?.facebook}
                     onChange={(event) =>
-                      event?.target?.value?.length > 0 &&
-                      event?.target?.value?.length < 50 &&
+                      event?.target?.value?.length >= 0 &&
+                      event?.target?.value?.length <= 50 &&
                       setForm({ ...form, facebook: event?.target?.value })
                     }
                   />

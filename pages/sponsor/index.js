@@ -8,12 +8,21 @@ import SponsorVideo from 'components/sponsor/SponsorVideo';
 import getLayouts from 'utils/getLayouts';
 import getCredential from 'core/services/helpers/getCredential';
 import SSServices from 'core/services/ServerSide/ssServices';
+import service from 'core/services/publicService';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMultipleSponsorPlayed, clearSponsorPlayed } from 'core/redux/reducers/globalSlice';
+import { getCookie } from 'cookies-next';
 
 export default function Sponsor() {
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [isPlay, setIsPlay] = useState(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [played, setPlayed] = useState([]);
   const { t } = useTranslation();
+  const {
+    authentication: { token }
+  } = useSelector((state) => state);
 
   const { data: dataSponsor } = useGetAdsSponsorQuery(
     {},
@@ -21,6 +30,24 @@ export default function Sponsor() {
       refetchOnMountOrArgChange: true
     }
   );
+
+  useEffect(() => {
+    if (token && getCookie('_token')) {
+      service
+        .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/is-voted-and-favorited-videos`)
+        .then(function (result) {
+          const { favorites: _fav, votes: _vote, already_watched_ads: _ads } = result?.data || {};
+
+          if (_ads?.length) {
+            setPlayed(_ads);
+            dispatch(setMultipleSponsorPlayed(_ads));
+          } else {
+            dispatch(clearSponsorPlayed());
+            setPlayed([]);
+          }
+        });
+    }
+  }, [token]);
 
   const hasNextPage = () => {
     const pagination = page;
@@ -54,9 +81,7 @@ export default function Sponsor() {
   }, []);
 
   return (
-    <div
-      className="flex flex-col space-y-12 overflow-hidden container px-4 space-botttom"
-    >
+    <div className="flex flex-col space-y-12 overflow-hidden container px-4 space-botttom">
       <SponsorInformation />
       <div className="flex flex-col gap-5">
         <h3 className="text-2xl font-semibold m-0">{t('Sponsor Video')}</h3>
@@ -66,7 +91,7 @@ export default function Sponsor() {
           hasMore={hasNextPage()}
           endMessage={
             <p className="flex items-center justify-center w-full my-3">
-              <b>{t('Yay! You have seen it all')}</b>
+              {/* <b>{t('Yay! You have seen it all')}</b> */}
             </p>
           }>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -96,7 +121,9 @@ export default function Sponsor() {
 Sponsor.getLayout = (page, props) => getLayouts(page, 'base', props);
 
 export const getServerSideProps = async ({ req }) => {
-  let membershipStatus, config=[], request;
+  let membershipStatus,
+    config = [],
+    request;
   const { isAuthenticated, token } = getCredential({ req });
 
   if (isAuthenticated && token) {

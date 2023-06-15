@@ -7,6 +7,8 @@ import { useForgotPasswordMutation } from '../../core/services/rtk/Authenticatio
 import { authenticationApi } from '../../core/services/rtk/AuthenticationServices';
 import { setEmailOtp } from '../../core/redux/reducers/modalSlice';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import useCountDown from 'core/hooks/useCountdown';
 
 export default function ForgotPasswordModal({ onClose }) {
   const dispatch = useDispatch();
@@ -38,9 +40,40 @@ export default function ForgotPasswordModal({ onClose }) {
     }
   }, [isSuccess]);
 
+  const [timer, setTimer] = useState(60);
+  const countDown = (data) => {
+    let x;
+    // 60 seconds from now
+    const countDownDate = new Date().getTime() + data * 1000;
+    x = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0 || !distance) {
+        setTimer(0);
+        return () => {
+          clearInterval(x);
+        };
+      } else {
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setTimer(seconds);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(x);
+    };
+  };
+
   useEffect(() => {
     if (isError) {
-      if (error.data.message.includes('user_not_found')) {
+      if (error?.status === 429) {
+        countDown(60);
+        toast.error(
+          `${t('Too many attempts')}, ${t('please try again in')} ${timer} ${t('seconds')}`
+        );
+      }
+      if (error?.data?.message?.includes('user_not_found')) {
         setErrorEmail('Email not found');
       }
     }

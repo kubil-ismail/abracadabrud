@@ -25,6 +25,7 @@ export default function handler(req, res) {
     .catch((result) => {
       res.status(result?.response?.status ?? 500).json({
         result: encrypt(result?.response?.data),
+        results: result?.response?.data,
         encrypt: true
       });
     });

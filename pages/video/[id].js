@@ -9,15 +9,16 @@ import CardVideo from 'components/element/CardVideo';
 import getCredential from 'core/services/helpers/getCredential';
 import SSServices from 'core/services/ServerSide/ssServices';
 import Head from 'next/head';
+import parse from 'html-react-parser';
 
 export default function Video(props) {
-  const { seo } = props;
+  const { seo, seoPage, seoUrl } = props;
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.authentication);
   const [commentCount, setCommentCount] = useState(0);
   const [voteCount, setVoteCount] = useState(0);
-
+  console.log('seo', seo);
   useEffect(() => {
     if (seo) {
       setVoteCount(seo?.video?.votes);
@@ -42,18 +43,12 @@ export default function Video(props) {
           property="og:title"
           content={`${seo?.video?.caption} - ${seo?.video?.user?.contestant?.artist_band_name}`}
         />
-        <meta
-          property="og:description"
-          content={`
-          Check out abracadabra, a cool new music platform where Indonesian performers are competing to perform as the opening act at the wePOP concert. You can upload your music video, vote for other videos, and win amazing prizes.
-        `}
-        />
+        <meta property="og:description" content={parse(seoPage?.description)} />
         <meta property="og:image" content={seo?.video?.thumbnails[0]?.thumbnail} />
 
         {/* twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        {/* <meta name="twitter:site" content="@abracadabra" />
-        <meta name="twitter:creator" content="@abracadabra" /> */}
+        <meta name="twitter:site" content={seo?.twitter_site} />
         <meta
           name="twitter:title"
           content={`${seo?.video?.caption} - ${seo?.video?.user?.contestant?.artist_band_name}`}
@@ -100,7 +95,7 @@ export async function getServerSideProps({ query, req }) {
     global;
   const { isAuthenticated, token } = getCredential({ req });
 
-  global = [SSServices.getShowVideo(atob(id))];
+  global = [SSServices.getShowVideo(atob(id)), SSServices.getSeo({ path: '/video' })];
 
   if (isAuthenticated && token) {
     config = [
@@ -128,13 +123,16 @@ export async function getServerSideProps({ query, req }) {
   //   });
   // }
 
+  seo = await SSServices.getSeo({ path: '/' });
+
   return {
     props: {
       seo: data[0]?.data ?? {},
+      seoPage: data?.[1] ?? {},
       title: `${data[0]?.data?.video?.caption ?? 'Video Detail'} | Abracadabra Starquest`,
       bottomConfig: {
-        myPoints: data?.[3] ?? {},
-        allEvents: data?.[1] ?? {},
+        myPoints: data?.[4] ?? {},
+        allEvents: data?.[2] ?? {},
         membershipStatus: membershipStatus ?? {}
       }
       // data: data

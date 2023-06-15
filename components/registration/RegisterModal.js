@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import { setCookie } from 'cookies-next';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { toast } from 'react-toastify';
 
 export default function RegisterModal({ onClose }) {
   const recaptchaRef = useRef();
@@ -99,7 +100,7 @@ export default function RegisterModal({ onClose }) {
     } else if (registerError?.confirmPassword) {
       document.getElementById('confirmPassword').focus();
     } else if (registerError?.referalCode) {
-      document.getElementById('referalCode').focus();
+      document.getElementById('referalCode')?.focus();
     }
   };
 
@@ -256,20 +257,30 @@ export default function RegisterModal({ onClose }) {
   }, [isSuccessRegister]);
 
   useEffect(() => {
-    if (isSuccessRole) {
-      const { fullname, username, mobile, password, confirmPassword, referalCode } = inputs;
+    try {
+      if (isSuccessRole) {
+        const { fullname, username, mobile, password, confirmPassword, referalCode } = inputs;
 
-      completeBasicProfile({
-        firstname: fullname,
-        username,
-        phone: mobile,
-        password,
-        password_confirmation: confirmPassword,
-        referal_code: referalCode ? `${atob(referalCode)}ACADABRA0` : '',
-        pref_language: lang
-      });
+        if (referalCode && !atob(referalCode)) {
+          return;
+        }
 
-      dispatch(resetReferralCode());
+        completeBasicProfile({
+          firstname: fullname,
+          username,
+          phone: mobile,
+          password,
+          password_confirmation: confirmPassword,
+          referal_code: referalCode ? `${atob(referalCode)}ACADABRA0` : '',
+          pref_language: lang
+        });
+
+        dispatch(resetReferralCode());
+      }
+    } catch (error) {
+      if (error && inputs.referalCode) {
+        setRegisterError((registerError) => ({ ...registerError, referalCode: "Invalid refferal code" }));
+      }
     }
   }, [isSuccessRole]);
 
@@ -286,11 +297,42 @@ export default function RegisterModal({ onClose }) {
   }, [isSuccessCompleteProfile]);
   // success end
 
+  const [timer, setTimer] = useState(60);
+  const countDown = (data) => {
+    let x;
+    // 60 seconds from now
+    const countDownDate = new Date().getTime() + data * 1000;
+    x = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0 || !distance) {
+        setTimer(0);
+        return () => {
+          clearInterval(x);
+        };
+      } else {
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setTimer(seconds);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(x);
+    };
+  };
+
   // error start
   useEffect(() => {
     if (isErrorRegister) {
       setErrCount(errCount + 1);
 
+      if (errorRegister?.status === 429) {
+        countDown(60);
+        toast.error(
+          `${t('Too many attempts')}, ${t('please try again in')} ${timer} ${t('seconds')}`
+        );
+      }
       errorRegister?.data?.errors?.email.map((error) => {
         setRegisterError((registerError) => ({ ...registerError, email: error }));
         document.getElementById('email').focus();
@@ -366,7 +408,7 @@ export default function RegisterModal({ onClose }) {
       {modalOtp ? <OtpConfirmModal /> : null}
       <div className={`${!modalRegister ? 'hidden' : 'fixed justify-center z-50'}`}>
         <div className="bg-black/20 fixed inset-0 w-full z-50 flex items-center md:justify-center py-5">
-          <div className="bg-[#2B1462] text-slate-50 rounded-r-2xl md:rounded-2xl px-8 md:px-8 pt-8 pb-12 flex flex-col animate-l-to-r w-[92%] md:max-w-md">
+          <div className="bg-[#2B1462] text-slate-50 rounded-r-2xl md:rounded-2xl px-8 md:px-8 pt-8 pb-12 flex flex-col animate-l-to-r w-[92%] md:max-w-md lg:max-h-[94%]">
             <div className="flex justify-end">
               <RiCloseFill
                 size={32}

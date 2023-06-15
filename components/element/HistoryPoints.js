@@ -17,16 +17,16 @@ export default function HistoryPoint({ data }) {
   return (
     <div className="bg-[#313131] text-slate-50 rounded-lg p-4 flex flex-col gap-3 relative">
       <div className="flex justify-between w-full">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col space-y-1">
           {/* <h3 className="text-xs font-semibold">
             {data?.event?.title ?? data?.point_source_name ?? 'Event Title '}
           </h3> */}
-          <span className="text-[14px] font-medium">
+          <span className="flex-0 text-[14px] font-medium w-[80%] ">
             <EllipsisText text={t(getDescription(data)) ?? 'source point'} length={100} />
           </span>
         </div>
         <div className="">
-          <div className="bg-[#BFFFC6] text-[#16A626] rounded-md px-3 py-2 flex items-center justify-center text-xs font-bold">
+          <div className="bg-[#BFFFC6] flex-1 text-[#16A626] rounded-md px-3 py-2 flex items-center justify-center text-xs font-bold">
             {`+ ${data?.point_value} points`}
           </div>
         </div>

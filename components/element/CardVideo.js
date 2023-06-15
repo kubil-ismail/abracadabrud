@@ -88,7 +88,7 @@ THANKS!
             favorites: _fav,
             votes: _vote,
             already_watched_ads: _ads
-          } = result?.data?.data || {};
+          } = result?.data || {};
 
           if (_ads?.length) {
             dispatch(setMultipleSponsorPlayed(_ads));
@@ -174,13 +174,23 @@ THANKS!
             </div>
             <div className="flex-1 flex flex-col space-y-2">
               <div className="flex space-x-1 items-center text-xs font-normal">
-                <Username name={bandName} fontStyle="text-xs font-normal mb-0" />
+                <Username 
+                name={
+                  <EllipsisText
+                text={
+                  bandName ?? 'Unknown'
+                }
+                length={20}
+              />
+                } 
+                fontStyle="text-xs font-normal mb-0"
+                />
                 <span>&middot;</span>
                 <span className="">{t(moment(date).fromNow())}</span>
               </div>
               <EllipsisText
                 text={caption ?? 'Unknown'}
-                length={28}
+                length={44}
                 className="text-[18px] font-extrabold m-0"
               />
             </div>
@@ -233,6 +243,10 @@ THANKS!
                     idArray={current?.id}
                     // stillLoading={isLoading}
                     isActive={likeList?.find((_item) => _item === current?.id)}
+                    handleFavorite={() => {
+                      setLikeList([...likeList, ...[current?.id]]);
+                      setFavorite(favorite + 1);
+                    }}
                   />
                 </div>
                 {/* <BottomSheetsComment

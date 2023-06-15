@@ -5,8 +5,10 @@ import moment from 'moment';
 import Username from 'components/element/Username';
 import EmptyVotedVideo from 'components/empty-placeholder/EmptyVotedVideo';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 export default function BottomSheetsVote({ total, idVideo, stillLoading, isActive }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [totalVote, setTotalVote] = useState(total);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +82,7 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
         onDismiss={() => setOpen(false)}
         header={
           <div className="font-semibold py-2 text-base">
-            History
+            {t('History')}
             {` (${new Intl.NumberFormat(locale, {
               notation: totalVote >= 10000 ? 'compact' : 'standard',
               compactDisplay: 'short',
@@ -99,7 +101,7 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
           )}
           {isError && !isFetching && (
             <div className="flex justify-center items-center">
-              <p className="text-sm text-red-500">Something went wrong</p>
+              <p className="text-sm text-red-500">{t('Something went wrong')}</p>
             </div>
           )}
           {datas?.length > 0 ? (
@@ -125,7 +127,7 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
                       />{' '}
                       •{' '}
                       {/* <span className="font-bold">{item?.artist_band_name ?? item?.firstname} </span> •{' '} */}
-                      {moment(item?.created_at).fromNow()}
+                      {t(moment(item?.created_at).fromNow())}
                     </div>
                     <span className="text-green-500">+{item?.vote} Vote</span>
                   </div>
@@ -141,7 +143,7 @@ export default function BottomSheetsVote({ total, idVideo, stillLoading, isActiv
                   {isLoading ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-200"></div>
                   ) : (
-                    'Load more'
+                    `${t('Load More')}`
                   )}
                 </button>
               )}

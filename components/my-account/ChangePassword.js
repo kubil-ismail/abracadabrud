@@ -131,7 +131,7 @@ export default function ChangePassword() {
                     <input
                       type={seeCurrentPassword ? 'text' : 'password'}
                       className="text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md w-full"
-                      placeholder={t('Enter your current password')}
+                      placeholder={t('Enter current password')}
                       // dont auto fill password
                       autoComplete="new-password"
                       value={password}
@@ -172,7 +172,7 @@ export default function ChangePassword() {
                     <input
                       type={seeNewPassword ? 'text' : 'password'}
                       className="w-full text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md"
-                      placeholder={t('Enter your new password')}
+                      placeholder={t('Enter new password')}
                       value={newPassword}
                       onChange={(e) => {
                         if (e.target.value.length < 8 && e.target.value !== '') {
@@ -218,7 +218,7 @@ export default function ChangePassword() {
                     <input
                       type={seeConfirmPassword ? 'text' : 'password'}
                       className="text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md w-full"
-                      placeholder={t('Confirm your password')}
+                      placeholder={t('Enter new password again')}
                       value={confirmPassword}
                       onChange={(e) => {
                         if (e.target.value === newPassword || e.target.value === '') {

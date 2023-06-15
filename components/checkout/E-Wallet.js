@@ -8,9 +8,9 @@ export default function Ewallet({ paymentMethods, isPhone }) {
   const { paymentMethodsId, isUsingCC, isQris } = useSelector((state) => state.payments);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col space-y-5 pb-2">
       <h3 className="text-base font-bold">{t('E-Wallet')}</h3>
-      <div className="flex flex-wrap gap-2 md:gap-5 justify-center pb-2">
+      <div className="flex flex-wrap gap-2 md:gap-5 justify-center">
         {paymentMethods
           ?.filter((item) => item.payment_type === 'ewallet')
           ?.filter((item) =>
@@ -39,8 +39,8 @@ export default function Ewallet({ paymentMethods, isPhone }) {
                 src={data.payment_image}
                 alt="logo"
                 height={8}
-                className="w-12 m-auto"
                 loading="lazy"
+                className="w-16 h-6 m-auto"
                 style={{ objectFit: 'contain' }}
               />
             </button>
@@ -68,8 +68,8 @@ export default function Ewallet({ paymentMethods, isPhone }) {
                   src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/qris.png`}
                   alt="logo"
                   height={8}
-                  className="w-12 m-auto"
                   loading="lazy"
+                  className="w-16 h-4 m-auto"
                   style={{ objectFit: 'contain' }}
                 />
               </button>

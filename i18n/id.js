@@ -4,10 +4,10 @@ const id = {
   'The weekly prize package includes:': 'Hadiah mingguan termasuk:',
   '2 free VIP concert tickets.': '2 tiket konser WePOP (VIP).',
   'Backstage tour.': 'Tur backstage.',
-  'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.':
-    'Meet ‘n Greet dan selfie dengan Judika, Rizky Febian, BCL, dan Kahitna.',
-  'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.':
-    'Meet ‘n Greet dan selfie dengan Judika, Rizky Febian, BCL, dan Kahitna.',
+  'Meet ‘n greet and selfies with the wePOP stars!':
+    'Meet ‘n Greet dan selfie dengan Bintang WePop!',
+  'Meet ‘n greet and selfies with the wePOP stars!':
+    'Meet ‘n Greet dan selfie dengan Bintang WePop!',
   'Accommodation and round-trip transport from anywhere in Indonesia.':
     'Akomodasi dan transportasi pulang-pergi dari mana saja di Indonesia.',
   'Accommodation and round-trip transport from anywhere in Indonesia':
@@ -22,7 +22,7 @@ const id = {
     'Dapatkan vote terbanyak untuk video kamu dan sekaligus dapatkan kesempatan sekali seumur hidup menjadi opening act di konser wePOP.  Menangkan semua hadiahnya dari hadiah mingguan di atas, plus…',
   'Rp.100,000,000 cash!': 'Uang tunai Rp.100.000.000!',
   'Professional photo session with the event artists.':
-    'Sesi foto profesional dengan Judika, Rizky Febian, BCL, dan Kahitna.',
+    'Sesi foto profesional dengan Bintang WePop!.',
   'Accommodation and round-trip transport from anywhere in Indonesia for you and/or your band.':
     'Akomodasi dan transportasi pulang-pergi dari mana saja di Indonesia untukmu dan band kamu.',
   'How to win!': 'CARANYA UNTUK MENANG!',
@@ -50,7 +50,7 @@ const id = {
   'Vote for the winning video': 'Kasih vote buat pemenang',
   'Each vote for the winning video will enter you into another lucky draw. This lucky draw winner will be announced along with the winning video at the end of the competition.':
     'Setiap vote untuk video pemenang akan bikin kamu otomatis masuk ke Lucky Draw Pemenang Lucky Draw akan diumumkan bersama dengan video pemenang di akhir kompetisi.',
-  '6 ways to collect more points!': '6 cara untuk kumpulkan poin lebih banyak!',
+  '7 ways to collect more points!': '7 cara untuk kumpulkan poin lebih banyak!',
   Register: 'Daftar',
   'Get 10 point for completing the abracadabra registration process.':
     'Dapatkan 10 poin setelah selesai daftar abracadabra.',
@@ -99,9 +99,9 @@ const id = {
     'Dapatkan hadiah membership premium eksklusif dari sponsor wePOP.',
   'Upload your video, and show the world what you are capable of!':
     'Unggah video kamu, dan tunjukkan kemampuanmu pada dunia!',
-  "Create a music video in which you sing your own original song or a song from the event's artists: Judika, Rizky Febian, BCL, and Kahitna.":
-    'Buat video penampilan musikmu. Kamu boleh nyanyi lagu sendiri, boleh juga membawakan cover lagu Judika, Rizky Febian, BCL, dan Kahitna. Bebas!',
-  'You can perform as a band or perform solo.': 'Boleh tampil sebagai band atau solo',
+  "Create a music video in which you sing your own original song or a song from the event's artists":
+    'Buat video penampilan musikmu. Kamu boleh nyanyi lagu sendiri, boleh juga membawakan cover lagu Artis Utama',
+  'You can perform as a band or perform solo.': 'Boleh tampil sebagai band atau solo.',
   'Lip syncing is not allowed. Use your authentic voice.':
     'Tidak boleh lip sync ya! Nyanyi pakai suara asli kamu.',
   'Be creative!': 'Bikin videonya sekreatif mungkin!',
@@ -345,8 +345,8 @@ const id = {
   'Share this video with your friends and earn 5 points for everyone that registered joins the competition':
     'Bagikan video ini dengan teman-teman kamu dan dapatkan 5 poin untuk semua orang yang berhasil ikut berkompetisi',
   'Video has been played.': 'Video sudah di tonton.',
-  'Check out wePOP’s amazing sponsors! Every time you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!':
-    'Tonton video sponsor, dan dapatkan 5 point, setiap kamu menonton salah satu video sponsor kami. Gunakan poin tersebut untuk vote dan menangkan hadiah yang luar biasa!',
+  'Check out wePOP’s amazing sponsors! Every day you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!':
+    'Tonton video sponsor, dan dapatkan 5 point, setiap hari kamu menonton salah satu video sponsor kami. Gunakan poin tersebut untuk vote dan menangkan hadiah yang luar biasa!',
   'Sponsor Video': 'Video Sponsor',
   'Yay! You have seen it all': 'Yay! Kamu sudah lihat semuanya',
   '3 June – 21 July 2023': '3 Juni – 21 Juli 2023',
@@ -414,7 +414,7 @@ const id = {
   'Please fill your credit card details & agree to the terms and conditions':
     'Silahkan untuk mengisi kartu kreditmu & setujui syarat dan ketentuan',
   'Cardless Credit': 'Kredit Tanpa Kartu',
-  'Membership Fee': 'Biaya Membership',
+  'Upgrade Membership Fee': 'Biaya Upgrade Membership',
   'Video Upload Fee': 'Biaya Unggah Video',
   'Share this link via': 'Bagikan link ini via',
   'Or via link': 'Atau via link',
@@ -804,8 +804,8 @@ const id = {
   'Invalid referral code': 'Kode referral tidak valid',
   'Meet ‘n greet and selfies with the headline artist.':
     'Meet ‘n Greet dan selfie dengan artis utama',
-  'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.':
-    'Meet ‘n Greet dan selfie dengan Judika, Rizky Febian, BCL, dan Kahitna.',
+  'Meet ‘n greet and selfies with the wePOP stars!':
+    'Meet ‘n Greet dan selfie dengan Bintang WePop!',
   'Already have an account ?': 'Sudah punya akun ?',
   'Profile picture updated': 'Foto profil berhasil di perbaharui',
   'Profile banner updated': 'Foto banner berhasil di perbaharui',
@@ -842,10 +842,10 @@ const id = {
   'Collect the most points. Each week the player with the most points wins amazing prizes.': 'Kumpulkan poin sebanyak-banyaknya. Setiap minggu, pengguna dengan poin tertinggi akan memenangkan hadiah-hadiah menarik.',
   'Get 10 points for completing the abracadabra registration process.': 'Dapatkan 10 poin setelah menyelesaikan pendaftaran di abracadabra.',
   'Watch Sponsor’s Video Daily': 'Tontonlah Video Sponsor',
-  'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.': 'Dapatkan 50 poin setiap penggunaan link referral kamu ketika daftar abracadabra',
+  'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.': 'Dapatkan 50 poin setiap penggunaan link referral kamu ketika daftar abracadabra.',
   'Complete Survey Questions': 'Lengkapi Pertanyaan Survei',
-  'Get 30 points for completing survey questions on “Survey Question” page': 'Dapatkan 30 poin untuk menyelesaikan pertanyaan survei',
-  'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.': 'Dapatkan akses premium backstage dan ekstra 500 poin kalau kamu upgrade membership ke Premium..',
+  'Get 30 points for completing survey questions on “Survey Question” page.': 'Dapatkan 30 poin untuk menyelesaikan pertanyaan survei.',
+  'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.': 'Dapatkan akses premium backstage dan ekstra 500 poin kalau kamu upgrade membership ke Premium.',
   'Click Here': 'Klik di sini',
   'Perform at the wePOP concert!': 'Tampil sebagai opening act di wePOP!',
   'Upload your music video. Get the most votes for your music video and join your idols on stage.': 'Unggah video musikmu. Dapatkan vote terbanyak untuk video musikmu dan bergabunglah dengan idolamu di panggung.',
@@ -929,13 +929,13 @@ const id = {
   'videos with extra votes!': 'video favorit Anda!',
   'Your membership is active': 'Membership kamu telah aktif',
   'a day ago': 'satu hari yang lalu',
-  'a hour ago': 'sejam yang lalu',
+  'an hour ago': 'sejam yang lalu',
   '2 hours ago': '2 jam yang lalu',
   '3 hours ago': '3 jam yang lalu',
   '4 hours ago': '4 jam yang lalu',
   '5 hours ago': '5 jam yang lalu',
   '6 hours ago': '6 jam yang lalu',
-  '7 hour ago': '7 jam yang lalu',
+  '7 hours ago': '7 jam yang lalu',
   '8 hours ago': '8 jam yang lalu',
   '9 hours ago': '9 jam yang lalu',
   '10 hours ago': '10 jam yang lalu',
@@ -946,7 +946,7 @@ const id = {
   '15 hours ago': '15 jam yang lalu',
   '16 hours ago': '16 jam yang lalu',
   '17 hours ago': '17 jam yang lalu',
-  '18 hour ago': '18 jam yang lalu',
+  '18 hours ago': '18 jam yang lalu',
   '19 hours ago': '19 jam yang lalu',
   '20 hours ago': '20 jam yang lalu',
   '21 hours ago': '21 jam yang lalu',
@@ -1064,9 +1064,25 @@ const id = {
   'The video you are looking for is not available.': 'Video yang kamu cari tidak tersedia.',
   'There is no event': 'Tidak ada event yang sedang berjalan',
   '1. Open the application that has a QRIS scan feature': '1. Buka aplikasi pembayaran yang memiliki fitur scan QRIS.',
+  'Buy More Points': 'Beli Lebih Banyak Poin',
+  'More': 'Muat lebih banyak',
+  'Video payment has expired': 'Pembayaran Video telah kadulawarsa',
+  'Points payment has expired': 'Pembayaran Pembelian Poin telah kadaluwarsa',
+  'Waiting for points payment': 'Menunggu pembayaran pembelian poin',
+  'Points payment has been cancelled': 'Pembayaran pembelian poin telah di batalkan',
+  'Mark all as read': 'Tandai semua telah dibaca',
+  'Sponsor video has been played': 'Video sponsor telah ditonton',
+  'Video Vote History': 'Riwayat Vote Video',
+  'Activities': 'Aktifitas',
+  'Point History': 'Riwayat Poin',
+  'Event List': 'Daftar Event',
+  'History': 'Riwayat',
+  'Video payment has been cancelled': 'Pembayaran Video telah dibatalkan',
+  'The current event has ended': 'Event telah berakhir',
+  'Buy Ticket wePOP: Come Together Here': 'Beli Tiket wePOP: Come Toghether Disini',
+  'Buy Now': 'Beli Sekarang',
 
-
-
+  
 
 
 };

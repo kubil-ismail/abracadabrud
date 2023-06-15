@@ -6,6 +6,8 @@ import service from 'core/services/publicService';
 import LoadingPodium from 'components/skeleton/LoadingPodium';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import EllipsisText from 'react-ellipsis-text';
+
 
 export default function ListRank({ data, current, last, loading, handleNextPage, eventId }) {
   const { t } = useTranslation();
@@ -36,8 +38,16 @@ export default function ListRank({ data, current, last, loading, handleNextPage,
             className="flex-1 flex flex-col">
             <Username
               name={
-                currentUser?.details?.user?.contestant?.artist_band_name ??
+                <EllipsisText
+                text={
+                  currentUser?.details?.user?.contestant?.artist_band_name ??
                 currentUser?.details?.user?.username
+                ?? 'Unknown'
+                }
+                length={28}
+              />
+                // currentUser?.details?.user?.contestant?.artist_band_name ??
+                // currentUser?.details?.user?.username
               }
               fontStyle="text-base md:text-lg font-bold"
             />
@@ -68,9 +78,30 @@ export default function ListRank({ data, current, last, loading, handleNextPage,
             <Link
               href={`/user/${item?.user?.username ?? item?.id}`}
               className="flex-1 flex flex-col">
+              {/* hidden on desktop */}
               <Username
-                name={item?.user?.contestant?.artist_band_name ?? item?.user?.username}
-                fontStyle="text-base md:text-lg font-bold"
+                name={
+                  <EllipsisText
+                text={
+                  item?.user?.contestant?.artist_band_name ?? item?.user?.username ?? 'Unknown'
+                }
+                length={28}
+              />
+                }
+                fontStyle="text-base md:text-lg font-bold block md:hidden"
+              />
+
+              {/* hidden on mobile */}
+              <Username
+                name={
+                  <EllipsisText
+                text={
+                  item?.user?.contestant?.artist_band_name ?? item?.user?.username ?? 'Unknown'
+                }
+                length={44}
+              />
+                }
+                fontStyle="text-base md:text-lg font-bold hidden md:block"
               />
               {/* <h3 className="text-base md:text-lg font-bold">{item?.user?.contestant?.artist_band_name ?? item?.user?.username}</h3> */}
             </Link>

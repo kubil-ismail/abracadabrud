@@ -25,7 +25,6 @@ export default function PerformerProfile({ me }) {
   const [dataMe, setDataMe] = useState(me);
 
   const { data: dataGenres, isSuccess: successGenres } = useGetGenresQuery();
-  const state = useSelector((state) => state);
 
   const [
     updatePerformerProfile,
@@ -58,6 +57,8 @@ export default function PerformerProfile({ me }) {
   });
 
   const [genreErr, setGenreErr] = useState('');
+  const [memberEmailErr, setMemberEmailErr] = useState([]);
+  const [memberNameErr, setMemberNameErr] = useState([]);
 
   // add input
   const addInput = (e) => {
@@ -119,7 +120,7 @@ export default function PerformerProfile({ me }) {
         'member_emails',
         JSON.stringify((dataMe?.user?.contestant?.members ?? [])?.map((item) => item?.email))
       );
-      setCountMembers(dataMe?.user?.contestant?.members?.length);
+      setCountMembers(dataMe?.user?.contestant?.members?.length ?? 0);
     }
   }, [dataMe]);
 
@@ -128,9 +129,7 @@ export default function PerformerProfile({ me }) {
       toast.success(t('Success update your Performer profile'));
 
       dispatch(
-        setCredentials({
-          user: dataUpdatePerformerProfile?.data?.user
-        })
+        setCredentials(dataUpdatePerformerProfile?.data)
       );
 
       setGenreErr('');
@@ -138,6 +137,17 @@ export default function PerformerProfile({ me }) {
 
     if (errorUpdatePerformerProfile) {
       toast.error(t('Failed update additional information'));
+
+      const countErrorMemberEmail = Object.keys(errorUpdatePerformerProfile?.data?.errors)?.filter(
+        (res) => res.includes('member_emails')
+      );
+
+      const countErrorMemberName = Object.keys(errorUpdatePerformerProfile?.data?.errors)?.filter(
+        (res) => res.includes('member_names')
+      );
+
+      setMemberEmailErr(countErrorMemberEmail ?? []);
+      setMemberNameErr(countErrorMemberName ?? []);
 
       if (errorUpdatePerformerProfile?.data?.errors?.genre_ids) {
         formik?.setFieldError(
@@ -188,11 +198,10 @@ export default function PerformerProfile({ me }) {
                   <label className="text-base font-semibold">{t('Band / Artist Name')}</label>
                   <input
                     type="text"
-                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${
-                      formik?.touched?.artist_band_name &&
+                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${formik?.touched?.artist_band_name &&
                       formik?.errors?.artist_band_name &&
                       'border-2 border-red-500'
-                    }`}
+                      }`}
                     placeholder={t('Enter your band/artist name')}
                     name="artist_band_name"
                     value={formik?.values?.artist_band_name}
@@ -209,10 +218,9 @@ export default function PerformerProfile({ me }) {
                     {t("Band / Artist Music's Genree")}
                   </label>
                   <Select
-                    className={`custom-select ${
-                      ((formik?.touched?.genre_ids && formik?.errors?.genre_ids) || genreErr) &&
+                    className={`custom-select ${((formik?.touched?.genre_ids && formik?.errors?.genre_ids) || genreErr) &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}
+                      }`}
                     options={options}
                     closeMenuOnScroll
                     value={options?.filter((item) =>
@@ -296,6 +304,20 @@ export default function PerformerProfile({ me }) {
                           setMember={setMemberArray}
                           value1={dataMe?.user?.contestant?.members?.[index]?.name ?? ''}
                           value2={dataMe?.user?.contestant?.members?.[index]?.email ?? ''}
+                          _errEmail={
+                            errorUpdatePerformerProfile?.data?.errors?.[
+                              memberEmailErr?.find((item) => item === `member_emails.${index}`)
+                            ]
+                              ? 'Member email is required'
+                              : ''
+                          }
+                          _errName={
+                            errorUpdatePerformerProfile?.data?.errors?.[
+                              memberNameErr?.find((item) => item === `member_names.${index}`)
+                            ]
+                              ? 'Member name is required'
+                              : ''
+                          }
                           onClose={(e) => {
                             // create array of member names
                             const memberNamesArray = JSON.parse(
@@ -325,7 +347,7 @@ export default function PerformerProfile({ me }) {
                   <span
                     type="button"
                     className="text-sm font-medium"
-                    // onClick={removeInput}
+                  // onClick={removeInput}
                   >
                     {t('add additional member')}
                   </span>

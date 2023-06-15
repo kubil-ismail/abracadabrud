@@ -28,6 +28,7 @@ import ResetPasswordModal from '../registration/ResetPasswordModal';
 import ContinuePayModal from '../upload-video/ContinuePayModal';
 import NotificationDropdown from './NotificationDropdown';
 import ModalConfirmLogout from 'components/element/modal/ModalConfirmLogout';
+import EllipsisText from 'react-ellipsis-text';
 
 export default function Navbar(props) {
   const router = useRouter();
@@ -135,7 +136,7 @@ export default function Navbar(props) {
             <>
               <div className="absolute inset-0 bg-black/70 transition-all ease-in delay-300 duration-500 min-h-screen overflow-hidden">
                 <div className="fixed top-0 left-0 transition-all ease-in delay-300 duration-500 w-full z-50 overflow-hidden">
-                  <div className="bg-[#282828] text-slate-50 animate-l-to-r w-[92%] md:w-[40%] lg:w-[23%] min-h-screen p-4">
+                  <div className="bg-[#282828] text-slate-50 animate-l-to-r w-[92%] md:w-[40%] lg:w-[24%] min-h-screen p-4">
                     <div className="flex justify-end">
                       <Image
                         src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/close-icon.png`}
@@ -203,6 +204,11 @@ export default function Navbar(props) {
                                   value: keyword
                                 })
                               );
+
+                              // handle if search not in home
+                              if (router.pathname !== '/') {
+                                //  router.push(`/?search=${keyword}`);
+                              }
                             }
                           }}
                         />
@@ -220,6 +226,11 @@ export default function Navbar(props) {
                                   value: keyword
                                 })
                               );
+
+                              // handle if search not in home
+                              if (router.pathname !== '/') {
+                                // router.push(`/?search=${keyword}`);
+                              }
                             }}
                           />
                           {/* <BsSearch
@@ -248,12 +259,21 @@ export default function Navbar(props) {
                               isActiveMemberships={
                                 memberships?.length > 0 &&
                                 dataMembershipStatus?.message ===
-                                  'Membership already paid and active'
+                                'Membership already paid and active'
                               }
+                              className="flex-0"
                             />
-                            <div className="flex flex-col">
+                            <div className="flex-1 flex flex-col">
                               <Username
-                                name={user?.contestant?.artist_band_name ?? user?.firstname}
+                                name={
+                                  <EllipsisText
+                                  text={
+                                  user?.contestant?.artist_band_name ?? user?.firstname
+                                  ?? 'Unknown'
+                                  }
+                                  length={20}
+                                />
+                                }
                                 fontStyle="text-base font-semibold"
                               />
                             </div>
@@ -307,7 +327,7 @@ export default function Navbar(props) {
                                 <div>
                                   <Disclosure.Button
                                     className="flex w-full justify-between text-left text-sm font-medium focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
-                                    // key={data.id}
+                                  // key={data.id}
                                   >
                                     <span className="text-base text-slate-50 cursor-pointer hover:text-[#FF00CA] transition-all delay-100 ease-in-out">
                                       FAQ
@@ -364,7 +384,7 @@ export default function Navbar(props) {
                                         </li>
                                         <li
                                           onClick={() => (
-                                            router.push('/faq/#buy-points'), setOpenSidebar(false)
+                                            router.push('/faq/#extra_points'), setOpenSidebar(false)
                                           )}
                                           className="cursor-pointer">
                                           {t('Buy More Points')}
@@ -450,7 +470,7 @@ export default function Navbar(props) {
               className="w-36"
               width="100%"
               height="100%"
-              // loading="lazy"
+            // loading="lazy"
             />
           </Link>
         </div>
@@ -465,6 +485,6 @@ export default function Navbar(props) {
           )}
         </div>
       </div>
-    </div >
+    </div>
   );
 }

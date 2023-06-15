@@ -31,6 +31,9 @@ export default function PremiumAccess(props) {
     }
   );
 
+
+  // console.log('sukses', data?.data);
+
   return (
     <div className="flex flex-col gap-12">
       <BadgeInfo isMembership={isAuthenticated && membershipsInfo?.memberships?.length} />
@@ -40,8 +43,8 @@ export default function PremiumAccess(props) {
             ? {}
             : { filter: 'brightness(50%) blur(10px)' }
         }
-        className={'flex flex-col gap-12'}>
-        {data?.data?.map((item, key) =>
+        className={'flex flex-col space-y-12'}>
+        {/* {data?.data?.map((item, key) =>
           item?.type === 'biography' ? (
             <ArtisBios
               title={item?.data?.title}
@@ -55,7 +58,34 @@ export default function PremiumAccess(props) {
           ) : (
             <></>
           )
+        )} */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {data?.data?.map((item, key) =>
+          item?.type === 'video' ? (
+            <CardVideoBackstage data={item} />
+          ) : <></>
         )}
+        </div>
+
+        <div className="">
+        {data?.data?.map((item, key) =>
+          item?.type === 'image' ? (
+            <BackstageGallery data={item?.data} />
+          ) : <></>
+        )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {data?.data?.map((item, key) =>
+          item?.type === 'biography' ? (
+            <ArtisBios
+              title={item?.data?.title}
+              image={item?.data?.image}
+              description={item?.data?.description}
+            />
+          ) : <></>
+        )}
+        </div>
 
         {dataSponsor?.videos
           ?.filter((res) => res.event_id === allEvents?.data?.data[0]?.id)

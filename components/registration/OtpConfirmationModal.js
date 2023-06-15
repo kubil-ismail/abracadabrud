@@ -22,7 +22,6 @@ import {
   setChangedEmail
 } from '../../core/redux/reducers/authenticationSlice';
 import { toast } from 'react-toastify';
-import { useEnrollUserToAllEventsMutation } from '../../core/services/rtk/EventServices';
 import useCountDown from '../../core/hooks/useCountdown';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
@@ -126,7 +125,7 @@ export default function OtpConfirmModal({ onClose }) {
   const [confirmOtpRegister, { data, isLoading, isSuccess, isError, error }] =
     useConfirmOtpRegisterMutation();
 
-  const [confirmOtpForgotPassword, { isSuccess: isSuccessConfirmForgotPassword }] =
+  const [confirmOtpForgotPassword, { isSuccess: isSuccessConfirmForgotPassword, isError: isErrorForgot }] =
     useConfirmOtpForgotPasswordMutation();
 
   const [resendOtp] = useResendOtpMutation();
@@ -300,7 +299,7 @@ export default function OtpConfirmModal({ onClose }) {
                     {emailOtp ? (
                       <span className="text-sm">
                         {t(
-                          "Thank you for signing up, We've sent you a six digit confirmation code to:"
+                          "We've sent you a six digit confirmation code to:"
                         )}{' '}
                         <strong className="mx-1 text-[#23FF2C]">{emailOtp}</strong>
                         {t('Please enter the code below.')}
@@ -334,7 +333,7 @@ export default function OtpConfirmModal({ onClose }) {
                   <input type="text" className="w-12 h-12 bg-white text-zinc-800 rounded-md text-center font-semibold" id="otp-6" value={otp[6]} onChange={(e) => handleChange(e, 6)} /> */}
                 </div>
               </form>
-              {(isError || isChangeError || isErrorForgotPassword) && (
+              {(isError || isChangeError || isErrorForgotPassword || isErrorForgot) && (
                 <div className="text-red-500 text-sm">{t('OTP is not valid')}</div>
               )}
               <div className="flex justify-end mt-3">

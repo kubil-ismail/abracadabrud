@@ -4,6 +4,7 @@
 // import { useGetEventsQuery, useGetEventQuery } from '../../core/services/rtk/EventServices';
 // import { useRouter } from 'next/router';
 import BannerEvent from './Banner';
+import BuyTicketHere from './BuyTicketHere';
 // import DetailEvent from './DetailEvent';
 import CompetitionDates from './CompetitionDates';
 // import WinAwesomePrize from '../faq/WinAwesomePrize';
@@ -21,6 +22,7 @@ export default function CurrentEvent() {
         <div className="flex flex-col space-y-4">
           <BannerEvent />
           <CompetitionDates />
+          {/* <BuyTicketHere /> */}
           {/* <WinAwesomePrize />
           <PerformAtWepop />
           <HowToWin /> */}

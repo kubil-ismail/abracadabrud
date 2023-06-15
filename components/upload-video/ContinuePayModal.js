@@ -13,10 +13,13 @@ import {
   setEventId,
   setVideoUploadFee,
   setEvents,
-  setPaymentFor
+  setPaymentFor,
+  setData
 } from 'core/redux/reducers/paymentsSlice';
 import { logout } from 'core/redux/reducers/authenticationSlice';
 import { useTranslation } from 'react-i18next';
+import { setCookie } from 'nookies';
+import { deleteCookie } from 'cookies-next';
 
 export default function ContinuePayModal({ onClose }) {
   const dispatch = useDispatch();
@@ -111,6 +114,9 @@ export default function ContinuePayModal({ onClose }) {
                     className="bg-[#23FF2C] text-zinc-900 px-4 py-2 text-sm font-semibold rounded-md"
                     onClick={() => {
                       dispatch(setPaymentFor('video_upload'));
+                      dispatch(setData({}));
+                      deleteCookie('payment');
+                      setCookie('payment', JSON.stringify({ payment_for: 'video_upload' }));
                       router.push('/checkout');
                       dispatch(setModal({ name: 'modalContinuePay', value: false }));
                     }}

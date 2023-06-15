@@ -17,6 +17,7 @@ import { setAllEvents } from 'core/redux/reducers/globalSlice';
 import { setFtvProfile } from 'core/redux/reducers/authenticationSlice';
 import service from 'core/services/publicService';
 import CardInfographic from 'components/element/CardInfographic';
+import parse from 'html-react-parser';
 
 export default function Home(props) {
   const dispatch = useDispatch();
@@ -59,13 +60,13 @@ export default function Home(props) {
     <>
       <Head>
         <title>{seo?.title}</title>
-        <meta name="description" content={seo?.description} />
+        <meta name="description" content={parse(seo?.description)} />
         <meta name="keywords" content={seo?.keyword} />
         <meta name="author" content={seo?.author} />
         <meta name="robots" content={seo?.robots} />
         {/* og */}
         <meta property="og:title" content={seo?.title} />
-        <meta property="og:description" content={seo?.description} />
+        <meta property="og:description" content={parse(seo?.description)} />
         <meta property="og:image" content={seo?.image} />
         <meta property="og:url" content={seo?.url} />
         {/* twitter_card */}
@@ -73,7 +74,7 @@ export default function Home(props) {
         <meta name="twitter:creator" content={seo?.twitter_creator} />
         <meta name="twitter:site" content={seo?.twitter_site} />
         <meta name="twitter:title" content={seo?.title} />
-        <meta name="twitter:description" content={seo?.description} />
+        <meta name="twitter:description" content={parse(seo?.description)} />
         <meta name="twitter:image" content={seo?.image} />
         {/* fb */}
         <meta property="fb:app_id" content={seo?.fb_app_id} />

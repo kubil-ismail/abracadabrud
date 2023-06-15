@@ -22,7 +22,12 @@ const MembershipPayment = (props) => {
   const [timer_1, setTimer_1] = useState('Loading...');
   const [isIos, setIsIos] = useState(false);
   const paymentMembershipId = props?.data?.paymentDetail;
+  // const paymentMembershipCC = props?.data?.paymentsMembership?.data?.filter((item) => item.status === 1)[0];
+  // const paymentMembershipCCCancelled = props?.data?.paymentsMembership?.data?.filter((item) => item.status === 4)[0];
+  // const paymentMembershipCCExpired = props?.data?.paymentsMembership?.data?.filter((item) => item.status === 3)[0];
+  const isCC = (paymentMembershipId?.data?.payment_method?.payment_type === 'credit_card');
 
+  console.log('proops', props);
   const countDownMembership = (data) => {
     let x;
     if (payment_for === 'membership' || payment_for === 'membership_detail') {
@@ -78,11 +83,17 @@ const MembershipPayment = (props) => {
   }, []);
 
   useEffect(() => {
+    if (isCC) {
+      return;
+    }
     setTimer_1('Loading...');
     if (paymentMembershipId) countDownMembership(paymentMembershipId);
-  }, []);
+  }, [paymentMembershipId, payment_for]);
 
   useEffect(() => {
+    if (isCC) {
+      return;
+    }
     const guide = guidePayments.filter((item) =>
       isQris
         ? item.payment_code === paymentMembershipId?.data?.payment_method?.payment_code &&
@@ -92,6 +103,32 @@ const MembershipPayment = (props) => {
     );
     setPaymentGuide(guide);
   }, [paymentMembershipId]);
+
+  const checkCC = () => {
+    SSServices.getPaymentMembershipId({
+      id: paymentMembershipId?.data?.id ?? data?.id,
+      token,
+      client: true
+    }).then((result) => {
+      if (result?.data?.transaction?.status === 2) {
+        toast.success(t('Payment success, redirect to profile...'));
+        setTimeout(() => {
+          router.replace('/my-account?tab=membership#transaction');
+        }, 3000);
+      } else if (result?.data?.transaction?.status === 3) {
+        toast.error(t('Payment expired, redirect to profile...'));
+        setTimeout(() => {
+          router.replace('/my-account?tab=membership#transaction');
+        }, 3000);
+      } else if (result?.data?.transaction?.status === 4) {
+        toast.error(t('Payment canceled, redirect to profile...'));
+        setTimeout(() => {
+          router.replace('/my-account?tab=membership#transaction');
+        }, 3000);
+      }
+      dispatch(setRefetchNotifications(true));
+    });
+  };
 
   useEffect(() => {
     if (payment_for === 'membership' || payment_for === 'membership_detail') {
@@ -104,26 +141,20 @@ const MembershipPayment = (props) => {
           if (result?.data?.transaction?.status === 2) {
             toast.success(t('Payment success, redirect to profile...'));
             clearInterval(interval);
-            setTimeout(() => {
-              router.replace('/my-account?tab=membership#transaction');
-            }, 3000);
+            router.replace('/my-account?tab=membership#transaction');
           } else if (result?.data?.transaction?.status === 3) {
             clearInterval(interval);
             toast.error(t('Payment expired, redirect to profile...'));
-            setTimeout(() => {
-              router.replace('/my-account?tab=membership#transaction');
-            }, 3000);
+            router.replace('/my-account?tab=membership#transaction');
           } else if (result?.data?.transaction?.status === 4) {
             clearInterval(interval);
             toast.error(t('Payment canceled, redirect to profile...'));
-            setTimeout(() => {
-              router.replace('/my-account?tab=membership#transaction');
-            }, 3000);
+            router.replace('/my-account?tab=membership#transaction');
           }
           dispatch(setRefetchNotifications(true));
         });
       }, 3000);
-      return () => clearInterval(interval);
+      return () => { clearInterval(interval) };
     }
   }, [props]);
 
@@ -142,23 +173,55 @@ const MembershipPayment = (props) => {
         />
         {/* <img src="/assets/images/waiting-payment.png" alt="" className="w-[240px] m-auto" /> */}
       </div>
-      <div className="flex flex-col space-y-5 text-center">
-        <h3 className="text-lg font-bold">{timer_1}</h3>
-        <span className="text-xs font-light">
-          {t('Please complete the payment with the information below before')}{' '}
-          {new Date(paymentMembershipId?.data?.transaction?.expired_at).toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
-          })}
-        </span>
-      </div>
+
+      {(isCC) ? (
+        <div className="flex flex-col space-y-5">
+          {/* Snap Midtrans */}
+          <button
+            className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+            onClick={() => {
+              if (isCC) {
+                snap.pay(paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.snap_token, {
+                  // onSuccess: function (result) {
+                  //   toast.success(t('Payment success, redirect to profile...'));
+                  //   setTimeout(() => {
+                  //     router.replace('/my-account?tab=membership#transaction');
+                  //   }, 3000);
+                  // },
+                  // onError: function (result) {
+                  //   toast.error(t('Payment failed, redirect to profile...'));
+                  //   setTimeout(() => {
+                  //     router.replace('/my-account?tab=membership#transaction');
+                  //   }, 3000);
+                  // },
+                  // onClose: function () {
+                  //   checkCC();
+                  // }
+                });
+              }
+            }}>
+            {t('Pay with Credit Card')}
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-col space-y-5 text-center">
+          <h3 className="text-lg font-bold">{timer_1}</h3>
+          <span className="text-xs font-light">
+            {t('Please complete the payment with the information below before')}{' '}
+            {new Date(paymentMembershipId?.data?.transaction?.expired_at).toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              hour12: true
+            })}
+          </span>
+        </div>
+      )}
 
       {/* Mobile phone olny alert */}
-      {(data?.payment_name ?? data?.payment_method?.payment_name) === 'ShopeePay' && !isIos && (
+      {(data?.payment_name ?? paymentMembershipId?.data?.payment_method?.payment_name) === 'ShopeePay' && !isIos && (
         <div
           className="flex p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 max-w-2xl md:m-auto"
           role="alert">
@@ -178,7 +241,7 @@ const MembershipPayment = (props) => {
         </div>
       )}
 
-      {(data?.payment_type === 'ewallet' || data?.payment_method?.payment_type === 'ewallet') &&
+      {(data?.payment_type === 'ewallet' || paymentMembershipId?.data?.payment_method?.payment_type === 'ewallet') &&
         (data?.how_to_pay?.find((res) => res?.name === 'generate-qr-code') ||
           paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'generate-qr-code')
         ) && (
@@ -187,7 +250,7 @@ const MembershipPayment = (props) => {
             <div className="flex flex-col space-y-5">
               <div className="flex flex-col space-y-5 mt-3">
                 <img
-                  src={paymentMembershipId?.data?.transaction?.how_to_pay[0]?.url}
+                  src={paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.url}
                   alt=""
                   className="w-[250px] md:w-[320px] m-auto"
                 />
@@ -198,21 +261,21 @@ const MembershipPayment = (props) => {
           </div>
         )}
 
-      {(data?.payment_type === 'outlet' || data?.payment_method?.payment_type === 'outlet') && (
+      {(data?.payment_type === 'outlet' || paymentMembershipId?.data?.payment_method?.payment_type === 'outlet') && (
         <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              {data?.payment_method?.payment_image?.image && (
-                <img src={data?.payment_method?.payment_image?.image} alt="logo" className="w-12" />
+              {paymentMembershipId?.data?.payment_method?.payment_image?.image && (
+                <img src={paymentMembershipId?.data?.payment_method?.payment_image?.image} alt="logo" className="w-12" />
               )}
 
               <span className="text-xs md:text-sm flex flex-col gap-5">
-                {data?.payment_name ?? data?.payment_method?.payment_name}
+                {data?.payment_name ?? paymentMembershipId?.data?.payment_method?.payment_name}
               </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-xs md:text-sm flex flex-col gap-5">
-                {paymentMembershipId?.data?.transaction?.how_to_pay[0]?.payment_code}
+                {paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.payment_code}
               </span>
               <Image
                 src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
@@ -222,7 +285,8 @@ const MembershipPayment = (props) => {
                 className="cursor-pointer"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    paymentMembershipId?.data?.transaction?.how_to_pay[0]?.payment_code
+                    data?.how_to_pay?.[0]?.payment_code ??
+                    paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.payment_code
                   );
                   toast.success(t('Success copy code to clipboard'));
                 }}
@@ -232,7 +296,7 @@ const MembershipPayment = (props) => {
                 className="cursor-pointer"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    paymentMembershipId?.data?.transaction?.how_to_pay[0]?.payment_code
+                    paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.payment_code
                   );
                   toast.success(t('Success copy code to clipboard'));
                 }}
@@ -243,8 +307,8 @@ const MembershipPayment = (props) => {
       )}
 
       {/* check if not mandiri account */}
-      {(data?.payment_type || data?.payment_method?.payment_type) === 'virtual_account' &&
-        (data?.payment_code || data?.payment_method?.payment_code) !== 'va_mandiri' && (
+      {(data?.payment_type || paymentMembershipId?.data?.payment_method?.payment_type) === 'virtual_account' &&
+        (data?.payment_code || paymentMembershipId?.data?.payment_method?.payment_code) !== 'va_mandiri' && (
           <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
@@ -255,8 +319,15 @@ const MembershipPayment = (props) => {
                     className="w-12"
                   />
                 )}
+                {paymentMembershipId?.data?.payment_method?.payment_image?.image && (
+                  <img
+                    src={paymentMembershipId?.data?.payment_method?.payment_image?.image}
+                    alt="logo"
+                    className="w-12"
+                  />
+                )}
                 <span className="text-xs md:text-sm flex flex-col gap-5">
-                  {data?.payment_name ?? data?.payment_method?.payment_name}
+                  {data?.payment_name ?? paymentMembershipId?.data?.payment_method?.payment_name}
                 </span>
               </div>
               <div className="flex items-center gap-4">
@@ -281,7 +352,7 @@ const MembershipPayment = (props) => {
                   size={16}
                   className="cursor-pointer"
                   onClick={() => {
-                    navigator.clipboard.writeText(data?.how_to_pay[0]?.va_number);
+                    navigator.clipboard.writeText(data?.how_to_pay?.[0]?.va_number);
                     toast.success(t('Success copy virtual account to clipboard'));
                   }}
                 /> */}
@@ -290,20 +361,27 @@ const MembershipPayment = (props) => {
           </div>
         )}
 
-      {(data?.payment_type || data?.payment_method?.payment_type) === 'virtual_account' &&
-        (data?.payment_code || data?.payment_method?.payment_code) === 'va_mandiri' && (
+      {(data?.payment_type || paymentMembershipId?.data?.payment_method?.payment_type) === 'virtual_account' &&
+        (data?.payment_code || paymentMembershipId?.data?.payment_method?.payment_code) === 'va_mandiri' && (
           <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                {data?.payment_method?.payment_image?.image && (
+                {data?.payment_image?.image && (
                   <img
-                    src={data?.payment_method?.payment_image?.image}
+                    src={data?.payment_image?.image}
+                    alt="logo"
+                    className="w-12"
+                  />
+                )}
+                {paymentMembershipId?.data?.payment_method?.payment_image?.image && (
+                  <img
+                    src={paymentMembershipId?.data?.payment_method?.payment_image?.image}
                     alt="logo"
                     className="w-12"
                   />
                 )}
                 <span className="text-xs md:text-sm flex flex-col gap-5">
-                  {data?.payment_name ?? data?.payment_method?.payment_name}
+                  {data?.payment_name ?? paymentMembershipId?.data?.payment_method?.payment_name}
                 </span>
               </div>
               <div className="flex flex-col gap-2">
@@ -311,7 +389,7 @@ const MembershipPayment = (props) => {
                   <div className="flex gap-1 items-baseline">
                     <span className="text-[10px] text-zinc-300 font-light">( Bill Key )</span>
                     <span className="text-xs md:text-sm flex flex-col gap-5">
-                      {data?.how_to_pay[0]?.biller_code}
+                      {data?.how_to_pay?.[0]?.biller_code || paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.biller_code}
                     </span>
                   </div>
                   <Image
@@ -321,7 +399,7 @@ const MembershipPayment = (props) => {
                     height={18}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.biller_code);
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.biller_code || paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.biller_code);
                       toast.success(t('Success copy Billing Code to clipboard'));
                     }}
                   />
@@ -330,14 +408,14 @@ const MembershipPayment = (props) => {
                     size={16}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.biller_code);
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.biller_code);
                       toast.success(t('Success copy Billing Code to clipboard'));
                     }}
                   /> */}
                 </div>
                 <div className="flex items-center gap-4 justify-end">
                   <span className="text-xs md:text-sm flex flex-col gap-5">
-                    {data?.how_to_pay[0]?.bill_key}
+                    {data?.how_to_pay?.[0]?.bill_key || paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.bill_key}
                   </span>
                   <Image
                     src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
@@ -346,7 +424,7 @@ const MembershipPayment = (props) => {
                     height={18}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.bill_key);
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.bill_key || paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.bill_key);
                       toast.success(t('Success copy Biiling Number to clipboard'));
                     }}
                   />
@@ -354,7 +432,7 @@ const MembershipPayment = (props) => {
                     size={16}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.bill_key);
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.bill_key);
                       toast.success(t('Success copy Biiling Number to clipboard'));
                     }}
                   /> */}
@@ -364,21 +442,21 @@ const MembershipPayment = (props) => {
           </div>
         )}
 
-      {data?.payment_type === 'cardless_credit' ||
+      {((data?.payment_type === 'cardless_credit' ||
+        paymentMembershipId?.data?.payment_method?.payment_type === 'cardless_credit' ||
         data?.payment_type === 'direct_debit' ||
-        ((data?.payment_method?.payment_type === 'cardless_credit' ||
-          data?.payment_method?.payment_type === 'direct_debit') && (
-            <div className="flex flex-col space-y-5">
-              <Link
-                href={paymentMembershipId?.data?.transaction?.how_to_pay[0]?.redirect_url ?? '/'}
-                className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
-                {t('Pay Now')}
-              </Link>
-            </div>
-          ))}
+        paymentMembershipId?.data?.payment_method?.payment_type === 'direct_debit') && (
+          <div className="flex flex-col space-y-5">
+            <Link
+              href={data?.how_to_pay?.[0]?.redirect_url || paymentMembershipId?.data?.transaction?.how_to_pay?.[0]?.redirect_url}
+              className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
+              {t('Pay Now')}
+            </Link>
+          </div>
+        ))}
 
       {/* Pay with gopay */}
-      {(data?.payment_name === 'Gopay' || data?.payment_method?.payment_name === 'Gopay') &&
+      {(data?.payment_name === 'Gopay' || paymentMembershipId?.data?.payment_method?.payment_name === 'Gopay') &&
         (data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
           paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url) &&
         !isQris && (
@@ -392,7 +470,7 @@ const MembershipPayment = (props) => {
           </>
         )}
 
-      {(data?.payment_name === 'ShopeePay' || data?.payment_method?.payment_name === 'ShopeePay') &&
+      {(data?.payment_name === 'ShopeePay' || paymentMembershipId?.data?.payment_method?.payment_name === 'ShopeePay') &&
         (data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
           paymentMembershipId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url) &&
         (
@@ -419,9 +497,11 @@ const MembershipPayment = (props) => {
         {t('Go to Transaction History')}
       </button>
 
-      <div className="mt-10">
-        <PaymentsGuide guideList={paymentGuide} />
-      </div>
+      {(!isCC) && (
+        <div className="mt-10">
+          <PaymentsGuide guideList={paymentGuide} />
+        </div>
+      )}
     </>
   );
 };

@@ -60,40 +60,40 @@ export default function BottomSheetsCast(props) {
   return (
     <div>
       <div
-        className="flex flex-col gap-1 items-center item-pointer"
+        className="flex flex-col space-x-1 items-center item-pointer"
         aria-hidden
         onClick={() => setOpen(!open)}>
-        <div className="h-[31px] flex items-center flex-wrap gap-1">
+        <div className={available_vote?.toString().split('')?.length >= 5 ? "flex items-center justify-center space-x-1 text-center flex-wrap" : "h-[31px] flex items-center space-x-1 text-center flex-wrap" }>
           {isAuthenticated && data?.remaining ? (
             <span
               className={
                 available_vote?.toString().split('')?.length <= 2 &&
                   vote_use?.toString().split('')?.length <= 2
-                  ? 'font-medium text-xl md:text-2xl'
-                  : 'font-medium text-[15px]'
+                  ? 'font-medium text-xl md:text-2xl pl-1'
+                  : 'font-medium text-[12px] pl-1 mt-[1px]'
               }>
               {kFormatter(available_vote)}
             </span>
           ) : vote_use?.toString().split('')?.length > 2 ? (
-            <small className="font-normal text-[15px]">0</small>
+            <small className="font-normal text-xl md:text-2xl">0</small>
           ) : (
             <small className="font-normal text-xl md:text-2xl">0</small>
           )}
-          {'/'}
+          <span className="text-xl md:text-2xl">/</span>
           {isAuthenticated && data?.total_usage ? (
             <small
               className={
                 available_vote?.toString().split('')?.length <= 2 &&
                   vote_use?.toString().split('')?.length <= 2
                   ? 'font-medium text-xl md:text-2xl'
-                  : 'font-medium text-[15px]'
+                  : 'font-medium text-[12px]'
               }>
               {kFormatter(vote_use)}
             </small>
           ) : isAuthenticated &&
             data?.remaining &&
             available_vote?.toString().split('')?.length > 2 ? (
-            <small className="font-normal text-[15px]">0</small>
+            <small className="font-normal text-2xl">0</small>
           ) : (
             <small className="font-normal text-xl md:text-2xl">0</small>
           )}
@@ -103,7 +103,7 @@ export default function BottomSheetsCast(props) {
       <BottomSheet
         open={open}
         onDismiss={() => setOpen(false)}
-        header={<div className="font-semibold py-2 text-base">Video Vote History</div>}
+        header={<div className="font-semibold py-2 text-base">{t('Video Vote History')}</div>}
         snapPoints={({ maxHeight }) => 0.8 * maxHeight}>
         {isAuthenticated ? (
           <div className="flex flex-col gap-7 mx-4 my-5">
@@ -123,7 +123,7 @@ export default function BottomSheetsCast(props) {
                   setPageVoteHistory(next);
                 }}
                 disabled={dataVoteLoading}>
-                {dataVoteLoading ? 'Loading...' : 'Load More'}
+                {dataVoteLoading ? 'Loading...' : `${t('Load More')}`}
               </button>
             )}
           </div>

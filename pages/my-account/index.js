@@ -30,11 +30,7 @@ export default function MyAccount(props) {
       service
         .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/is-voted-and-favorited-videos`)
         .then(function (result) {
-          const {
-            favorites: _fav,
-            votes: _vote,
-            already_watched_ads: _ads
-          } = result?.data?.data || {};
+          const { favorites: _fav, votes: _vote, already_watched_ads: _ads } = result?.data || {};
 
           if (_ads?.length) {
             dispatch(setMultipleSponsorPlayed(_ads));
@@ -42,8 +38,8 @@ export default function MyAccount(props) {
             dispatch(clearSponsorPlayed());
           }
 
-          setFavoriteList(_fav);
-          setVoteList(_vote);
+          setFavoriteList(_fav ?? []);
+          setVoteList(_vote ?? []);
         });
     }
   }, [token]);
@@ -53,6 +49,8 @@ export default function MyAccount(props) {
       router.replace('/');
     }
   }, [router, isAuthenticated]);
+
+  console.log('voteList index', voteList);
 
   return (
     <div className="flex flex-col space-y-12">

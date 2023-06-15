@@ -12,11 +12,12 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { setCookie } from 'cookies-next';
 import ReCAPTCHA from 'react-google-recaptcha';
+import useCountDown from 'core/hooks/useCountdown';
 
 export default function LoginModal({ onClose }) {
   const recaptchaRef = useRef();
   const [seePassword, setSeePassword] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,11 +59,21 @@ export default function LoginModal({ onClose }) {
           setCookie('_userId', data?.user?.id);
           setCookie('_token', data?.token);
 
-          if (!router.pathname.includes('/video')) {
-            changeLang('/', '/en');
+          if (data?.user?.pref_language === "2") {
+            i18n.changeLanguage("en");
+            localStorage.setItem("locale", "en");
+            router.push(router.asPath, router.asPath, { locale: "en" });
           } else {
-            changeLang(router.asPath, router.asPath);
+            i18n.changeLanguage('id');
+            localStorage.setItem('locale', 'id');
+            router.push(router.asPath, router.asPath, { locale: "id" });
           }
+
+          // if (!router.pathname.includes('/video')) {
+          //   changeLang('/', '/en');
+          // } else {
+          //   changeLang(router.asPath, router.asPath);
+          // }
           toast.success(t('Success Login'));
         }
       }
@@ -91,9 +102,38 @@ export default function LoginModal({ onClose }) {
     }
   });
 
+  const [timer, setTimer] = useState(60);
+  const countDown = (data) => {
+    let x;
+    // 60 seconds from now
+    const countDownDate = new Date().getTime() + data * 1000;
+    x = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0 || !distance) {
+        setTimer(0);
+        return () => {
+          clearInterval(x);
+        };
+      } else {
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setTimer(seconds);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(x);
+    };
+  };
+
   useEffect(() => {
     if (isError) {
       setErrCount(errCount + 1);
+      if (error?.status === 429) {
+        countDown(60)
+        toast.error(`${t('Too many attempts')}, ${t('please try again in')} ${timer} ${t('seconds')}`);
+      }
     }
   }, [isError]);
 
@@ -235,7 +275,7 @@ export default function LoginModal({ onClose }) {
             </form>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

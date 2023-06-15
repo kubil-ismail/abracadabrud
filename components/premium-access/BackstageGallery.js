@@ -29,7 +29,7 @@ export default function BackstageGallery(data) {
 
   return (
     <div className="flex flex-col gap-7">
-      <h3 className="text-xl md:text-4xl font-extrabold text-[#23FF2C]">
+      <h3 className="text-xl md:text-4xl font-bold text-[#23FF2C]">
         {data?.data?.main_title}
       </h3>
       <div className="mx-1">
@@ -45,15 +45,15 @@ export default function BackstageGallery(data) {
           className="mb-5">
           {data?.data?.image?.map((item) => (
             <SwiperSlide>
-              <div style={{ position: 'relative', height: '420px' }}>
+              <div className="" style={{ position: 'relative', height: '420px' }}>
                 <img
                   src={item?.images}
-                  className="w-full h-[340px] md:h-[420px] object-contain"
+                  className="w-full h-[340px] md:h-[420px] object-contain cursor-pointer"
                   style={{ height: '420px', width: '100%', zIndex: 99999 }}
                 />
-                <div className="absolute bottom-6 left-6">
+                {/* <div className="absolute bottom-6 left-6">
                   <h3 className="text-base font-medium drop-shadow-3xl w-full md:w-[90%]">{item?.caption}</h3>
-                </div>
+                </div> */}
                 <div
                   style={{
                     backgroundImage: `url(${item?.images})`,
@@ -63,10 +63,12 @@ export default function BackstageGallery(data) {
                     filter: 'blur(8px)',
                     marginTop: '-420px',
                     zIndex: -10,
-                    position: 'relative'
+                    position: 'relative',
+                    cursor: 'pointer'
                   }}
                 />
               </div>
+              <h3 className="text-base font-normal w-full md:w-[90%] mt-3 md:mt-5">{item?.caption}</h3>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -77,21 +79,21 @@ export default function BackstageGallery(data) {
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
-          className="mySwiper">
+          className="mySwipers cursor-pointer">
           {data?.data?.image?.map((item) => (
             <SwiperSlide>
               <div style={{ position: 'relative', height: '150px' }}>
                 {isMobile ? (
                   <img
                     src={item?.images}
-                    className="w-full"
+                    className="w-full cursor-pointer"
                     style={{ height: '100px', width: '100%', zIndex: 99999, objectFit: 'cover' }}
                   />
                 ) : (
                   <>
                     <img
                       src={item?.images}
-                      className="w-full object-contain h-[180px] md:h-[150px]"
+                      className="w-full object-contain h-[180px] md:h-[150px] cursor-pointer"
                       style={{ height: '150px', width: '100%', zIndex: 99999 }}
                     />
                     <div

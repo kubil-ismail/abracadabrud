@@ -99,6 +99,8 @@ export default function AdditionalInformation({ me }) {
     }
   }, [dataGenres]);
 
+  const { i18n } = useTranslation();
+
   useEffect(() => {
     if (additionalInformationSuccess) {
       toast.success(t('Success update additional information'));
@@ -107,13 +109,15 @@ export default function AdditionalInformation({ me }) {
 
       setTimeout(() => {
         if (formik.values?.preferredLanguage === '2') {
-          router.push('/my-account', '/my-account', {
-            locale: 'en'
-          });
+          i18n.changeLanguage('en');
+
+          localStorage.setItem('locale', 'en');
+          router.push(router.asPath, router.asPath, { locale: 'en' });
         } else {
-          router.push('/id/my-account', '/id/my-account', {
-            locale: 'id'
-          });
+          i18n.changeLanguage('id');
+
+          localStorage.setItem('locale', 'id');
+          router.push(router.asPath, router.asPath, { locale: 'id' });
         }
       }, 2000);
     }
@@ -177,11 +181,10 @@ export default function AdditionalInformation({ me }) {
                 <div className="flex flex-col space-y-3">
                   <label className="text-base font-semibold">{t('Preferred Language')}</label>
                   <Select
-                    className={`custom-select ${
-                      formik.touched.preferredLanguage &&
+                    className={`custom-select ${formik.touched.preferredLanguage &&
                       formik?.errors?.preferredLanguage &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}
+                      }`}
                     options={languageOptions}
                     closeMenuOnScroll
                     value={languageOptions?.find(
@@ -215,12 +218,11 @@ export default function AdditionalInformation({ me }) {
                     {t('Your favorite music genres')}
                   </label>
                   <Select
-                    className={`custom-select ${
-                      ((formik.touched.favoriteMusicGenres &&
-                        formik?.errors?.favoriteMusicGenres) ||
-                        favoriteMusicGenresErr) &&
+                    className={`custom-select ${((formik.touched.favoriteMusicGenres &&
+                      formik?.errors?.favoriteMusicGenres) ||
+                      favoriteMusicGenresErr) &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}
+                      }`}
                     options={options}
                     isMulti
                     closeMenuOnScroll
@@ -261,7 +263,7 @@ export default function AdditionalInformation({ me }) {
                   <ErrorMessage
                     message={t(
                       (formik.touched.favoriteMusicGenres && formik?.errors?.favoriteMusicGenres) ||
-                        favoriteMusicGenresErr
+                      favoriteMusicGenresErr
                     )}
                   />
                 </div>
@@ -269,11 +271,10 @@ export default function AdditionalInformation({ me }) {
                   <label className="text-base font-semibold">{t('Zip Code')}</label>
                   <input
                     type="number"
-                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${
-                      formik.touched.zipCode &&
+                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${formik.touched.zipCode &&
                       formik?.errors?.zipCode &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}
+                      }`}
                     placeholder={t('Enter zip code')}
                     name="zipCode"
                     value={formik.values.zipCode}
@@ -291,11 +292,10 @@ export default function AdditionalInformation({ me }) {
                   <label className="text-base font-semibold">{t('Date of Birth')}</label>
                   <input
                     type="date"
-                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${
-                      formik.touched.dateOfBirth &&
+                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${formik.touched.dateOfBirth &&
                       formik?.errors?.dateOfBirth &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}
+                      }`}
                     // at least 18 years old from now
                     max={
                       new Date(new Date().setFullYear(new Date().getFullYear() - 15))
@@ -326,10 +326,9 @@ export default function AdditionalInformation({ me }) {
                 <div className="md:col-span-2 flex flex-col space-y-3">
                   <label className="text-base font-semibold">{t('Gender')}</label>
                   <div
-                    className={`grid grid-cols-4 gap-2 p-3 bg-white rounded-lg text-zinc-900 ${
-                      ((formik.touched.gender && formik?.errors?.gender) || genderErr) &&
+                    className={`grid grid-cols-4 gap-2 p-3 bg-white rounded-lg text-zinc-900 ${((formik.touched.gender && formik?.errors?.gender) || genderErr) &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}>
+                      }`}>
                     <div className="flex flex-col items-center">
                       <input
                         type="radio"
@@ -402,11 +401,10 @@ export default function AdditionalInformation({ me }) {
                 <div className="md:col-span-2 flex flex-col space-y-3">
                   <label className="text-base font-semibold">{t('About You')}</label>
                   <textarea
-                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${
-                      formik.touched.aboutMe &&
+                    className={`text-sm bg-white px-4 py-3 text-[#0000FF] rounded-md ${formik.touched.aboutMe &&
                       formik?.errors?.aboutMe &&
                       'border-2 border-red-500 rounded-lg'
-                    }`}
+                      }`}
                     placeholder={t('Tell us something interesting about yourself.')}
                     name="aboutMe"
                     value={formik.values.aboutMe}
@@ -419,9 +417,8 @@ export default function AdditionalInformation({ me }) {
                 <div className="md:col-span-2 flex justify-end">
                   <button
                     type="submit"
-                    className={`px-5 py-2 text-[#4100FF] bg-[#23FF2C] font-bold text-base w-32 rounded-md ${
-                      !formik.isValid && 'cursor-not-allowed'
-                    }`}
+                    className={`px-5 py-2 text-[#4100FF] bg-[#23FF2C] font-bold text-base w-32 rounded-md ${!formik.isValid && 'cursor-not-allowed'
+                      }`}
                     onClick={() => {
                       if (!JSON.parse(formik.values.favoriteMusicGenres)?.length) {
                         setFavoriteMusicGenresErr('Genre is required');

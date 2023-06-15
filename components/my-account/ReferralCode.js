@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { encryptId } from 'lib/Aes.v2';
+import { toast } from 'react-toastify';
 
 export default function ReferralCode() {
   const [url, setUrl] = useState('');
@@ -69,12 +70,25 @@ export default function ReferralCode() {
           </Disclosure.Button>
           <Disclosure.Panel className="text-xs sm:text-sm py-8 md:py-10">
             <div className="flex flex-col gap-7 text-slate-50">
-              <div className="flex flex-col gap-2">
+              <div className="flex items-center space-x-2">
                 {/* <h3 className="text-lg font-bold m-0">{t('Referral Code')}</h3> */}
                 <span className="text-base font-bold">
                   {t(`Your Referral Code is :`)}
                   {''} {encryptId(user?.my_referal_code.replace('ACADABRA0', ''))}
                 </span>
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
+                  alt="copy"
+                  width={20}
+                  height={20}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      encryptId(user?.my_referal_code.replace('ACADABRA0', ''))
+                    );
+                    toast.success(t('Success copy code to clipboard'));
+                  }}
+                  />
               </div>
               <div className="">
                 <span className="text-sm font-medium">

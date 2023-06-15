@@ -7,11 +7,12 @@ import { setCookie } from 'cookies-next';
 import Head from 'next/head';
 import SSServices from 'core/services/ServerSide/ssServices';
 import getCredential from 'core/services/helpers/getCredential';
+import parse from 'html-react-parser';
 
 export default function Referral(props) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [seo] = props?.data ?? [];
+  const seo = props?.seo;
 
   React.useEffect(() => {
     if (router.query?.id) {
@@ -27,13 +28,13 @@ export default function Referral(props) {
   return (
     <>
       <Head>
-        <meta name="description" content={seo?.description} />
+        <meta name="description" content={parse(seo?.description)} />
         <meta name="keywords" content={seo?.keyword} />
         <meta name="author" content={seo?.author} />
         <meta name="robots" content={seo?.robots} />
         {/* og */}
         <meta property="og:title" content={seo?.title} />
-        <meta property="og:description" content={seo?.description} />
+        <meta property="og:description" content={parse(seo?.description)} />
         <meta property="og:image" content={seo?.image} />
         <meta property="og:url" content={seo?.url} />
         {/* twitter_card */}
@@ -41,7 +42,7 @@ export default function Referral(props) {
         <meta name="twitter:creator" content={seo?.twitter_creator} />
         <meta name="twitter:site" content={seo?.twitter_site} />
         <meta name="twitter:title" content={seo?.title} />
-        <meta name="twitter:description" content={seo?.description} />
+        <meta name="twitter:description" content={parse(seo?.description)} />
         <meta name="twitter:image" content={seo?.image} />
         {/* fb */}
         <meta property="fb:app_id" content={seo?.fb_app_id} />

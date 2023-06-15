@@ -9,6 +9,9 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import Script from 'next/script';
+import ErrorBoundary from 'components/layout/ErrorBoundary';
+import LoginPublic from 'components/registration/LoginPublic'
+import { getCookie } from 'cookies-next';
 import '../i18n';
 
 export default function App({ Component, pageProps }) {
@@ -26,6 +29,14 @@ export default function App({ Component, pageProps }) {
     }
   }, []);
 
+  const midtransScriptUrl = process.env.NEXT_PUBLIC_MIDTRANS_BASE_URL.includes('sandbox') ?
+    "https://app.sandbox.midtrans.com/snap/snap.js" :
+    "https://app.midtrans.com/snap/snap.js"
+
+  // Optional: set script attribute, for example snap.js have data-client-key attribute 
+  // (change the value according to your client-key)
+  const myMidtransClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+
   useEffect(() => {
     // console.log('locale', locale);
     // console.log('defaultLocale', defaultLocale);
@@ -36,8 +47,13 @@ export default function App({ Component, pageProps }) {
     //   i18n.changeLanguage(locale);
     //   // push('/en', '/en', { locale });
     // }
-    i18n.changeLanguage(defaultLocale);
-  }, [i18n]);
+    if (locale) {
+      localStorage.setItem('locale', locale);
+    }
+
+
+    i18n.changeLanguage(localStorage.getItem('locale') || defaultLocale);
+  }, [i18n, locale]);
 
   const title = pageProps?.title ?? "Abracadabra"
 
@@ -59,6 +75,12 @@ export default function App({ Component, pageProps }) {
         `}
       </Script>
 
+      <Script
+        strategy="beforeInteractive"
+        src={midtransScriptUrl}
+        data-client-key={myMidtransClientKey}
+      />
+
       <Head>
         <title>{title}</title>
         <meta
@@ -68,7 +90,14 @@ export default function App({ Component, pageProps }) {
       </Head>
 
       <NextNProgress color="#FF00CA" />
-      {getLayout(<Component {...pageProps} />, pageProps.bottomConfig)}
+      <ErrorBoundary>
+        {(process.env.NEXT_PUBLIC_IS_PROTECTED && !getCookie('access_staging')) ||
+        getCookie('access_staging') == "true" ? (
+          <LoginPublic />
+        ) : (
+          getLayout(<Component {...pageProps} />, pageProps.bottomConfig)
+        )}
+      </ErrorBoundary>
       <ToastContainer />
     </Provider>
   );

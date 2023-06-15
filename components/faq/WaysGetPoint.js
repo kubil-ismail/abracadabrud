@@ -47,7 +47,7 @@ export default function WaysGetPoint() {
   return (
     <div className="px-7 md:px-10 py-10 rounded-2xl bg-[#FF00FE] flex flex-col space-y-5 break-words">
       <h3 className="text-4xl  md:text-5xl font-black text-[#23FF2C]">
-        {t('6 ways to collect more points!')}
+        {t('7 ways to collect more points!')}
       </h3>
       <div className="px-2 flex flex-col space-y-4 md:gap-8 md:max-w-5xl md:m-auto">
       {showShareModal && (
@@ -178,7 +178,7 @@ export default function WaysGetPoint() {
                 </div>
               </div>
               <span className="font-normal md:text-xl ">
-                {t('Get 30 points for completing survey questions on “Survey Question” page')}
+                {t('Get 30 points for completing survey questions on “Survey Question” page.')}
               </span>
             </div>
           </div>

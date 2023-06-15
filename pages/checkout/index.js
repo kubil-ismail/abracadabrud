@@ -16,6 +16,8 @@ import { isAndroid } from 'react-device-detect';
 import { deleteCookie, setCookie } from 'cookies-next';
 import SSServices from 'core/services/ServerSide/ssServices';
 import getCredential from 'core/services/helpers/getCredential';
+import CreditCard from 'components/checkout/CreditCard';
+import CreditCardSnap from 'components/checkout/CreditCardSnap';
 
 export default function Checkout(props) {
   const router = useRouter();
@@ -26,8 +28,19 @@ export default function Checkout(props) {
   const paymentMethods = props?.data?.[3]?.data ?? [];
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useSelector((state) => state.authentication);
+  const redirectVideo = props?.redirectVideo ?? false;
+  const pendingVideoId = props?.pendingVideoId ?? null;
 
   console.log('props', props);
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (redirectVideo && pendingVideoId && payment_for === 'video_upload') {
+      router.replace(`/checkout/order-summary/${Paramcrypt.encode(pendingVideoId)}`);
+    } else if (paymentMethods.length > 0) {
+      setIsLoading(false);
+    }
+  }, [redirectVideo]);
 
   useEffect(() => {
     const ios = () => {
@@ -48,10 +61,6 @@ export default function Checkout(props) {
 
     if (ios()) {
       setIsIos(true);
-    }
-
-    if (paymentMethods.length > 0) {
-      setIsLoading(false);
     }
   }, []);
 
@@ -76,10 +85,16 @@ export default function Checkout(props) {
                   fill="currentFill"
                 />
               </svg>
-              <span class="sr-only">Loading...</span>
+              <span class="sr-only">
+                {
+                  (redirectVideo && pendingVideoId && (payment_for === 'video_upload')) ? 'Redirecting to order summary' : 'Loading'
+                }
+              </span>
             </div>
           </div>
-          <p>Loading...</p>
+          <p>{
+            (redirectVideo && pendingVideoId && (payment_for === 'video_upload')) ? 'Redirecting to order summary' : 'Loading'
+          }</p>
         </div>
       </div>
     </>
@@ -94,6 +109,7 @@ export default function Checkout(props) {
           <Ewallet paymentMethods={paymentMethods} isPhone={isIos} />
           <VirtualAccount paymentMethods={paymentMethods} />
           {/* <CreditCard paymentMethods={paymentMethods} /> */}
+          <CreditCardSnap paymentMethods={paymentMethods} />
           <Minimarket paymentMethods={paymentMethods} />
           <BankTransfer paymentMethods={paymentMethods} />
           <CardlessCredit paymentMethods={paymentMethods} />
@@ -109,8 +125,11 @@ export const getServerSideProps = async ({ req }) => {
   let membershipStatus,
     config = [],
     request,
-    global = [];
+    global = [],
+    optional = [];
   const { isAuthenticated, token, _userId, payment } = getCredential({ req });
+
+  const paymentJSON = JSON.parse(payment ?? '{}');
 
   if (isAuthenticated && token) {
     config = [
@@ -118,24 +137,29 @@ export const getServerSideProps = async ({ req }) => {
       SSServices.getMemberships({ token }),
       SSServices.getMyPoints({ token }),
       SSServices.getPaymentMethod({ token, platform: 1 }),
-      SSServices.getPaymentsVideo({ client: false, token, id: _userId }),
-      SSServices.getPaymentsMembership({ client: false, token, id: _userId }),
-      SSServices.getPaymentsBuyPoints({ client: false, token, id: _userId })
     ]; // mandatory for root used
+
+    optional = [
+      (paymentJSON?.payment_for === 'video_upload') ? SSServices.getPaymentsVideo({ client: false, token, id: _userId }) :
+        (paymentJSON?.payment_for === 'membership') ? SSServices.getPaymentsMembership({ client: false, token, id: _userId }) :
+          (paymentJSON?.payment_for === 'points') ? SSServices.getPaymentsBuyPoints({ client: false, token, id: _userId }) : {},
+    ];
   }
 
   request = []; // mandatory for this page
 
-  const data = await Promise.all([...config, ...request]);
+  const data = await Promise.all([...config, ...optional, ...request]);
 
-  const pendingVideo = await data?.[4]?.data?.filter((item) => item.status === 1)[0] ?? {};
-  const pendingMembership = await data?.[5]?.data?.filter((item) => item.status === 1)[0] ?? {};
-  const pendingBuyPoints = await data?.[6]?.data?.filter((item) => item.status === 1)[0] ?? {};
+  const pending = await data?.[4]?.data?.filter((item) => item.status === 1)[0] ?? {};
+
+  const id = await [
+    (paymentJSON?.payment_for === 'video_upload') ? SSServices.getPaymentVideoId({ token, id: pending?.id }) :
+      (paymentJSON?.payment_for === 'membership') ? SSServices.getPaymentMembershipId({ token, id: pending?.id }) :
+        (paymentJSON?.payment_for === 'points') ? SSServices.getPaymentBuyPointsId({ token, id: pending?.id }) : {},
+  ]
 
   global = await Promise.all([
-    SSServices.getPaymentVideoId({ token, id: pendingVideo?.id }),
-    SSServices.getPaymentMembershipId({ token, id: pendingMembership?.id }),
-    SSServices.getPaymentBuyPointsId({ token, id: pendingBuyPoints?.id })
+    ...id,
   ]);
 
   // global = [
@@ -150,6 +174,7 @@ export const getServerSideProps = async ({ req }) => {
     title: 'Checkout | Abracadbara Starquest',
     data,
     global,
+    pending,
     bottomConfig: {
       myPoints: data?.[2] ?? {},
       allEvents: data?.[0] ?? {},
@@ -157,19 +182,22 @@ export const getServerSideProps = async ({ req }) => {
     }
   }
 
-  const paymentJSON = JSON.parse(payment ?? '{}');
 
-  if (global?.[0]?.data?.transaction?.status === 1 && paymentJSON?.payment_for === 'video_upload') {
+  if (((global?.[0]?.data?.transaction?.status === 1)) && (paymentJSON?.payment_for === 'video_upload')) {
     return {
-      redirect: {
-        destination: `/checkout/order-summary/${Paramcrypt.encode(
-          pendingVideo?.id ?? new Date().toDateString()
-        )}`,
-        permanent: false
-      },
-      props: { ...props }
+      // redirect: {
+      //   destination: `/checkout/order-summary/${Paramcrypt.encode(
+      //     pendingVideo?.id ?? new Date().toDateString()
+      //   )}`,
+      //   permanent: false,
+      // },
+      props: {
+        ...props,
+        redirectVideo: true,
+        pendingVideoId: pending?.id ?? new Date().toDateString()
+      }
     }
-  } else if (global?.[1]?.data?.transaction?.status === 1 && paymentJSON?.payment_for === 'membership') {
+  } else if (((global?.[0]?.data?.transaction?.status === 1)) && (paymentJSON?.payment_for === 'membership')) {
     // setCookie(
     //   'payment',
     //   JSON.stringify({
@@ -182,13 +210,13 @@ export const getServerSideProps = async ({ req }) => {
     return {
       redirect: {
         destination: `/checkout/order-summary/${Paramcrypt.encode(
-          pendingMembership?.id ?? new Date().toDateString()
+          pending?.id ?? new Date().toDateString()
         )}`,
         permanent: false
       },
       props: { ...props }
     }
-  } else if (global?.[2]?.data?.transaction?.status === 1 && paymentJSON?.payment_for === 'points') {
+  } else if (((global?.[0]?.data?.transaction?.status === 1)) && (paymentJSON?.payment_for === 'points')) {
     // setCookie(
     //   'payment',
     //   JSON.stringify({
@@ -201,7 +229,7 @@ export const getServerSideProps = async ({ req }) => {
     return {
       redirect: {
         destination: `/checkout/order-summary/${Paramcrypt.encode(
-          pendingBuyPoints?.id ?? new Date().toDateString()
+          pending?.id ?? new Date().toDateString()
         )}`,
         permanent: false
       },

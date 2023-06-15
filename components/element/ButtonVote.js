@@ -70,7 +70,7 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
     };
   }, []);
 
-  return (
+  return isAuthenticated ? (
     <>
       {/* {data?.data?.remaining < 5 && open &&
         <EmptyVoteModal onClose={!open} />
@@ -135,7 +135,7 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
                 leave="transition ease-in duration-150"
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1">
-                <Popover.Panel className={`absolute -top-[185px] z-30 max-w-sm transform sm:px-0`}>
+                <Popover.Panel className={`absolute -top-[215px] md:-top-[188px] z-30 max-w-sm transform sm:px-0`}>
                   <div className="relative z-100 p-3 mt-3 rounded-md bg-[#FF00CA] text-slate-50">
                     <div className="flex flex-col gap-2 text-center w-full">
                       <h3 className="text-xs font-medium">{t('Select # of votes to cast')}</h3>
@@ -159,7 +159,7 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
                           })
                           : options.map((item, index) => {
                             return (
-                              <div className="flex items-center gap-1" key={index}>
+                              <div className="flex items-center space-x-1" key={index}>
                                 <input
                                   type="radio"
                                   id={item.value}
@@ -183,11 +183,14 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
         </Popover>
       ) : (
         <button
-          className={`flex items-center gap-2 ${small ? 'py-1 px-2' : 'py-2 px-3'
+          className={`flex items-center space-x-2 ${small ? 'py-1 px-2' : 'py-2 px-3'
             }  bg-[#FF00CA] text-[#0000FF] rounded-md focus:outline-none ${process.env.NEXT_PUBLIC_IS_PRELAUNCH && 'btn-disabled-pink'
             }`}
           onClick={() => {
             if (!process.env.NEXT_PUBLIC_IS_PRELAUNCH) {
+              if (!isAuthenticated) {
+                return dispatch(setModal({ name: 'modalLogin', value: true }));
+              }
               if (events?.data?.data?.length < 1) {
                 toast.error(t("Can't vote, event already ended"));
                 return;
@@ -210,5 +213,26 @@ export default function ButtonVote({ idVideo, handleVote, small }) {
         </button>
       )}
     </>
+  ) : (
+    <button
+      className={`flex items-center gap-2 ${small ? 'py-1 px-2' : 'py-2 px-3'
+        }  bg-[#FF00CA] text-[#0000FF] rounded-md focus:outline-none ${process.env.NEXT_PUBLIC_IS_PRELAUNCH && 'btn-disabled-pink'
+        }`}
+      onClick={() => {
+        if (!isAuthenticated) {
+          return dispatch(setModal({ name: 'modalLogin', value: true }));
+        }
+      }}
+      disabled={process.env.NEXT_PUBLIC_IS_PRELAUNCH}>
+      <img
+        src="/assets/icons/btn-vote-icon.svg"
+        alt="btn-vote-icon"
+        className={small ? 'w-4' : 'w-5'}
+        loading="lazy"
+        width="100%"
+        height="100%"
+      />
+      <span className="text-sm font-bold">Vote</span>
+    </button>
   );
 }

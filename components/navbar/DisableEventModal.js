@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import { RiCloseFill } from 'react-icons/ri';
 
 export default function ContinuePayModal({ onClose }) {
+  const { t } = useTranslation();
   return (
     <>
       <div className={`flex items-center justify-center`}>
@@ -25,7 +27,7 @@ export default function ContinuePayModal({ onClose }) {
                 />
               </div>
               <div className="flex flex-col gap-5 items-center">
-                <h3 className="text-lg font-semibold text-center">The current event has ended</h3>
+                <h3 className="text-lg font-semibold text-center">{t('The current event has ended')}</h3>
               </div>
             </div>
           </div>

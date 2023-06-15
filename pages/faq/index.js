@@ -18,9 +18,22 @@ import UsePointToVote from 'components/faq/UsePointToVote';
 import { useGetEventMembershipQuery } from 'core/services/rtk/MembershipServices';
 import BuyPoints from 'components/faq/BuyPoints';
 import ExtraPoints from 'components/faq/ExtraPoints';
+import { setAllEvents } from 'core/redux/reducers/globalSlice';
+import { useDispatch } from 'react-redux';
+import Head from 'next/head';
+import parse from 'html-react-parser';
 
 export default function Faq(props) {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const all_events = props?.bottomConfig?.allEvents;
+  const seo = props?.seo;
+
+  React.useEffect(() => {
+    if (all_events) {
+      dispatch(setAllEvents(all_events));
+    }
+  }, [all_events]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -31,25 +44,48 @@ export default function Faq(props) {
   }, []);
 
   return (
-    <div className="flex flex-col space-y-5">
-      <WhatIsFaq />
-      <WinAwesomePrize />
-      {/* <HowToWinFaq /> */}
-      <EveryWeekWinner />
-      <UsePointToVote />
-      <HowToCollectPoint />
-      <WaysGetPoint />
-      <Points />
-      <PerformAtWepop />
-      <HowToSubmitVideo />
-      <RulesFaq />
-      <div id="memberships"></div>
-      <div className="flex flex-col gap-6">
-        <BenefitMembership {...props} />
+    <>
+      <Head>
+        <title>{seo?.title}</title>
+        <meta name="description" content={parse(seo?.description)} />
+        <meta name="keywords" content={seo?.keyword} />
+        <meta name="author" content={seo?.author} />
+        <meta name="robots" content={seo?.robots} />
+        {/* og */}
+        <meta property="og:title" content={seo?.title} />
+        <meta property="og:description" content={parse(seo?.description)} />
+        <meta property="og:image" content={seo?.image} />
+        <meta property="og:url" content={seo?.url} />
+        {/* twitter_card */}
+        <meta name="twitter:card" content={seo?.twitter_card} />
+        <meta name="twitter:creator" content={seo?.twitter_creator} />
+        <meta name="twitter:site" content={seo?.twitter_site} />
+        <meta name="twitter:title" content={seo?.title} />
+        <meta name="twitter:description" content={parse(seo?.description)} />
+        <meta name="twitter:image" content={seo?.image} />
+        {/* fb */}
+        <meta property="fb:app_id" content={seo?.fb_app_id} />
+      </Head>
+      <div className="flex flex-col space-y-5">
+        <WhatIsFaq />
+        <WinAwesomePrize />
+        {/* <HowToWinFaq /> */}
+        <EveryWeekWinner />
+        <UsePointToVote />
+        <HowToCollectPoint />
+        <WaysGetPoint />
+        <Points />
+        <PerformAtWepop />
+        <HowToSubmitVideo />
+        <RulesFaq />
+        <div id="memberships"></div>
+        <div className="flex flex-col gap-6">
+          <BenefitMembership {...props} />
+        </div>
+        {/* <BuyPoints {...props} /> */}
+        <ExtraPoints {...props} />
       </div>
-      {/* <BuyPoints {...props} /> */}
-      <ExtraPoints {...props} />
-    </div>
+    </>
   );
 }
 
@@ -64,10 +100,12 @@ export const getServerSideProps = async ({ req }) => {
   let membershipStatus,
     eventMembership,
     config = [],
-    request = [];
+    request = [],
+    seo;
   const { isAuthenticated, token } = getCredential({ req });
 
   request = [SSServices.getAllEvents()]; // mandatory for this page
+  seo = await SSServices.getSeo({ path: '/faq' });
 
   if (isAuthenticated && token) {
     config = [SSServices.getMemberships({ token }), SSServices.getMyPoints({ token })]; // mandatory for root used
@@ -99,6 +137,7 @@ export const getServerSideProps = async ({ req }) => {
     props: {
       ...props,
       title: 'FAQ | Abracadbara Starquest',
+      seo: seo ?? {},
       bottomConfig: {
         myPoints: data?.[2] ?? {},
         allEvents: data?.[0] ?? {},

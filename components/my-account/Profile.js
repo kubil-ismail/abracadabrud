@@ -58,7 +58,11 @@ export default function Profile({ me }) {
     const { value } = event.currentTarget;
 
     if (name === 'fullname') {
-      if (value.length < 3) {
+      // can only contain letters, spaces
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
+      if (value.length < 3 && value.length > 0) {
         setErrorForm({
           ...errorForm,
           fullname: 'Full name must be at least 3 characters'

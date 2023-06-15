@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ErrorMessage from '../error/ErrorMessage';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 
-const InputMember = ({ setMember, value1, value2, onClose, index }) => {
+const InputMember = ({ setMember, value1, value2, onClose, index, _errName, _errEmail }) => {
   const [name, setName] = useState(value1 ?? '');
   const [email, setEmail] = useState(value2 ?? '');
   const [error, setError] = useState({
@@ -69,10 +69,10 @@ const InputMember = ({ setMember, value1, value2, onClose, index }) => {
           value={name}
           onChange={onChangeName}
         />
-        <ErrorMessage message={error.name} />
+        <ErrorMessage message={error.name || _errName} />
       </div>
       <div className="flex flex-col gap-2">
-      <label className="text-sm">Email</label>
+        <label className="text-sm">Email</label>
         <div className="flex items-center content-between mb-3">
           <input
             name="member_email"
@@ -89,7 +89,7 @@ const InputMember = ({ setMember, value1, value2, onClose, index }) => {
             onClick={() => onClose(index)}
           />
         </div>
-        <ErrorMessage message={error.email} />
+        <ErrorMessage message={error.email || _errEmail} />
       </div>
     </div>
   );

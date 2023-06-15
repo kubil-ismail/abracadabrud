@@ -24,6 +24,10 @@ const VideoPayment = (props) => {
   const [paymentGuide, setPaymentGuide] = useState([]);
   const { t } = useTranslation();
   const paymentVideoId = props?.data?.paymentDetail;
+  const paymentVideoCC = props?.data?.paymentVideoUser?.data?.filter((item) => item.status === 1)[0];
+  const paymentVideoCCCancelled = props?.data?.paymentVideoUser?.data?.filter((item) => item.status === 4)[0];
+  const paymentVideoCCExpired = props?.data?.paymentVideoUser?.data?.filter((item) => item.status === 3)[0];
+  const isCC = (paymentVideoId?.data?.payment_method?.payment_type === 'credit_card');
 
   useEffect(() => {
     const ios = () => {
@@ -82,9 +86,12 @@ const VideoPayment = (props) => {
   useEffect(() => {
     setTimer_2('Loading...');
     if (paymentVideoId) countDownMembership(paymentVideoId);
-  }, []);
+  }, [paymentVideoId]);
 
   useEffect(() => {
+    if (isCC) {
+      return;
+    }
     const guide = guidePayments.filter((item) =>
       isQris
         ? item.payment_code === paymentVideoId?.data?.payment_method?.payment_code && item.isQris
@@ -93,10 +100,26 @@ const VideoPayment = (props) => {
     setPaymentGuide(guide);
   }, [paymentVideoId]);
 
+  const checkCC = () => {
+    SSServices.getPaymentVideoId({ id: paymentVideoId?.data?.id ?? data?.id, token, client: true }).then((result) => {
+      if (result?.data?.transaction?.status === 2) {
+        toast.success(t('Payment success, redirect to profile...'));
+        router.replace('/my-account?tab=video#transaction');
+      } else if (result?.data?.transaction?.status === 3) {
+        toast.error(t('Payment expired, redirect to profile...'));
+        router.replace(`/my-account?tab=video#transaction`);
+      } else if (result?.data?.transaction?.status === 4) {
+        toast.error(t('Payment canceled, redirect to profile...'));
+        router.replace(`/my-account?tab=video#transaction`);
+      }
+      dispatch(setRefetchNotifications(true));
+    });
+  };
+
   useEffect(() => {
     if (payment_for === 'video_upload' || payment_for === 'video_upload_detail') {
       let interval = setInterval(() => {
-        SSServices.getPaymentVideoId({ id: data?.id, token, client: true }).then((result) => {
+        SSServices.getPaymentVideoId({ id: paymentVideoId?.data?.id ?? data?.id, token, client: true }).then((result) => {
           if (result?.data?.transaction?.status === 2) {
             clearInterval(interval);
             toast.success(t('Payment success, redirect to profile...'));
@@ -130,7 +153,9 @@ const VideoPayment = (props) => {
           height={240}
           className="m-auto"
         />
+        {/* <img src="/assets/images/waiting-payment.png" alt="" className="w-[240px] m-auto" /> */}
       </div>
+
       <div className="flex flex-col space-y-5 text-center">
         <h3 className="text-lg font-bold">{timer_2}</h3>
         <span className="text-xs font-light">
@@ -146,8 +171,39 @@ const VideoPayment = (props) => {
         </span>
       </div>
 
+      {(isCC) && (
+        <div className="flex flex-col space-y-5">
+          {/* Snap Midtrans */}
+          <button
+            className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+            onClick={() => {
+              if (isCC) {
+                snap.pay(paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.snap_token, {
+                  // onSuccess: function (result) {
+                  //   toast.success(t('Payment success, redirect to profile...'));
+                  //   setTimeout(() => {
+                  //     router.replace('/my-account?tab=video#transaction');
+                  //   }, 3000);
+                  // },
+                  // onError: function (result) {
+                  //   toast.error(t('Payment failed, redirect to profile...'));
+                  //   setTimeout(() => {
+                  //     router.replace('/my-account?tab=video#transaction');
+                  //   }, 3000);
+                  // },
+                  // onClose: function () {
+                  //   checkCC();
+                  // }
+                });
+              }
+            }}>
+            {t('Pay with Credit Card')}
+          </button>
+        </div>
+      )}
+
       {/* Mobile phone olny alert */}
-      {(data?.payment_name ?? data?.payment_method?.payment_name) === 'ShopeePay' && !isIos && (
+      {(data?.payment_name ?? paymentVideoId?.data?.payment_method?.payment_name) === 'ShopeePay' && !isIos && (
         <div
           className="flex p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 max-w-2xl md:m-auto"
           role="alert">
@@ -167,43 +223,41 @@ const VideoPayment = (props) => {
         </div>
       )}
 
-      {/* <div className="flex flex-col gap-5">Order id: {data?.order_id}</div>
-      <div className="flex flex-col gap-5">
-        Payment Method: {data?.payment_name ?? data?.payment_method?.payment_name}
-      </div> */}
-      {(data?.payment_type === 'ewallet' || data?.payment_method?.payment_type === 'ewallet') &&
-        data?.how_to_pay?.find((res) => res?.name === 'generate-qr-code') && (
-          <div className="flex flex-col space-y-5 max-w-2xl md:mx-auto">
+      {(data?.payment_type === 'ewallet' || paymentVideoId?.data?.payment_method?.payment_type === 'ewallet') &&
+        (data?.how_to_pay?.find((res) => res?.name === 'generate-qr-code') ||
+          paymentVideoId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'generate-qr-code')
+        ) && (
+          <div className="flex flex-col space-y-5 max-w-2xl md:m-auto">
             <p className="text-center">{t('How To Pay:')}</p>
             <div className="flex flex-col space-y-5">
               <div className="flex flex-col space-y-5 mt-3">
                 <img
-                  src={paymentVideoId?.data?.transaction?.how_to_pay[0]?.url}
+                  src={paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.url}
                   alt=""
                   className="w-[250px] md:w-[320px] m-auto"
                 />
               </div>
             </div>
+
             <p className="text-center">{t('Or')}</p>
           </div>
         )}
-      {(data?.payment_type === 'outlet' || data?.payment_method?.payment_type === 'outlet') && (
-        // <div className="flex flex-col gap-5">
-        //   Code/Account Number: {paymentVideoId?.data?.transaction?.how_to_pay[0]?.payment_code}
-        // </div>
+
+      {(data?.payment_type === 'outlet' || paymentVideoId?.data?.payment_method?.payment_type === 'outlet') && (
         <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              {data?.payment_method?.payment_image?.image && (
-                <img src={data?.payment_method?.payment_image?.image} alt="logo" className="w-12" />
+              {paymentVideoId?.data?.payment_method?.payment_image?.image && (
+                <img src={paymentVideoId?.data?.payment_method?.payment_image?.image} alt="logo" className="w-12" />
               )}
+
               <span className="text-xs md:text-sm flex flex-col gap-5">
-                {data?.payment_name ?? data?.payment_method?.payment_name}
+                {data?.payment_name ?? paymentVideoId?.data?.payment_method?.payment_name}
               </span>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-xs md:text-sm flex flex-col space-y-5">
-                {paymentVideoId?.data?.transaction?.how_to_pay[0]?.payment_code}
+            <div className="flex items-center gap-4">
+              <span className="text-xs md:text-sm flex flex-col gap-5">
+                {paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.payment_code}
               </span>
               <Image
                 src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
@@ -213,7 +267,8 @@ const VideoPayment = (props) => {
                 className="cursor-pointer"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    paymentVideoId?.data?.transaction?.how_to_pay[0]?.payment_code
+                    data?.how_to_pay?.[0]?.payment_code ??
+                    paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.payment_code
                   );
                   toast.success(t('Success copy code to clipboard'));
                 }}
@@ -223,7 +278,7 @@ const VideoPayment = (props) => {
                 className="cursor-pointer"
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    paymentVideoId?.data?.transaction?.how_to_pay[0]?.payment_code
+                    paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.payment_code
                   );
                   toast.success(t('Success copy code to clipboard'));
                 }}
@@ -234,8 +289,8 @@ const VideoPayment = (props) => {
       )}
 
       {/* check if not mandiri account */}
-      {(data?.payment_type ?? data?.payment_method?.payment_type) === 'virtual_account' &&
-        (data?.payment_code ?? data?.payment_method?.payment_code) !== 'va_mandiri' && (
+      {(data?.payment_type || paymentVideoId?.data?.payment_method?.payment_type) === 'virtual_account' &&
+        (data?.payment_code || paymentVideoId?.data?.payment_method?.payment_code) !== 'va_mandiri' && (
           <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
@@ -246,14 +301,22 @@ const VideoPayment = (props) => {
                     className="w-12"
                   />
                 )}
+                {paymentVideoId?.data?.payment_method?.payment_image?.image && (
+                  <img
+                    src={paymentVideoId?.data?.payment_method?.payment_image?.image}
+                    alt="logo"
+                    className="w-12"
+                  />
+                )}
                 <span className="text-xs md:text-sm flex flex-col gap-5">
-                  {data?.payment_name ?? data?.payment_method?.payment_name}
+                  {data?.payment_name ?? paymentVideoId?.data?.payment_method?.payment_name}
                 </span>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-4">
                 <span className="text-xs md:text-sm flex flex-col gap-5">
-                  {data?.how_to_pay[0]?.va_number}
+                  {data?.how_to_pay?.[0]?.va_number || paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.va_number}
                 </span>
+
                 <Image
                   src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
                   alt="copy"
@@ -261,80 +324,54 @@ const VideoPayment = (props) => {
                   height={18}
                   className="cursor-pointer"
                   onClick={() => {
-                    navigator.clipboard.writeText(data?.how_to_pay[0]?.va_number);
-                    toast.success(t('Success copy virtual account code to clipboard'));
+                    navigator.clipboard.writeText(data?.how_to_pay?.[0]?.va_number ||
+                      paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.va_number
+                    );
+                    toast.success(t('Success copy virtual account to clipboard'));
                   }}
                 />
                 {/* <MdContentCopy
                   size={16}
                   className="cursor-pointer"
                   onClick={() => {
-                    navigator.clipboard.writeText(data?.how_to_pay[0]?.va_number);
-                    toast.success(t('Success copy virtual account code to clipboard'));
+                    navigator.clipboard.writeText(data?.how_to_pay?.[0]?.va_number);
+                    toast.success(t('Success copy virtual account to clipboard'));
                   }}
                 /> */}
               </div>
             </div>
           </div>
-          // <div className="flex items-center gap-2">
-          //   Virtual Account Number: {data?.how_to_pay[0]?.va_number}{' '}
-          //   <MdContentCopy
-          //     style={{ cursor: 'pointer' }}
-          //     onClick={() => {
-          //       navigator.clipboard.writeText(data?.how_to_pay[0]?.va_number);
-
-          //       toast.success('Success copy virtual account to clipboard');
-          //     }}
-          //   />
-          // </div>
         )}
 
-      {(data?.payment_type ?? data?.payment_method?.payment_type) === 'virtual_account' &&
-        (data?.payment_code ?? data?.payment_method?.payment_code) === 'va_mandiri' && (
-          // <>
-          //   <div className="flex items-center gap-2">
-          //     Billing Code : {data?.how_to_pay[0]?.biller_code}{' '}
-          //     <MdContentCopy
-          //       style={{ cursor: 'pointer' }}
-          //       onClick={() => {
-          //         navigator.clipboard.writeText(data?.how_to_pay[0]?.biller_code);
-
-          //         toast.success('Success copy Billing Code to clipboard');
-          //       }}
-          //     />
-          //   </div>
-          //   <div className="flex items-center gap-2">
-          //     Billing Number : {data?.how_to_pay[0]?.bill_key}{' '}
-          //     <MdContentCopy
-          //       style={{ cursor: 'pointer' }}
-          //       onClick={() => {
-          //         navigator.clipboard.writeText(data?.how_to_pay[0]?.bill_key);
-
-          //         toast.success('Success copy Biiling Number to clipboard');
-          //       }}
-          //     />
-          //   </div>
-          // </>
+      {(data?.payment_type || paymentVideoId?.data?.payment_method?.payment_type) === 'virtual_account' &&
+        (data?.payment_code || paymentVideoId?.data?.payment_method?.payment_code) === 'va_mandiri' && (
           <div className="bg-zinc-800 px-4 py-3 rounded-md w-full max-w-2xl md:m-auto">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                {data?.payment_method?.payment_image?.image && (
+                {data?.payment_image?.image && (
                   <img
-                    src={data?.payment_method?.payment_image?.image}
+                    src={data?.payment_image?.image}
+                    alt="logo"
+                    className="w-12"
+                  />
+                )}
+                {paymentVideoId?.data?.payment_method?.payment_image?.image && (
+                  <img
+                    src={paymentVideoId?.data?.payment_method?.payment_image?.image}
                     alt="logo"
                     className="w-12"
                   />
                 )}
                 <span className="text-xs md:text-sm flex flex-col gap-5">
-                  {data?.payment_name ?? data?.payment_method?.payment_name}
+                  {data?.payment_name ?? paymentVideoId?.data?.payment_method?.payment_name}
                 </span>
               </div>
-              <div className="flex flex-col space-y-2">
-                <div className="flex items-center space-x-4 justify-end">
-                  <div className="flex space-x-1 items-baseline">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-4 justify-end">
+                  <div className="flex gap-1 items-baseline">
                     <span className="text-[10px] text-zinc-300 font-light">( Bill Key )</span>
                     <span className="text-xs md:text-sm flex flex-col gap-5">
-                      {data?.how_to_pay[0]?.biller_code}
+                      {data?.how_to_pay?.[0]?.biller_code || paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.biller_code}
                     </span>
                   </div>
                   <Image
@@ -344,22 +381,23 @@ const VideoPayment = (props) => {
                     height={18}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.biller_code);
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.biller_code || paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.biller_code);
                       toast.success(t('Success copy Billing Code to clipboard'));
                     }}
                   />
+
                   {/* <MdContentCopy
                     size={16}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.biller_code);
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.biller_code);
                       toast.success(t('Success copy Billing Code to clipboard'));
                     }}
                   /> */}
                 </div>
-                <div className="flex items-center space-x-4 justify-end">
+                <div className="flex items-center gap-4 justify-end">
                   <span className="text-xs md:text-sm flex flex-col gap-5">
-                    {data?.how_to_pay[0]?.bill_key}
+                    {data?.how_to_pay?.[0]?.bill_key || paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.bill_key}
                   </span>
                   <Image
                     src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/copy-icon.png`}
@@ -368,16 +406,16 @@ const VideoPayment = (props) => {
                     height={18}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.bill_key);
-                      toast.success(t('Success copy Bill Key to clipboard'));
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.bill_key || paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.bill_key);
+                      toast.success(t('Success copy Biiling Number to clipboard'));
                     }}
                   />
                   {/* <MdContentCopy
                     size={16}
                     className="cursor-pointer"
                     onClick={() => {
-                      navigator.clipboard.writeText(data?.how_to_pay[0]?.bill_key);
-                      toast.success(t('Success copy Bill Key to clipboard'));
+                      navigator.clipboard.writeText(data?.how_to_pay?.[0]?.bill_key);
+                      toast.success(t('Success copy Biiling Number to clipboard'));
                     }}
                   /> */}
                 </div>
@@ -386,37 +424,42 @@ const VideoPayment = (props) => {
           </div>
         )}
 
-      {(data?.payment_type === 'cardless_credit' ||
+      {((data?.payment_type === 'cardless_credit' ||
+        paymentVideoId?.data?.payment_method?.payment_type === 'cardless_credit' ||
         data?.payment_type === 'direct_debit' ||
-        data?.payment_method?.payment_type === 'cardless_credit' ||
-        data?.payment_method?.payment_type === 'direct_debit') && (
-          <div className="flex flex-col gap-5">
+        paymentVideoId?.data?.payment_method?.payment_type === 'direct_debit') && (
+          <div className="flex flex-col space-y-5">
             <Link
-              href={paymentVideoId?.data?.transaction?.how_to_pay[0]?.redirect_url ?? '/'}
+              href={data?.how_to_pay?.[0]?.redirect_url || paymentVideoId?.data?.transaction?.how_to_pay?.[0]?.redirect_url}
               className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
               {t('Pay Now')}
             </Link>
           </div>
-        )}
+        ))}
 
-      {(data?.payment_name ?? data?.payment_method?.payment_name) === 'Gopay' &&
-        data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect') &&
+      {/* Pay with gopay */}
+      {(data?.payment_name === 'Gopay' || paymentVideoId?.data?.payment_method?.payment_name === 'Gopay') &&
+        (data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+          paymentVideoId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url) &&
         !isQris && (
           <>
             <Link
-              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
-              className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center font-medium">
+              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+                paymentVideoId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
+              className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
               {t('Pay with Gopay')}
             </Link>
           </>
         )}
 
-      {(data?.payment_name ?? data?.payment_method?.payment_name) === 'ShopeePay' &&
-        isIos &&
-        data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect') && (
+      {(data?.payment_name === 'ShopeePay' || paymentVideoId?.data?.payment_method?.payment_name === 'ShopeePay') &&
+        (data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+          paymentVideoId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url) &&
+        (
           <>
             <Link
-              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
+              href={data?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url ||
+                paymentVideoId?.data?.transaction?.how_to_pay?.find((res) => res?.name === 'deeplink-redirect')?.url}
               className="m-auto w-56 py-3 px-4 text-white bg-[#119311] rounded-md text-center">
               {t('Pay with Shopeepay')}
             </Link>
@@ -425,7 +468,7 @@ const VideoPayment = (props) => {
 
       {/* <button
         className="m-auto w-56 py-3 px-4 text-white border border-zinc-700 rounded-md"
-        onClick={() => dispatch(pointApi.util.invalidateTags(['VideoPaymentHistory']))}>
+        onClick={() => dispatch(pointApi.util.invalidateTags(['MembershipPaymentHistory']))}>
         {t('Check status payment')}
       </button> */}
 
@@ -436,9 +479,11 @@ const VideoPayment = (props) => {
         {t('Go to Transaction History')}
       </button>
 
-      <div className="mt-10">
-        <PaymentsGuide guideList={paymentGuide} />
-      </div>
+      {(!isCC) && (
+        <div className="mt-10">
+          <PaymentsGuide guideList={paymentGuide} />
+        </div>
+      )}
     </>
   );
 };

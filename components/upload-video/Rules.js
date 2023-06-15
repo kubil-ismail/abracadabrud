@@ -19,7 +19,7 @@ export default function Rules() {
               'Create a music video in which you sing your own original song or a song made famous, Judika, Rizky Febian, BCL, and Kahitna.'
             )} */}
             {t(
-              "Create a music video in which you sing your own original song or a song from the event's artists: Judika, Rizky Febian, BCL, and Kahitna."
+              "Create a music video in which you sing your own original song or a song from the event's artists"
             )}
           </li>
           <li>{t('You can perform as a band or perform solo.')}</li>

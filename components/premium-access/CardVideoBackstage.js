@@ -3,11 +3,11 @@ import ReactPlayer from 'react-player/youtube';
 export default function CardVideoBackstage({ data }) {
   return (
     <div className="w-full md:max-w-2xl md:m-auto flex flex-col gap-7 relative" id="collect-votes">
-      <div className="absolute top-8 left-8">
-        <h3 className="text-xl md:text-4xl font-extrabold">{data?.data?.title}</h3>
+      <div className="absolute top-6 left-8">
+        {/* <h3 className="text-xl md:text-3xl drop-shadow-3xl font-semibold">{data?.data?.title}</h3> */}
       </div>
       <figure className="">
-        <div className="aspect-video md:w-full md:h-[460px] rounded-[20px]">
+        <div className="aspect-video md:w-full md:h-[220px] lg:h-[320px] rounded-[20px]">
           <ReactPlayer
             url={data?.data?.video_link}
             width="100%"

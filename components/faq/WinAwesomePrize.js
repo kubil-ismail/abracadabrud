@@ -34,7 +34,8 @@ export default function WinAwesomePrize() {
               <ul className="list-none font-normal text-lg text-center md:text-left flex flex-col space-y-2 w-full">
                 <li>{t('2 free VIP concert tickets.')}</li>
                 <li>{t('Backstage tour.')}</li>
-                <li>{t('Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.')}</li>
+                {/* <li>{t('Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.')}</li> */}
+                <li>{t('Meet ‘n greet and selfies with the wePOP stars!')}</li>
                 <li>{t('Accommodation and round-trip transport from anywhere in Indonesia.')}</li>
               </ul>
             </div>

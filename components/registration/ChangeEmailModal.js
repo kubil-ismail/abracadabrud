@@ -12,6 +12,8 @@ import {
 import service from 'core/services/publicService';
 import { useTranslation } from 'react-i18next';
 import { decrypt, encrypt } from 'lib/Aes.v2';
+import { toast } from 'react-toastify';
+import useCountDown from 'core/hooks/useCountdown';
 
 export default function LoginModal({ onClose }) {
   const [seePassword, setSeePassword] = useState(false);
@@ -25,6 +27,31 @@ export default function LoginModal({ onClose }) {
 
   const { token } = useSelector((state) => state.authentication);
   const { modalChangeEmail } = useSelector((state) => state.modal);
+
+  const [timer, setTimer] = useState(60);
+  const countDown = (data) => {
+    let x;
+    // 60 seconds from now
+    const countDownDate = new Date().getTime() + data * 1000;
+    x = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+
+      if (distance < 0 || !distance) {
+        setTimer(0);
+        return () => {
+          clearInterval(x);
+        };
+      } else {
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setTimer(seconds);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(x);
+    };
+  };
 
   const sendOtp = () => {
     setIsLoading(true);
@@ -47,6 +74,11 @@ export default function LoginModal({ onClose }) {
       })
       .catch((error) => {
         const response = decrypt(error?.response?.data?.result);
+
+        if (response?.status === 429) {
+          countDown(60)
+          toast.error(`${t('Too many attempts')}, ${t('please try again in')} ${timer} ${t('seconds')}`);
+        }
 
         if (response?.message === 'api.auth.login.password_invalid') {
           setErrorPass('Invalid password');

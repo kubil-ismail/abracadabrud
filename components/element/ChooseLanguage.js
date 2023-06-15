@@ -55,6 +55,7 @@ export default function ChooseLanguage() {
                         setTranslateActive(data.id)
                         i18n.changeLanguage(data.locale)
                         router.push(router.asPath, router.asPath, { locale: data.locale })
+                        localStorage.setItem('locale', data.locale);
                       }}>
                     <div className="flex items-center space-y-2 m-0">
                       <img src={data.image} alt="flag" className="w-6 h-6 rounded-full object-cover object-center" />

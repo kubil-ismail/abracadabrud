@@ -1,5 +1,6 @@
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import EllipsisText from 'react-ellipsis-text';
 
 export default function VoteNotif({ data }) {
   const { t } = useTranslation();
@@ -8,7 +9,7 @@ export default function VoteNotif({ data }) {
 
   return (
     <div
-      className={`${data?.has_read ? 'bg-[#3a383e]' : 'bg-[#404040]'} mt-2 p-4 hover:bg-[#3a383e] text-slate-50 shadow-[-1px_2px_14px_-1px_rgba(0,0,0,0.04)] rounded-lg transition-all ease-in-out delay-75 cursor-pointer`}
+      className={`${data?.read ? 'bg-[#3a383e]' : 'bg-[#404040]'} mt-2 p-4 hover:bg-[#3a383e] text-slate-50 shadow-[-1px_2px_14px_-1px_rgba(0,0,0,0.04)] rounded-lg transition-all ease-in-out delay-75 cursor-pointer`}
       //   style={{
       //     color: style?.light_text,
       //     background: style?.secondary_background,
@@ -33,13 +34,20 @@ export default function VoteNotif({ data }) {
             <div className="flex flex-col gap-1">
               <div className="flex gap-2 items-center">
                 <h3 className="text-[10px] md:text-base font-semibold m-0">
-                  {data?.payload?.voted_by?.fullname}
+                        <EllipsisText
+                              text={
+                                    data?.payload?.voted_by?.fullname
+                                    ?? 'Unknown'
+                                    }
+                                    length={20}
+                              />
+                  {/* {data?.payload?.voted_by?.fullname} */}
                 </h3>
                 {/* <span className="text-[10px] text-gray-200">{data?.payload?.voted_by?.username}</span> */}
                 <div className="flex gap-1 items-center">
                   <div className="w-1 h-1 rounded-full text-gray-200" />
                   <span className="text-[8px] md:text-[10px] text-gray-200">
-                    {moment(data?.created_at).fromNow()}
+                    {t(moment(data?.created_at).fromNow())}
                   </span>
                 </div>
               </div>
@@ -50,7 +58,7 @@ export default function VoteNotif({ data }) {
                     // t(`You received ${data?.data?.total_vote} ${data?.data?.total_vote >= 2 ? "Votes" : "vote"} from
                     // ${data?.payload?.voted_by?.username}`)
                   }
-                  
+
                 </span>
               </div>
             </div>

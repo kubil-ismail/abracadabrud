@@ -4,8 +4,10 @@ import EmptyTransaction from 'components/empty-placeholder/EmptyTransaction';
 import { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import service from 'core/services/publicService';
+import { useTranslation } from 'react-i18next';
 
 export default function VideoTabs() {
+  const { t } = useTranslation();
   const selector = useSelector((state) => state.authentication);
   const [currentTransaction, setCurrentTransaction] = useState(null);
   const [dataVideos, setDataVideos] = useState([]);
@@ -88,7 +90,7 @@ export default function VideoTabs() {
                       nextPageVideos(next);
                     }
                   }}>
-                  Load More
+                  {t('Load More')}
                 </button>
               )}
             </div>

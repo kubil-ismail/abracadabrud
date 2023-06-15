@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import EllipsisText from 'react-ellipsis-text';
 import moment from 'moment';
 import Username from './Username';
+import { useTranslation } from 'react-i18next';
 
 export default function VideoVoteHistory({ data }) {
+  const { t } = useTranslation();
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center space-x-4">
@@ -20,13 +22,27 @@ export default function VideoVoteHistory({ data }) {
             <EllipsisText text={data?.video?.caption ?? 'title'} length={32} />
           </h3>
           <div className="flex space-x-1 items-center">
-            <Username name={data?.video?.user?.contestant?.artist_band_name} fontStyle="text-xs font-light" />
+          <Username
+              name={
+                <EllipsisText
+                text={
+                  data?.video?.user?.contestant?.artist_band_name ??
+                  data?.video?.user?.username ?? 'Unknown'
+                }
+                length={28}
+              />
+                // currentUser?.details?.user?.contestant?.artist_band_name ??
+                // currentUser?.details?.user?.username
+              }
+              fontStyle="text-xs font-light"
+            />
+             {/* <Username name={data?.video?.user?.contestant?.artist_band_name ?? data?.video?.user?.username} fontStyle="text-xs font-light" /> */}
             {/* <span className="text-xs font-light">
               {data?.video?.user?.contestant?.artist_band_name}
             </span> */}
             <span className="text-center flex justify-center">&middot;</span>
             <span className="text-xs font-light">
-              {moment(data?.created_at).fromNow()}
+              {t(moment(data?.created_at).fromNow())}
             </span>
           </div>
         </div>

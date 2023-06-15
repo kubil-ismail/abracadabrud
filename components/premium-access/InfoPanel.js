@@ -4,7 +4,7 @@ export default function InfoPanel() {
   return (
     <div className="flex flex-col gap-7" id="collect-votes">
       <figure className="">
-        <div className="aspect-video md:w-full md:h-[460px] rounded-[20px]">
+        <div className="aspect-video md:w-full md:h-[380px] rounded-[20px]">
           <ReactPlayer
             url="https://youtu.be/JCN-2Hrnemw"
             width="100%"

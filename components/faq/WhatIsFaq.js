@@ -14,7 +14,7 @@ export default function WhatIsFaq() {
           />
         </div>
         <div className="text-center mt-5 md:mt-0">
-          <ul className="list-none font-semibold text-[32px] text-center flex flex-col space-y-[0.6rem] w-full">
+          <ul className="list-none font-semibold text-[32px] text-center flex flex-col space-y-[0.6rem] w-full md:max-w-xl md:m-auto">
             <li className="font-extrabold mb-7">{t('Frequently Asked Questions')}</li>
             <Link href="/faq/#win-awesome">
               <li>{t('What are the prizes?')}</li>

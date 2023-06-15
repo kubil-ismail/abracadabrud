@@ -14,7 +14,7 @@ export default function ModalConfirmLogout({ onHide, logout }) {
       <div className="">
         <div className="bg-black/20 fixed inset-0 w-full z-50 flex items-center md:justify-center">
           <div className="bg-[#2B1462] text-slate-50 rounded-r-2xl md:rounded-2xl px-8 md:px-8 pt-8 pb-12 flex flex-col animate-l-to-r w-[92%] md:max-w-md">
-            <div className="flex justify-end mb-3">
+            <div className="flex justify-end mb-6">
             <Image
             src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/close-icon.png`}
             alt="close"

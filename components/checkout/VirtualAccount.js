@@ -16,16 +16,14 @@ export default function VirtualAccount({ paymentMethods }) {
       <h3 className="text-base font-bold">{t('Bank Transfer')}</h3>
       <div className="flex flex-wrap space-x-2 md:space-x-5 justify-center pb-2">
         {paymentMethods
-          ?.filter(
-            (item) => item.payment_type === 'virtual_account'
-          )
+          ?.filter((item) => item.payment_type === 'virtual_account')
           .map((data) => (
             <button
               className={`${
                 paymentMethodsId === data.id && !isUsingCC
                   ? 'bg-gray-300 mb-3'
                   : 'bg-white cursor-pointer'
-              } rounded-md p-3 w-[38%] md:w-[18%] mb-3`}
+              } rounded-md p-3 w-[38%] md:w-[18%] mb-5`}
               key={data.id}
               onClick={() => {
                 dispatch(setPaymentMethodsId(data.id));
@@ -34,7 +32,13 @@ export default function VirtualAccount({ paymentMethods }) {
                   dispatch(setIsUsingCC(false));
                 }
               }}>
-              <img src={data.payment_image} alt="logo" className="w-12 m-auto" loading="lazy" />
+              <img
+                src={data.payment_image}
+                alt="logo"
+                className="w-16 h-6 m-auto"
+                style={{ objectFit: 'contain' }}
+                loading="lazy"
+              />
             </button>
           ))}
       </div>

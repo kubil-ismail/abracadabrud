@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 export default function HeaderSupport() {
   const { t } = useTranslation();
   return (
-    <div className="">
+    <div className="mt-4">
       <h3 className="text-3xl font-bold">{t('Abracadabra Legal Information')}</h3>
     </div>
   );

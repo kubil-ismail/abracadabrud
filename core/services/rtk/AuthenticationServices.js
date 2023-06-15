@@ -39,7 +39,11 @@ export const authenticationApi = createApi({
       }),
       transformResponse: (response) => {
         if (response?.encrypt) {
-          return decrypt(response?.result)?.data;
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
         }
 
         if (response.data) {
@@ -73,7 +77,11 @@ export const authenticationApi = createApi({
       },
       transformResponse: (response) => {
         if (response?.encrypt) {
-          return decrypt(response?.result)?.data;
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
         }
 
         if (response.data) {
@@ -114,6 +122,14 @@ export const authenticationApi = createApi({
         body: { payload: encrypt({ identifier: identity }) }
       }),
       transformResponse: (response) => {
+        if (response?.encrypt) {
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
+        }
+
         if (response.data) {
           return response.data;
         }
@@ -139,6 +155,13 @@ export const authenticationApi = createApi({
         }
       }),
       transformResponse: (response) => {
+        if (response?.encrypt) {
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
+        }
         if (response.data) {
           return response.data;
         }
@@ -154,18 +177,27 @@ export const authenticationApi = createApi({
     }),
     resetPassword: builder.mutation({
       query: ({ otp, password, password_confirmation }) => ({
-        url: '/auth/forgot-password/reset',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/forgot-password/reset`,
         method: 'POST',
         body: {
-          otp,
-          password,
-          password_confirmation
+          payload: encrypt({
+            otp,
+            password,
+            password_confirmation
+          })
         }
       }),
       transformResponse: (response) => {
         if (response.data) {
           return response.data;
         }
+        return response;
+      },
+      transformErrorResponse: (response) => {
+        if (response?.data && response?.data?.encrypt) {
+          return decrypt(response?.data?.result);
+        }
+
         return response;
       }
     }),
@@ -206,7 +238,11 @@ export const authenticationApi = createApi({
       },
       transformResponse: (response) => {
         if (response?.encrypt) {
-          return decrypt(response?.result)?.data;
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
         }
 
         if (response.data) {
@@ -228,7 +264,11 @@ export const authenticationApi = createApi({
       }),
       transformResponse: (response) => {
         if (response?.encrypt) {
-          return decrypt(response?.result)?.data;
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
         }
 
         if (response.data) {
@@ -240,11 +280,27 @@ export const authenticationApi = createApi({
     }),
     forgotPassword: builder.mutation({
       query: ({ email }) => ({
-        url: '/auth/forgot-password',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/forgot-password`,
         method: 'POST',
-        body: { email }
+        body: { payload: encrypt({ email }) }
       }),
+      transformErrorResponse: (response) => {
+        if (response?.data && response?.data?.encrypt) {
+          return decrypt(response?.data?.result);
+        }
+
+        return response;
+      },
       transformResponse: (response) => {
+        if (response?.encrypt) {
+          const result = decrypt(response?.result);
+
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
+        }
+
         if (response.data) {
           return response.data;
         }
@@ -267,7 +323,11 @@ export const authenticationApi = createApi({
       }),
       transformResponse: (response) => {
         if (response?.encrypt) {
-          return decrypt(response?.result)?.data;
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
         }
 
         if (response.data) {
@@ -286,7 +346,11 @@ export const authenticationApi = createApi({
       },
       transformResponse: (response) => {
         if (response?.encrypt) {
-          return decrypt(response?.result)?.data;
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
         }
 
         if (response.data) {
@@ -460,19 +524,43 @@ export const authenticationApi = createApi({
             otp
           })
         }
-      })
+      }),
+      transformResponse: (response) => {
+        if (response?.encrypt) {
+          const result = decrypt(response?.result);
+          if (result?.status === 429) {
+            return result;
+          }
+          return result?.data;
+        }
+
+        if (response?.data) {
+          return response?.data;
+        }
+
+        return response;
+      }
     }),
     checkTokenStatus: builder.query({
       query: () => '/auth/check-token-status'
     }),
     confirmOtpForgotPassword: builder.mutation({
       query: ({ otp }) => ({
-        url: '/auth/forgot-password/otp/confirm',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/forgot-password/otp/confirm`,
         method: 'POST',
         body: {
-          otp
+          payload: encrypt({
+            otp
+          })
         }
-      })
+      }),
+      transformErrorResponse: (response) => {
+        if (response?.data && response?.data?.encrypt) {
+          return { data: decrypt(response?.data?.result) };
+        }
+
+        return response;
+      }
     })
   })
 });

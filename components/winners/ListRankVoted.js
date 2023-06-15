@@ -9,6 +9,7 @@ import ModalShare from 'components/element/modal/ModalShare';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import EllipsisText from 'react-ellipsis-text';
 
 export default function ListRankVoted({ data, current, last, loading, handleNextPage, eventId }) {
   const { t } = useTranslation();
@@ -115,7 +116,14 @@ THANKS!
             <Link href={`/user/${currentUser?.details?.username ?? currentUser?.details?.id}`}>
               <Username
                 name={
+                  <EllipsisText
+                  text={
                   currentUser?.details?.contestant?.artist_band_name ?? currentUser?.details?.name
+                  ?? 'Unknown'
+                  }
+                  length={14}
+                />
+                  // currentUser?.details?.contestant?.artist_band_name ?? currentUser?.details?.name
                 }
                 fontStyle="text-base md:text-lg font-bold"
               />
@@ -148,10 +156,36 @@ THANKS!
             </div>
             <div className="flex-1 flex flex-col">
               <Link href={`/user/${item?.username ?? item?.id}`}>
-                <Username
+                             {/* hidden on desktop */}
+              <Username
+                name={
+                  <EllipsisText
+                text={
+                  item?.contestant?.artist_band_name ?? item?.name ?? 'Unknown'
+                }
+                length={28}
+              />
+                }
+                fontStyle="text-base md:text-lg font-bold block md:hidden"
+              />
+
+              {/* hidden on mobile */}
+              <Username
+                name={
+                  <EllipsisText
+                text={
+                  item?.contestant?.artist_band_name ?? item?.name ?? 'Unknown'
+                }
+                length={44}
+              />
+                }
+                fontStyle="text-base md:text-lg font-bold hidden md:block"
+              />
+               
+                {/* <Username
                   name={item?.contestant?.artist_band_name ?? item?.name}
                   fontStyle="text-base md:text-lg font-bold"
-                />
+                /> */}
                 {/* <h3 className="text-base md:text-lg font-bold">{item?.contestant?.artist_band_name ?? item?.name}</h3> */}
               </Link>
               {/* <h3 className="text-lg font-bold">{item?.contestant?.artist_band_name}</h3> */}

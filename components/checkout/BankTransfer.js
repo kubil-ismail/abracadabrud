@@ -31,7 +31,13 @@ export default function BankTransfer({ paymentMethods }) {
                   dispatch(setIsUsingCC(false));
                 }
               }}>
-              <img src={data.payment_image} alt="logo" className="w-12 m-auto" loading="lazy" />
+              <img
+                src={data.payment_image}
+                alt="logo"
+                className="w-16 h-6 m-auto"
+                style={{ objectFit: 'contain' }}
+                loading="lazy"
+              />
             </button>
           ))}
       </div>

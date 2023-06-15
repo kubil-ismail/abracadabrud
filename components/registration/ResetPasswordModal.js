@@ -90,10 +90,10 @@ export default function ResetPasswordModal({ onClose }) {
 
   useEffect(() => {
     if (isError) {
-      if (errorResetPassword?.data?.message) {
+      if (errorResetPassword?.message) {
         setError({
           ...error,
-          password: errorResetPassword?.data?.message
+          password: errorResetPassword?.message
         });
       }
     }

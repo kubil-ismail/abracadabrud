@@ -13,6 +13,7 @@ import ModalShare from './modal/ModalShare';
 import { setVideoId } from 'core/redux/reducers/threedotsSlice';
 import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
+import { encryptId } from 'lib/Aes.v2';
 
 export default function ThreeDotVideo({
   idVideo,
@@ -64,10 +65,12 @@ export default function ThreeDotVideo({
   useEffect(() => {
     if (user && isAuthenticated) {
       setUrl(
-        `${window.location.origin}${basePath}/video/${idVideo}?referral=${user?.my_referal_code}`
+        `${window.location.origin}${basePath}/video/${encryptId(idVideo)}?referral=${encryptId(
+          user?.my_referal_code.replace('ACADABRA0', '')
+        )}`
       );
     } else {
-      setUrl(`${window.location.origin}${basePath}/video/${idVideo}`);
+      setUrl(`${window.location.origin}${basePath}/video/${encryptId(idVideo)}`);
     }
   }, [user, idVideo]);
 
@@ -190,7 +193,7 @@ THANKS!
                   </span>
                 </button>
               )} */}
-              {/* <div className="">
+              <div className="">
                 <button type="button" className="text-sm" onClick={() => setModalShareShow(true)}>
                   <span className="text-xs sm:text-sm flex items-center gap-2 cursor-pointer ">
                     <img
@@ -204,7 +207,7 @@ THANKS!
                     <small>{t('Share')}</small>
                   </span>
                 </button>
-              </div> */}
+              </div>
               {user?.id !== userID && (
                 <button
                   type="button"

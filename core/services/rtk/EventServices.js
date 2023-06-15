@@ -296,6 +296,11 @@ export const eventApi = createApi({
         method: 'POST',
         body: { payload: encrypt({ video_payment_id: video_contest_id }) }
       }),
+      transformResponse: (response) => {
+        if (response?.encrypt) {
+          return decrypt(response?.result);
+        }
+      },
       transformErrorResponse: (response) => {
         if (response?.data && response?.data?.encrypt) {
           return decrypt(response?.data?.result);
@@ -311,6 +316,11 @@ export const eventApi = createApi({
         method: 'POST',
         body: { payload: encrypt({ buy_points_payment_id: buy_points_payment_id }) }
       }),
+      transformResponse: (response) => {
+        if (response?.encrypt) {
+          return decrypt(response?.result);
+        }
+      },
       invalidatesTags: ['PaymentVideo']
     }),
     checkoutMembership: builder.mutation({
@@ -358,6 +368,11 @@ export const eventApi = createApi({
         method: 'POST',
         body: { payload: encrypt({ membership_payment_id: membership_id }) }
       }),
+      transformResponse: (response) => {
+        if (response?.encrypt) {
+          return decrypt(response?.result);
+        }
+      },
       invalidatesTags: ['PaymentMembership']
     }),
     activeMemberships: builder.query({

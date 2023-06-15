@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { setModal } from 'core/redux/reducers/modalSlice';
 import { toast } from 'react-toastify';
-import { setPaymentFor, setPointsFee, setPointsId } from 'core/redux/reducers/paymentsSlice';
+import { setData, setPaymentFor, setPointsFee, setPointsId } from 'core/redux/reducers/paymentsSlice';
 import { useEffect } from 'react';
 import { deleteCookie, setCookie } from 'cookies-next';
 
@@ -48,6 +48,7 @@ export default function ExtraPoints(props) {
       return;
     }
     dispatch(setPaymentFor('points'));
+    dispatch(setData({}));
     deleteCookie('payment');
     setCookie('payment', JSON.stringify({ payment_for: 'points' }));
     router.push('/checkout');
@@ -84,7 +85,7 @@ export default function ExtraPoints(props) {
       <div className="flex flex-col items-center text-[#FF00FE] ">
         <h3 className="font-extrabold text-center text-2xl">{t('Shower your favorite')}</h3>
         <h3 className="font-extrabold text-center text-2xl">{t('videos with extra votes!')}</h3>
-        <span className="font-semibold text-center text-2xl">{t('Rp 29,900')}</span>
+        {/* <span className="font-semibold text-center text-2xl">{t('Rp 29,900')}</span> */}
       </div>
       <div className="flex items-center justify-center w-full h-full">
         <div className="flex flex-col space-y-3 items-center text-center">
@@ -93,12 +94,14 @@ export default function ExtraPoints(props) {
             alt=""
             className="w-48 md:w-64"
           />
-          <h3 className="font-extrabold text-2xl text-[#FF00FE] w-3/4 opacity-50">
+          <h3 className="font-extrabold text-2xl text-[#FF00FE] w-3/4">
             {t('500 points')}
           </h3>
-          <span className="font-semibold text-base text-[#23FF2C] w-3/4 opacity-50">
+          <span className="font-semibold text-base text-[#23FF2C] w-3/4">
             {t('Get 500 free points when you upgrade your membership.')}
           </span>
+          <span className="font-semibold text-center text-2xl text-[#FF00FE] mt-3">{t('Rp 29,900')}</span>
+
         </div>
       </div>
       <div className="md:mt-5">

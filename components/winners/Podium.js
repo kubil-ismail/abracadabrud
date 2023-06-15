@@ -7,6 +7,7 @@ import service from 'core/services/publicService';
 import { useEffect } from 'react';
 import SkeletonPodium from 'components/skeleton/SkeletonPodium';
 import { useTranslation } from 'react-i18next';
+import EllipsisText from 'react-ellipsis-text';
 import { useRouter } from 'next/router';
 
 export default function Podium({ title, eventId }) {
@@ -41,7 +42,7 @@ export default function Podium({ title, eventId }) {
       )
       .then((res) => {
         setData(res?.data?.points?.data);
-        setLastPage(res?.data?.data?.points?.last_page);
+        setLastPage(res?.data?.points?.last_page);
       })
       .catch((err) => {
         console.log(err);
@@ -50,6 +51,7 @@ export default function Podium({ title, eventId }) {
         setIsLoading(false);
       });
   }, []);
+
 
   return (
     <div
@@ -95,7 +97,16 @@ export default function Podium({ title, eventId }) {
                   }).format(data[1]?.total_points)} ${t('Points')}`}</h3>
                   <Link href={`/user/${data[1]?.user?.username ?? data[1]?.user_id}`}>
                     <Username
-                      name={data[1]?.user?.contestant?.artist_band_name ?? data[1]?.user?.username}
+                      name={
+                        <EllipsisText
+                        text={
+                          data[1]?.user?.contestant?.artist_band_name ?? data[1]?.user?.username
+                        ?? 'Unknown'
+                        }
+                        length={14}
+                      />
+                        // data[1]?.user?.contestant?.artist_band_name ?? data[1]?.user?.username
+                      }
                       fontStyle={'text-xs font-semibold text-center block'}
                     />
                     {/* <h3 className="text-xs font-semibold text-center">{data[1]?.user?.contestant?.artist_band_name ?? data[1]?.user?.username}</h3> */}
@@ -138,7 +149,15 @@ export default function Podium({ title, eventId }) {
                   }).format(data[0]?.total_points)} ${t('Points')}`}</h3>
                   <Link href={`/user/${data[0]?.user?.username ?? data[0]?.user_id}`}>
                     <Username
-                      name={data[0]?.user?.contestant?.artist_band_name ?? data[0]?.user?.username}
+                      name={
+                            <EllipsisText
+                              text={
+                                    data[0]?.user?.contestant?.artist_band_name ?? data[0]?.user?.username
+                                    ?? 'Unknown'
+                                    }
+                                    length={14}
+                              />
+                              }
                       fontStyle={'text-xs font-semibold text-center block'}
                     />
                     {/* <h3 className="text-xs font-semibold text-center">{data[0]?.user?.contestant?.artist_band_name ?? data[0]?.user?.username}</h3> */}
@@ -175,11 +194,18 @@ export default function Podium({ title, eventId }) {
                     maximumFractionDigits: 1
                   }).format(data[2]?.total_points)} ${t('Points')}`}</h3>
                   <Link href={`/user/${data[2]?.user?.username ?? data[2]?.user_id}`}>
-                    <Username
-                      name={data[2]?.user?.contestant?.artist_band_name ?? data[2]?.user?.username}
-                      fontStyle="text-xs font-semibold text-center block"
+                  <Username
+                      name={
+                            <EllipsisText
+                              text={
+                                data[2]?.user?.contestant?.artist_band_name ?? data[2]?.user?.username
+                                    ?? 'Unknown'
+                                    }
+                                    length={14}
+                              />
+                              }
+                      fontStyle={'text-xs font-semibold text-center block'}
                     />
-                    {/* <h3 className="text-xs font-semibold text-center">{data[2]?.user?.contestant?.artist_band_name ?? data[2]?.user?.username}</h3> */}
                   </Link>
                 </div>
                 <div className="w-full rounded-t-2xl bg-[#0000FF] h-[63px] flex items-center justify-center font-extrabold text-[32px]">

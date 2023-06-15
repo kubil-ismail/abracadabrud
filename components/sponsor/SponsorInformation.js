@@ -22,7 +22,7 @@ export default function SponsorInformation() {
             Connecting Fans, Bands and Brands.
           </h3>
           <span className="text-sm md:text-base w-full">
-            {t('Check out wePOP’s amazing sponsors! Every time you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!')}
+            {t('Check out wePOP’s amazing sponsors! Every day you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!')}
           </span>
         </div>
       </div>

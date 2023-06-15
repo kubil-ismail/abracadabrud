@@ -8,6 +8,7 @@ import service from 'core/services/publicService';
 import SkeletonPodium from 'components/skeleton/SkeletonPodium';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import EllipsisText from 'react-ellipsis-text';
 
 export default function PodiumMostVoted({ title, eventId }) {
   const { t } = useTranslation();
@@ -101,7 +102,15 @@ export default function PodiumMostVoted({ title, eventId }) {
                   ).format(data[1]?.votes)} Vote`}</h3>
                   <Link href={`/user/${data[1]?.username ?? data[1]?.id}`}>
                     <Username
-                      name={data[1]?.contestant?.artist_band_name ?? data[1]?.name}
+                      name= {
+                        <EllipsisText
+                        text={
+                          data[1]?.contestant?.artist_band_name ?? data[1]?.name
+                        ?? 'Unknown'
+                        }
+                        length={14}
+                      />
+                      }
                       fontStyle={'text-xs font-semibold text-center block'}
                     />
                     {/* <h3 className="text-xs font-semibold text-center">{data[1]?.contestant?.artist_band_name ?? data[1]?.name}</h3> */}
@@ -146,10 +155,19 @@ export default function PodiumMostVoted({ title, eventId }) {
                     }
                   ).format(data[0]?.votes)} Vote`}</h3>
                   <Link href={`/user/${data[0]?.username}`}>
-                    <Username
-                      name={data[0]?.contestant?.artist_band_name ?? data[0]?.name}
+                  <Username
+                      name= {
+                        <EllipsisText
+                        text={
+                          data[0]?.contestant?.artist_band_name ?? data[0]?.name
+                        ?? 'Unknown'
+                        }
+                        length={14}
+                      />
+                      }
                       fontStyle={'text-xs font-semibold text-center block'}
                     />
+                    
                     {/* <h3 className="text-xs font-semibold text-center">{data[0]?.contestant?.artist_band_name ?? data[0]?.name}</h3> */}
                   </Link>
                 </div>
@@ -187,11 +205,18 @@ export default function PodiumMostVoted({ title, eventId }) {
                     }
                   ).format(data[2]?.votes)} Vote`}</h3>
                   <Link href={`/user/${data[2]?.username}`}>
-                    <Username
-                      name={data[2]?.contestant?.artist_band_name ?? data[2]?.name}
-                      fontStyle="text-xs font-semibold text-center block"
+                  <Username
+                      name= {
+                        <EllipsisText
+                        text={
+                          data[2]?.contestant?.artist_band_name ?? data[2]?.name
+                        ?? 'Unknown'
+                        }
+                        length={14}
+                      />
+                      }
+                      fontStyle={'text-xs font-semibold text-center block'}
                     />
-                    {/* <h3 className="text-xs font-semibold text-center">{data[2]?.contestant?.artist_band_name ?? data[2]?.name}</h3> */}
                   </Link>
                 </div>
                 <div className="w-full rounded-t-2xl bg-[#0000FF] h-[63px] flex items-center justify-center font-extrabold text-[32px]">

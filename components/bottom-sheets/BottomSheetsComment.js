@@ -215,7 +215,7 @@ export default function BottomSheetsComment({
               {isLoading ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-200"></div>
               ) : (
-                'Load more'
+                `${t('Load more')}`
               )}
             </button>
           )}

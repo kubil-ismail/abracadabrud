@@ -20,7 +20,7 @@ PrivacyPolicy.getLayout = (page, props) => getLayouts(page, 'base', props);
 export async function getServerSideProps({ req, locale }) {
   const privacyPolicy = await service.get(`/concurrent/privacy-policy?language=${locale}`);
 
-  let membershipStatus, config=[], request;
+  let membershipStatus, config = [], request;
   const { isAuthenticated, token } = getCredential({ req });
 
   if (isAuthenticated && token) {

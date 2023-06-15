@@ -445,6 +445,36 @@ const SSServices = {
     } catch (error) {
       return error;
     }
+  },
+  getRunningText: async () => {
+    try {
+      const { data } = await ssApiService.get(
+        `${process.env.NEXT_PUBLIC_SITE_URL}/api/running-text`
+      );
+
+      if (data?.encrypt) {
+        return decrypt(data?.result);
+      }
+
+      return data;
+    } catch (error) {
+      return error;
+    }
+  },
+  getRunningText: async () => {
+    try {
+      const { data } = await ssApiService.get(
+        `${process.env.NEXT_PUBLIC_SITE_URL}/api/running-text`
+      );
+
+      if (data?.encrypt) {
+        return decrypt(data?.result);
+      }
+
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 };
 

@@ -4,8 +4,8 @@ const en = {
   'The weekly prize package includes:': 'The weekly prize package includes:',
   '2 free VIP concert tickets.': '2 free VIP concert tickets.',
   'Backstage tour.': 'Backstage tour.',
-  'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.':
-    'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.',
+  'Meet ‘n greet and selfies with the wePOP stars!':
+    'Meet ‘n greet and selfies with the wePOP stars!',
   'Accommodation and round-trip transport from anywhere in Indonesia.':
     'Accommodation and round-trip transport from anywhere in Indonesia.',
   'Upload your music video. Win the opportunity to perform the opening act at wePOP!':
@@ -18,8 +18,8 @@ const en = {
   'Get the most votes for your music video and win the grand prize... a once-in-a-lifetime opportunity to perform as the opening act at the wePOP concert. Win everything from the weekly prize package above, plus...':
     'Get the most votes for your music video and win the grand prize... a once-in-a-lifetime opportunity to perform as the opening act at the wePOP concert. Win everything from the weekly prize package above, plus...',
   'Rp.100,000,000 cash!': 'Rp.100,000,000 cash!',
-  'Professional photo session with Judika, Rizky Febian, BCL, dan Kahitna.':
-    'Professional photo session with Judika, Rizky Febian, BCL, dan Kahitna.',
+  'Professional photo session with the wePOP stars!.':
+    'Professional photo session with the wePOP stars!',
   'Accommodation and round-trip transport from anywhere in Indonesia for you and/or your band.':
     'Accommodation and round-trip transport from anywhere in Indonesia for you and/or your band.',
   'How to win!': 'How to win!',
@@ -46,7 +46,7 @@ const en = {
   'Vote for the winning video': 'Vote for the winning video',
   'Each vote for the winning video will enter you into another lucky draw. This lucky draw winner will be announced along with the winning video at the end of the competition.':
     'Each vote for the winning video will enter you into another lucky draw. This lucky draw winner will be announced along with the winning video at the end of the competition.',
-  '6 ways to collect more points!': '6 ways to collect more points!',
+  '7 ways to collect more points!': '7 ways to collect more points!',
   Register: 'Register',
   'Get 10 point for completing the abracadabra registration process.':
     'Get 10 point for completing the abracadabra registration process.',
@@ -71,8 +71,8 @@ const en = {
   "It's simple. Upload your performance video to your YouTube channel. Copy and paste the video link from YouTube into the video upload form here.":
     "It's simple. Upload your performance video to your YouTube channel. Copy and paste the video link from YouTube into the video upload form here.",
   'Video Rules': 'Video Rules',
-  "Create a music video in which you sing your own original song or a song from the event's artists: Judika, Rizky Febian, BCL, and Kahitna.":
-    "Create a music video in which you sing your own original song or a song from the event's artists: Judika, Rizky Febian, BCL, and Kahitna.",
+  "Create a music video in which you sing your own original song or a song from the event's artists":
+    "Create a music video in which you sing your own original song or a song from the event's artists",
   'You can perform as a band or perform solo.': 'You can perform as a band or perform solo.',
   'Lip syncing is not allowed. Use your authentic voice.':
     'Lip syncing is not allowed. Use your authentic voice.',
@@ -342,8 +342,8 @@ const en = {
   'Share this video with your friends and earn 5 points for everyone that registered joins the competition':
     'Share this video with your friends and earn 5 points for everyone that registered joins the competition',
   'Video has been played.': 'Video has been played.',
-  'Check out wePOP’s amazing sponsors! Every time you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!':
-    'Check out wePOP’s amazing sponsors! Every time you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!',
+  'Check out wePOP’s amazing sponsors! Every day you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!':
+    'Check out wePOP’s amazing sponsors! Every day you watch one of their videos you will earn 5 points. Use those points to vote and win amazing prizes!',
   'Sponsor Video': 'Sponsor Video',
   'Yay! You have seen it all': 'Yay! You have seen it all',
   '3 June – 21 July 2023': '3 June – 21 July 2023',
@@ -420,7 +420,7 @@ const en = {
   'Please fill your credit card details & agree to the terms and conditions':
     'Please fill your credit card details & agree to the terms and conditions',
   'Cardless Credit': 'Cardless Credit',
-  'Membership Fee': 'Membership Fee',
+  'Upgrade Membership Fee': 'Upgrade Membership Fee',
   'Video Upload Fee': 'Upload Video Fee',
   'Or via link': 'Or via link',
   'Share (Others)': 'Share (Others)',
@@ -815,8 +815,8 @@ const en = {
   'Invalid referral code': 'Invalid referral code',
   'Meet ‘n greet and selfies with the headline artist.':
     'Meet ‘n greet and selfies with the headline artist.',
-  'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.':
-    'Meet ‘n greet and selfies with Judika, Rizky Febian, BCL, and Kahitna.',
+  'Meet ‘n greet and selfies with the wePOP stars!':
+    'Meet ‘n greet and selfies with the wePOP stars!',
   'Already have an account ?': 'Already have an account ?',
   'Profile picture updated': 'Profile picture updated',
   'Profile banner updated': 'Profile banner updated',
@@ -854,7 +854,7 @@ const en = {
   'Watch Sponsor’s Video Daily': 'Watch Sponsor’s Video Daily',
   'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.': 'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.',
   'Complete Survey Questions': 'Complete Survey Questions',
-  'Get 30 points for completing survey questions on “Survey Question” page': 'Get 30 points for completing survey questions on “Survey Question” page',
+  'Get 30 points for completing survey questions on “Survey Question” page.': 'Get 30 points for completing survey questions on “Survey Question” page.',
   'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.': 'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.',
   'Click Here': 'Click Here',
   'Perform at the wePOP concert!': 'Perform at the wePOP concert!',
@@ -938,13 +938,13 @@ const en = {
   'Shower your favorite': 'Shower your favorite',
   'videos with extra votes!': 'videos with extra votes!',
   'Your membership is active': 'Your membership is active',
-  'a hour ago': 'a hours ago',
+  'an hour ago': 'an hours ago',
   '2 hours ago': '2 hours ago',
   '3 hours ago': '3 hours ago',
   '4 hours ago': '4 hours ago',
   '5 hours ago': '5 hours ago',
   '6 hours ago': '6 hours ago',
-  '7 hour ago': '7 hours ago',
+  '7 hours ago': '7 hours ago',
   '8 hours ago': '8 hours ago',
   '9 hours ago': '9 hours ago',
   '10 hours ago': '10 hours ago',
@@ -955,7 +955,7 @@ const en = {
   '15 hours ago': '15 hours ago',
   '16 hours ago': '16 hours ago',
   '17 hours ago': '17 hours ago',
-  '18 hour ago': '18 hours ago',
+  '18 hours ago': '18 hours ago',
   '19 hours ago': '19 hours ago',
   '20 hours ago': '20 hours ago',
   '21 hours ago': '21 hours ago',
@@ -1073,6 +1073,25 @@ const en = {
   'The video you are looking for is not available.': 'The video you are looking for is not available.',
   'There is no event': 'There is no event',
   '1. Open the application that has a QRIS scan feature': '1. Open the application that has a QRIS scan feature',
+  'Buy More Points': 'Buy More Points',
+  'More': 'More',
+  'Video payment has expired': 'Video payment has expired',
+  'Points payment has expired': 'Points payment has expired',
+  'Waiting for points payment': 'Waiting for points payment',
+  'Points payment has been cancelled': 'Points payment has been cancelled',
+  'Mark all as read': 'Mark all as read',
+  'Sponsor video has been played': 'Sponsor video has been played',
+  'Video Vote History': 'Video Vote History',
+  'Activities': 'Activities',
+  'Point History': 'Point History',
+  'Event List': 'Event List',
+  'History': 'History',
+  'Video payment has been cancelled': 'Video payment has been cancelled',
+  'The current event has ended': 'The current event has ended',
+  'Buy Ticket wePOP: Come Together Here': 'Buy Ticket wePOP: Come Together Here',
+  'Buy Now': 'Buy Now',
+
+
 };
 
 export default en;

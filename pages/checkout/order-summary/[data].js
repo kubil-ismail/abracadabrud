@@ -14,6 +14,7 @@ export default function OrderSummary(props) {
     props.data;
   // const [dataVideo, dataMembership, dataPoints] = props.global;
   console.log('props', props);
+  const params = props?.params;
   const dispatch = useDispatch();
 
   // const detail = () => {
@@ -36,7 +37,6 @@ export default function OrderSummary(props) {
   };
 
   const router = useRouter();
-  console.log('parsing', parsing);
 
   return (
     <div className="flex flex-col gap-10">
@@ -112,7 +112,8 @@ export const getServerSideProps = async ({ req, params }) => {
           myPoints: data?.[2] ?? {},
           allEvents: data?.[0] ?? {},
           membershipStatus: membershipStatus ?? {}
-        }
+        },
+        params
       }
     };
   } catch (error) {

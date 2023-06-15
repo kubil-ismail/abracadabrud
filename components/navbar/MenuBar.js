@@ -29,6 +29,7 @@ export default function MenuBar(props) {
   const { isAuthenticated, token, user } = useSelector((state) => state.authentication);
   const events = props?.allEvents;
   const dataMembershipStatus = props?.membershipStatus;
+  const [runningText, setRunningText] = useState([]);
 
   console.log('events', events);
 
@@ -50,6 +51,14 @@ export default function MenuBar(props) {
         dispatch(setModal({ name: 'modalLogin', value: true }));
       }
     }
+
+    SSServices.getRunningText()
+      .then((result) => {
+        console.log('result', result);
+        setRunningText(result?.data || []);
+      }).catch(() => {
+        setRunningText([]);
+      })
   }, [router.pathname]);
 
   const checkCanUpload = () => {
@@ -66,16 +75,13 @@ export default function MenuBar(props) {
                 deleteCookie('payment');
                 setCookie(
                   'payment',
-                  JSON.stringify({
-                    ...{ video_id: pending?.video_id, id: pending?.id },
-                    ...{ payment_for: 'video_upload' }
-                  })
+                  JSON.stringify({ payment_for: 'video_upload' })
                 );
-                dispatch(setData(pending));
+                dispatch(setData({}));
                 dispatch(setPaymentFor('video_upload'));
 
                 router.push(
-                  `/checkout/order-summary/${Paramcrypt.encode(result?.data?.video_payment_id ?? new Date().toDateString())}`
+                  '/checkout'
                 );
               })
               .catch(() => {
@@ -116,7 +122,7 @@ export default function MenuBar(props) {
     <div className="w-full flex items-center justify-center bg-[#363636] fixed bottom-0 left-0 right-0 z-30">
       <div className="w-full z-30 max-w-[440px]">
         <div className="flex flex-col">
-          <RunningText />
+          <RunningText text={runningText} />
           <div className="p-3 grid grid-cols-5 gap-2 text-slate-50 w-full">
             <Link href="/">
               <div className="flex flex-col gap-1 items-center text-slate-50">

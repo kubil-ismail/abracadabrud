@@ -1,11 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import axios from 'axios';
+import getCredential from 'core/services/helpers/getCredential';
 import { encrypt } from 'lib/Aes.v2';
 
 export default function handler(req, res) {
+  const { _token } = getCredential({ req }) || {};
+
   if (req.method !== 'GET') {
     res.status(400).json({
-      message: "Page not found"
+      message: 'Page not found'
     });
   }
 
@@ -23,7 +26,8 @@ export default function handler(req, res) {
         start_date,
         end_date,
         event_id
-      }
+      },
+      headers: { Authorization: _token ? `Bearer ${_token}` : null }
     })
     .then((result) => {
       res.status(200).json({

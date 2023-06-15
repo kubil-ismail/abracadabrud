@@ -1,8 +1,17 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /checkout/*
+Allow: /event/*
+Allow: /faq/*
+Disallow: /my-account/*
+Disallow: /premium-access/*
 Allow: /referral/*
+Allow: /sponsor/*
+Allow: /support/*
+Allow: /survey-question/*
+Allow: /upgrade-membership/*
+Allow: /upload/*
+Allow: /user/*
 Allow: /video/*
-
-
-
+Allow: /winners/*

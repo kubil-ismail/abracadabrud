@@ -93,7 +93,7 @@ export default function SponsorVideo({
             width="100%"
             height="100%"
             light
-            playing
+            playing={playing}
             // light={playing ? false : true}
             className="w-full h-full"
             // playing={mode === 'feed' ? playing : true}
@@ -117,21 +117,25 @@ export default function SponsorVideo({
             muted={!hasSound}
             onEnded={() => {
               if (token && isAuthenticated && allEvents?.data?.data?.length) {
-                SSServices.watchAds({ id })
-                  .then((response) => {
-                    if (response?.error === 'user already watched an ads today') {
-                      toast.info(t('user already watched an ads today'));
-                    } else {
-                      dispatch(setSponsorPlayed(id));
-                      SSServices.getMyPoints({ client: true }).then((result) => {
-                        dispatch(setPoint(result?.data));
-                        toast.success(t('Success get points from watch sponsor video.'));
-                      });
-                    }
-                  })
-                  .catch(() => {
-                    toast.error(t('Failed get points from watch sponsor video.'));
-                  });
+                if (hasPlay || alreadyWatched) {
+                  toast.info(t('user already watched an ads today'));
+                } else {
+                  SSServices.watchAds({ id })
+                    .then((response) => {
+                      if (response?.error === 'user already watched an ads today') {
+                        toast.info(t('user already watched an ads today'));
+                      } else {
+                        dispatch(setSponsorPlayed(id));
+                        SSServices.getMyPoints({ client: true }).then((result) => {
+                          dispatch(setPoint(result?.data));
+                          toast.success(t('Success get points from watch sponsor video.'));
+                        });
+                      }
+                    })
+                    .catch(() => {
+                      toast.error(t('Failed get points from watch sponsor video.'));
+                    });
+                }
               }
             }}
           />
@@ -168,15 +172,15 @@ export default function SponsorVideo({
       </div>
 
       {!isImage && (
-        <div className="flex flex-col space-y-1 px-4 pb-4 mt-4">
-          <span className="text-sm font-semibold text-slate-50 two-line">{title}</span>
+        <div className="flex flex-col space-y-1 p-5 md:px-5 md:py-4">
+          <span className="text-base font-semibold text-slate-50 two-line">{title}</span>
           {hasPlay || alreadyWatched ? (
             <span className="text-[10px] flex gap-1">
               <AiFillCheckCircle className="text-lime-500" />
               {t('Sponsor video has been played')}
             </span>
           ) : (
-            <span className="text-[10px] flex gap-1">
+            <span className="text-[10px] md:text-xs w-full md:max-w-md">
               {t(
                 'Watch this sponsor video until the end and collect 5 points. Watch it again tomorrow and get another 5 points!'
               )}

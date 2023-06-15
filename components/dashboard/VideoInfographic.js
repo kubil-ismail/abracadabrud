@@ -62,7 +62,7 @@ export default function VideoInfographic() {
               className="aspect-video rounded-t-[16px] overflow-hidden"
             />
           </div>
-          <div className="bg-zinc-800 p-4 md:p-5 flex flex-col space-y-1 rounded-b-[16px] h-full">
+          <div className="bg-zinc-800 p-4 md:py-5 md:px-6 flex flex-col space-y-1 rounded-b-[16px] h-full">
             <h3 className="text-base md:text-lg font-extrabold w-full uppercase md:w-[90%]">
               {t('How to vote, share and win amazing prizes!')}
             </h3>
