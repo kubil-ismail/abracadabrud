@@ -104,11 +104,16 @@ export default function CardVideo() {
       setIsMuted(true);
     }
 
-    service.get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/shuffle-data-video-ads`).finally(() => {
-      dispatch(setFilterContent('default'));
-      setFresh(true);
-    });
-  }, []);
+    service
+      .get(
+        `${process.env.NEXT_PUBLIC_SITE_URL}/api/shuffle-data-video-ads?sort=other&search=${
+          router?.query?.keyword ?? 'qwertyuiop[]'
+        }`
+      )
+      .finally(() => {
+        setFresh(true);
+      });
+  }, [router]);
 
   useEffect(() => {
     if (fresh) {
@@ -127,13 +132,6 @@ export default function CardVideo() {
 
   useEffect(() => {
     if (filterContent && filterContent !== 'other' && filterContent !== 'events') {
-      setPage(1);
-      dispatch(
-        setFilterLoading({
-          loading: true,
-          type: filterContent?.type ?? filterContent
-        })
-      );
       if (filterContent?.type === 'search') {
         service
           .get(
@@ -202,36 +200,9 @@ export default function CardVideo() {
               })
             );
           });
-      } else {
-        service
-          .get(
-            `${process.env.NEXT_PUBLIC_SITE_URL}/api/shuffle-data-video-ads?sort=${filterContent}`
-          )
-          .finally(() => {
-            setFresh(true);
-            dispatch(
-              setFilterLoading({
-                loading: false,
-                type: filterContent?.type ?? filterContent
-              })
-            );
-          });
       }
     }
   }, [filterContent]);
-
-  useEffect(() => {
-    if (router?.query?.search) {
-      dispatch(
-        setFilterContent({
-          type: 'search',
-          value: router?.query?.search
-        })
-      );
-
-      // router.replace('/', undefined, { shallow: true });
-    }
-  }, []);
 
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   // on resize

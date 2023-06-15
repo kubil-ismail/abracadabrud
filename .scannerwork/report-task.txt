@@ -1,0 +1,6 @@
+projectKey=Abracadabra
+serverUrl=http://localhost:9000
+serverVersion=10.0.0.68432
+dashboardUrl=http://localhost:9000/dashboard?id=Abracadabra
+ceTaskId=AYdw55Gu9EOHhR9rdsnX
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYdw55Gu9EOHhR9rdsnX

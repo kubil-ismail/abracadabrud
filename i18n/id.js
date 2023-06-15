@@ -829,37 +829,52 @@ const id = {
   'Premium Backstage Access': 'Akses Premium Belakang Layar',
   'Extra Points Fee': 'Biaya Tambahan Poin',
   '2. The Gojek app will open.': '2. Aplikasi Gojek akan terbuka.',
-  "Gojek Pay Now": "Bayar dengan Gojek",
+  'Gojek Pay Now': 'Bayar dengan Gojek',
   'user already watched an ads today': 'video sponsor sudah dilihat hari ini',
   // new
   'Use your points to vote!': 'Gunakan poinmu untuk voting!',
-  'Each vote for the winning video automatically enters you into an extra lucky draw.': 'Setiap vote untuk video pemenang akan secara otomatis memasukkan kamu ke dalam ekstra lucky draw.',
-  'The extra lucky draw winner will be announced along with the winning video at the end of the competition.': 'Pemenang ekstra lucky draw akan diumumkan bersamaan dengan video pemenang pada akhir kompetisi.',
+  'Each vote for the winning video automatically enters you into an extra lucky draw.':
+    'Setiap vote untuk video pemenang akan secara otomatis memasukkan kamu ke dalam ekstra lucky draw.',
+  'The extra lucky draw winner will be announced along with the winning video at the end of the competition.':
+    'Pemenang ekstra lucky draw akan diumumkan bersamaan dengan video pemenang pada akhir kompetisi.',
   'Every week there are 2 winners.': 'Terdapat 2 pemenang di setiap minggunya.',
   'The weekly lucky draw winner!': 'Pemenang lucky draw mingguan!',
-  'Everyone can win. Each point you collect will automatically enter you in the weekly lucky draw. The more points you have the greater your chances are to win.': 'Semua orang memiliki kesempatan untuk menang. Setiap poin yang Kamu kumpulkan secara otomatis akan memasukkan Kamu dalam lucky draw mingguan. Semakin banyak poin yang Kamu miliki, semakin besar kesempatan Kamu untuk menang.',
+  'Everyone can win. Each point you collect will automatically enter you in the weekly lucky draw. The more points you have the greater your chances are to win.':
+    'Semua orang memiliki kesempatan untuk menang. Setiap poin yang Kamu kumpulkan secara otomatis akan memasukkan Kamu dalam lucky draw mingguan. Semakin banyak poin yang Kamu miliki, semakin besar kesempatan Kamu untuk menang.',
   'The weekly most point winner!': 'Pemenang dengan poin tertinggi mingguan!',
-  'Collect the most points. Each week the player with the most points wins amazing prizes.': 'Kumpulkan poin sebanyak-banyaknya. Setiap minggu, pengguna dengan poin tertinggi akan memenangkan hadiah-hadiah menarik.',
-  'Get 10 points for completing the abracadabra registration process.': 'Dapatkan 10 poin setelah menyelesaikan pendaftaran di abracadabra.',
+  'Collect the most points. Each week the player with the most points wins amazing prizes.':
+    'Kumpulkan poin sebanyak-banyaknya. Setiap minggu, pengguna dengan poin tertinggi akan memenangkan hadiah-hadiah menarik.',
+  'Get 10 points for completing the abracadabra registration process.':
+    'Dapatkan 10 poin setelah menyelesaikan pendaftaran di abracadabra.',
   'Watch Sponsor’s Video Daily': 'Tontonlah Video Sponsor',
-  'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.': 'Dapatkan 50 poin setiap penggunaan link referral kamu ketika daftar abracadabra.',
+  'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.':
+    'Dapatkan 50 poin setiap penggunaan link referral kamu ketika daftar abracadabra.',
   'Complete Survey Questions': 'Lengkapi Pertanyaan Survei',
-  'Get 30 points for completing survey questions on “Survey Question” page.': 'Dapatkan 30 poin untuk menyelesaikan pertanyaan survei.',
-  'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.': 'Dapatkan akses premium backstage dan ekstra 500 poin kalau kamu upgrade membership ke Premium.',
+  'Get 30 points for completing survey questions on “Survey Question” page.':
+    'Dapatkan 30 poin untuk menyelesaikan pertanyaan survei.',
+  'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.':
+    'Dapatkan akses premium backstage dan ekstra 500 poin kalau kamu upgrade membership ke Premium.',
   'Click Here': 'Klik di sini',
   'Perform at the wePOP concert!': 'Tampil sebagai opening act di wePOP!',
-  'Upload your music video. Get the most votes for your music video and join your idols on stage.': 'Unggah video musikmu. Dapatkan vote terbanyak untuk video musikmu dan bergabunglah dengan idolamu di panggung.',
+  'Upload your music video. Get the most votes for your music video and join your idols on stage.':
+    'Unggah video musikmu. Dapatkan vote terbanyak untuk video musikmu dan bergabunglah dengan idolamu di panggung.',
   'Grand prize includes…': 'Hadiahnya termasuk...',
-  'plus a Rp. 25,000,000 scholarship to a top music school.': 'plus beasiswa sekolah musik terkenal sebesar Rp 25.000.000.',
-  'Accommodation and round-trip transport from anywhere in Indonesia for you and your band.': 'Akomodasi dan transportasi pulang-pergi dari mana saja di Indonesia untukmu dan band kamu.',
-  'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info': 'Bergabunglah bersama kami di belakang panggung wePOP! Tingkatkan akun Kamu menjadi Premium dan nikmati akses belakang panggung premium secara siaran langsung (LIVE) online bersama kami di konser wePOP pada tanggal 6 Agustus, untuk info lebih lanjut',
+  'plus a Rp. 25,000,000 scholarship to a top music school.':
+    'plus beasiswa sekolah musik terkenal sebesar Rp 25.000.000.',
+  'Accommodation and round-trip transport from anywhere in Indonesia for you and your band.':
+    'Akomodasi dan transportasi pulang-pergi dari mana saja di Indonesia untukmu dan band kamu.',
+  'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info':
+    'Bergabunglah bersama kami di belakang panggung wePOP! Tingkatkan akun Kamu menjadi Premium dan nikmati akses belakang panggung premium secara siaran langsung (LIVE) online bersama kami di konser wePOP pada tanggal 6 Agustus, untuk info lebih lanjut',
   'click here.': 'klik di sini.',
   'Receive exclusive backstage content': 'Dapatkan konten eksklusif belakang panggung',
-  'Get exclusive access to photos and videos backstage as performers rehearse and prepare for the big event.': 'Dapatkan akses foto dan video eksklusif di backstage saat para artis bersiap untuk konser.',
+  'Get exclusive access to photos and videos backstage as performers rehearse and prepare for the big event.':
+    'Dapatkan akses foto dan video eksklusif di backstage saat para artis bersiap untuk konser.',
   '500 points': '500 points',
-  'Get 500 free points when you upgrade your membership.': 'Dapatkan 500 poin gratis saat kamu meningkatkan keanggotaanmu.',
+  'Get 500 free points when you upgrade your membership.':
+    'Dapatkan 500 poin gratis saat kamu meningkatkan keanggotaanmu.',
   'More chances to win': 'Tingkatkan kesempatan untuk menang',
-  'Each task you complete as a premium member will earn you double points.': 'Setiap tugas yang kamu selesaikan sebagai anggota premium akan memberi kamu poin ganda.',
+  'Each task you complete as a premium member will earn you double points.':
+    'Setiap tugas yang kamu selesaikan sebagai anggota premium akan memberi kamu poin ganda.',
   'Additional information': 'Informasi tambahan',
   'Change password': 'Ganti kata sandi',
   'Performer profile  & Add band member': 'Profil Performer & Tambah anggota band',
@@ -871,8 +886,10 @@ const id = {
   'Social media accounts': 'Akun media sosial',
   'Exciting gifts from wePOP sponsors': 'Hadiah menarik dari sponsor wePOP',
   'Link copied to clipboard': 'Berhasil salin tautan ke papan klip',
-  "You'll be logged out from abracadabra. Are you sure?": "Kamu akan keluar dari abracadabra, Kamu yakin?",
-  'Collect as many points as you can! Use your points to vote for your favorite video and win amazing prizes every week!': 'Kumpulkan poin Sebanyak banyaknya! Gunakan poin itu untuk memilih video favoritmu dan memenangkan hadiah keren tiap minggunya!',
+  "You'll be logged out from abracadabra. Are you sure?":
+    'Kamu akan keluar dari abracadabra, Kamu yakin?',
+  'Collect as many points as you can! Use your points to vote for your favorite video and win amazing prizes every week!':
+    'Kumpulkan poin Sebanyak banyaknya! Gunakan poin itu untuk memilih video favoritmu dan memenangkan hadiah keren tiap minggunya!',
   'Points awarded for completing your Registration.':
     'Poin diberikan karena berhasil menyelesaikan pendaftaran ke abracadabra.',
   'Points awarded for becoming Premium Member.':
@@ -887,7 +904,7 @@ const id = {
     'Poin diberikan karena menyelesaikan bagian ‘Info Tambahan’ di halaman ‘Akun Saya’.',
   'Points awarded for completing Survey Questions section on your My Account page.':
     'Poin diberikan karena menyelesaikan bagian ‘Pertanyaan Survei’ di halaman ‘Survey’.',
-  'Never': 'Tidak pernah',
+  Never: 'Tidak pernah',
   'Once Year': 'Setahun satu kali',
   'Once a Month': 'Sebulan satu kali',
   'More than Once a Month': 'Sebulan beberapa kali',
@@ -895,14 +912,14 @@ const id = {
   'Once every 6 months': 'Enam bulan sekali',
   'Stadium/Larger Venue': 'Stadium / Tempat yang besar',
   'Smaller and More intimate Venue': 'Tempat yang lebih kecil/intim',
-  'Both': 'Keduanya',
-  'Youtube': 'Youtube',
-  'Instagram': 'Instagram',
-  'Tiktok': 'Tiktok',
-  'Twitter': 'Twitter',
-  'Facebook': 'Facebook',
-  'Line': 'Line',
-  'Other': 'Lainnya',
+  Both: 'Keduanya',
+  Youtube: 'Youtube',
+  Instagram: 'Instagram',
+  Tiktok: 'Tiktok',
+  Twitter: 'Twitter',
+  Facebook: 'Facebook',
+  Line: 'Line',
+  Other: 'Lainnya',
   'From a friend': 'Dari teman',
   'From the artist': 'Dari artis',
   'From the news': 'Dari berita',
@@ -912,7 +929,7 @@ const id = {
   'From Twitter': 'Dari Twitter',
   'From Facebook': 'Dari Facebook',
   'From Line': 'Dari Line',
-  'Other': 'Lainnya',
+  Other: 'Lainnya',
   'Points awarded for buying points.': 'Poin diberikan karena membeli poin tambahan.',
   'You don’t have any notification': 'tidak ada pemberitahuan saat ini',
   'This user haven’t uploaded a video': 'Pengguna in belum mengunggah video',
@@ -922,8 +939,9 @@ const id = {
   'Waiting for membership payment': 'Menunggu pembayaran membership',
   'Waiting for upload video payment': 'Menunggu pembayaran uplado video',
   'You received': 'Kamu menerima',
-  'from': 'dari',
-  'Please complete the payment with the information below before': 'Silahkan lengkapi pembayaran dengan informasi di bawah ini sebelum',
+  from: 'dari',
+  'Please complete the payment with the information below before':
+    'Silahkan lengkapi pembayaran dengan informasi di bawah ini sebelum',
   'Buy Extra Points Now!': 'Beli Poin Ekstra Sekarang!',
   'Shower your favorite': 'Berikan ekstra Vote kepada',
   'videos with extra votes!': 'video favorit Anda!',
@@ -1063,9 +1081,10 @@ const id = {
   '5 year ago': '5 tahun yang lalu',
   'The video you are looking for is not available.': 'Video yang kamu cari tidak tersedia.',
   'There is no event': 'Tidak ada event yang sedang berjalan',
-  '1. Open the application that has a QRIS scan feature': '1. Buka aplikasi pembayaran yang memiliki fitur scan QRIS.',
+  '1. Open the application that has a QRIS scan feature':
+    '1. Buka aplikasi pembayaran yang memiliki fitur scan QRIS.',
   'Buy More Points': 'Beli Lebih Banyak Poin',
-  'More': 'Muat lebih banyak',
+  More: 'Muat lebih banyak',
   'Video payment has expired': 'Pembayaran Video telah kadulawarsa',
   'Points payment has expired': 'Pembayaran Pembelian Poin telah kadaluwarsa',
   'Waiting for points payment': 'Menunggu pembayaran pembelian poin',
@@ -1073,18 +1092,15 @@ const id = {
   'Mark all as read': 'Tandai semua telah dibaca',
   'Sponsor video has been played': 'Video sponsor telah ditonton',
   'Video Vote History': 'Riwayat Vote Video',
-  'Activities': 'Aktifitas',
+  Activities: 'Aktifitas',
   'Point History': 'Riwayat Poin',
   'Event List': 'Daftar Event',
-  'History': 'Riwayat',
+  History: 'Riwayat',
   'Video payment has been cancelled': 'Pembayaran Video telah dibatalkan',
   'The current event has ended': 'Event telah berakhir',
   'Buy Ticket wePOP: Come Together Here': 'Beli Tiket wePOP: Come Toghether Disini',
   'Buy Now': 'Beli Sekarang',
-
-  
-
-
+  'Latest video': 'Video terbaru'
 };
 
 

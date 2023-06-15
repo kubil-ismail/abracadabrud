@@ -73,7 +73,7 @@ export default function ForgotPasswordModal({ onClose }) {
           `${t('Too many attempts')}, ${t('please try again in')} ${timer} ${t('seconds')}`
         );
       }
-      if (error?.data?.message?.includes('user_not_found')) {
+      if (error?.message?.includes('user_not_found')) {
         setErrorEmail('Email not found');
       }
     }

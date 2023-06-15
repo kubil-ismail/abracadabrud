@@ -1,0 +1,102 @@
+stages:
+  - build
+  - deploy
+  - development
+  - staging
+
+variables:
+  ECR_IMAGE: $ECR_IMAGE
+  ECR_REGISTRY: $ECR_REGISTRY
+  AWS_DEFAULT_REGION: ap-southeast-3
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  PROJECT_LOCATION_DEV: ~/repo/development/fe-abracadabra/
+  PROJECT_LOCATION_STAGING: ~/repo/staging/fe-abracadabra/
+
+deploy-development:
+  stage: development
+  tags:
+    - aeo-runner-staging
+  image: alpine:latest
+  cache: {}
+  before_script:
+    - apk add --no-cache openssh-client ca-certificates bash rsync curl
+    - eval $(ssh-agent -s)
+    - /bin/bash -c 'ssh-add <(echo "$SERVER_SECRET_KEY")'
+  script:
+    - set -e
+    - cp devops/.env.development ./.env
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avrc --delete . $DEPLOY_STAGING_USER@$DEPLOY_STAGING_HOST:$PROJECT_LOCATION_DEV
+    - >
+      ssh -t $DEPLOY_STAGING_USER@$DEPLOY_STAGING_HOST "
+      cd $PROJECT_LOCATION_DEV/devops ;
+      docker-compose -f docker-compose-development.yml up --build -d ;
+      " || { echo "Failed!" && curl -X POST -H 'Content-Type: application/json' -d '{"content": "Build failed on branch '"$CI_COMMIT_BRANCH"' in project '"$CI_PROJECT_PATH"'!"}' $DISCORD_WEBHOOK_URL; exit 1; }
+    - sleep 5
+    - chmod +x ./devops/discord.sh && sh ./devops/discord.sh development
+  only:
+    - development
+  
+deploy-staging:
+  stage: staging
+  tags:
+    - aeo-runner-staging
+  image: alpine:latest
+  cache: {}
+  before_script:
+    - apk add --no-cache openssh-client ca-certificates bash rsync curl
+    - eval $(ssh-agent -s)
+    - /bin/bash -c 'ssh-add <(echo "$SERVER_SECRET_KEY")'
+  script:
+    - cp devops/.env.staging ./.env
+    - rsync -e "ssh -o StrictHostKeyChecking=no" -avrc --delete . $DEPLOY_STAGING_USER@$DEPLOY_STAGING_HOST:$PROJECT_LOCATION_STAGING
+    - >
+      ssh -t $DEPLOY_STAGING_USER@$DEPLOY_STAGING_HOST "
+      cd $PROJECT_LOCATION_STAGING/devops ;
+      docker-compose -f docker-compose-staging.yml up --build -d ;
+      " || { echo "Failed!" && curl -X POST -H 'Content-Type: application/json' -d '{"content": "Build failed on branch '"$CI_COMMIT_BRANCH"' in project '"$CI_PROJECT_PATH"'!"}' $DISCORD_WEBHOOK_URL; exit 1; }
+    - sleep 5
+    - chmod +x ./devops/discord.sh && sh ./devops/discord.sh staging
+  only:
+    - staging
+
+build:production:
+  stage: build
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  services:
+    - docker:dind
+  before_script:
+    - amazon-linux-extras install docker
+    - aws --version
+    - docker --version
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+    - export APP_VERSION=${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}
+  script:
+    - cp devops/.env.production ./.env
+    - docker pull $ECR_IMAGE:latest || true
+    - docker build --cache-from $ECR_IMAGE:latest -t $ECR_IMAGE:${APP_VERSION} -t $ECR_IMAGE:latest .
+    - docker push $ECR_IMAGE:${APP_VERSION}
+    - docker push $ECR_IMAGE:latest
+  only:
+    - production
+
+deploy:production:
+  stage: deploy
+  needs: ["build:production"]
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  before_script:
+    - yum install -y gettext
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+    - mv ./kubectl /usr/local/bin/kubectl
+  script:
+    - export APP_VERSION=${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}
+    - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name aeo-eks-prod-cluster
+    - cd devops/k8s/ && for f in alb.yaml; do envsubst < $f | kubectl apply -f -; done
+  only:
+    - production

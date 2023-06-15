@@ -57,10 +57,11 @@ export default function SortByFilter() {
               className="text-[14px] m-0"
             />
             <Image
-            src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/chevron-down.png`}
-            alt="chevron"
-            width={24}
-            height={24} />
+              src={`${process.env.NEXT_PUBLIC_ASSET_URL}/assets/images/chevron-down.png`}
+              alt="chevron"
+              width={24}
+              height={24}
+            />
           </Menu.Button>
         </div>
         <Transition
@@ -84,6 +85,16 @@ export default function SortByFilter() {
                     filterContentLoading?.type === 'default' && filterContentLoading?.loading,
                   onClick: () => {
                     dispatch(setFilterContent('default'));
+                  }
+                },
+                {
+                  id: 'latest_submission',
+                  name: 'Latest video',
+                  isLoading:
+                    filterContentLoading?.type === 'latest_submission' &&
+                    filterContentLoading?.loading,
+                  onClick: () => {
+                    dispatch(setFilterContent('latest_submission'));
                   }
                 },
                 {

@@ -198,16 +198,18 @@ export default function Navbar(props) {
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               setOpenSidebar(false);
-                              dispatch(
-                                setFilterContent({
-                                  type: 'search',
-                                  value: keyword
-                                })
-                              );
+                              // dispatch(
+                              //   setFilterContent({
+                              //     type: 'search',
+                              //     value: keyword
+                              //   })
+                              // );
 
-                              // handle if search not in home
-                              if (router.pathname !== '/') {
-                                //  router.push(`/?search=${keyword}`);
+                              if(keyword.length >=2)
+                              {
+                                router.push(`/search?keyword=${keyword}`);
+                              } else {
+                                router.push(`/search`);
                               }
                             }
                           }}
@@ -220,16 +222,17 @@ export default function Navbar(props) {
                             height={20}
                             onClick={() => {
                               setOpenSidebar(false);
-                              dispatch(
-                                setFilterContent({
-                                  type: 'search',
-                                  value: keyword
-                                })
-                              );
+                              // dispatch(
+                              //   setFilterContent({
+                              //     type: 'search',
+                              //     value: keyword
+                              //   })
+                              // );
 
-                              // handle if search not in home
-                              if (router.pathname !== '/') {
-                                // router.push(`/?search=${keyword}`);
+                              if (keyword.length >= 2) {
+                                router.push(`/search?keyword=${keyword}`);
+                              } else {
+                                router.push(`/search`);
                               }
                             }}
                           />

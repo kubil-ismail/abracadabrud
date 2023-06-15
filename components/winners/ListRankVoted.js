@@ -38,7 +38,10 @@ export default function ListRankVoted({ data, current, last, loading, handleNext
       .get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/me/videos`)
       .then((res) => {
         // get last video
-        setVideos(res?.data?.data?.videos[res?.data?.data?.videos.length - 1]);
+        setVideos(
+          res?.data?.data?.videos[res?.data?.data?.videos.length - 1] ??
+            res?.data?.videos[res?.data?.videos?.length - 1]
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -91,6 +94,8 @@ THANKS!
       document.body.style.overflow = 'auto';
     }
   });
+
+  console.log('videos', videos);
 
   return (
     <div className="flex flex-col space-y-3">

@@ -843,33 +843,48 @@ const en = {
   '2. The Gojek app will open.': '2. The Gojek app will open.',
   // new
   'Use your points to vote!': 'Use your points to vote!',
-  'Each vote for the winning video automatically enters you into an extra lucky draw.': 'Each vote for the winning video automatically enters you into an extra lucky draw.',
-  'The extra lucky draw winner will be announced along with the winning video at the end of the competition.': 'The extra lucky draw winner will be announced along with the winning video at the end of the competition.',
+  'Each vote for the winning video automatically enters you into an extra lucky draw.':
+    'Each vote for the winning video automatically enters you into an extra lucky draw.',
+  'The extra lucky draw winner will be announced along with the winning video at the end of the competition.':
+    'The extra lucky draw winner will be announced along with the winning video at the end of the competition.',
   'Every week there are 2 winners.': 'Every week there are 2 winners.',
   'The weekly lucky draw winner!': 'The weekly lucky draw winner!',
-  'Everyone can win. Each point you collect will automatically enter you in the weekly lucky draw. The more points you have the greater your chances are to win.': 'Everyone can win. Each point you collect will automatically enter you in the weekly lucky draw. The more points you have the greater your chances are to win. ',
+  'Everyone can win. Each point you collect will automatically enter you in the weekly lucky draw. The more points you have the greater your chances are to win.':
+    'Everyone can win. Each point you collect will automatically enter you in the weekly lucky draw. The more points you have the greater your chances are to win. ',
   'The weekly most point winner!': 'The weekly most point winner!',
-  'Collect the most points. Each week the player with the most points wins amazing prizes.': 'Collect the most points. Each week the player with the most points wins amazing prizes.',
-  'Get 10 points for completing the abracadabra registration process.': 'Get 10 points for completing the abracadabra registration process.',
+  'Collect the most points. Each week the player with the most points wins amazing prizes.':
+    'Collect the most points. Each week the player with the most points wins amazing prizes.',
+  'Get 10 points for completing the abracadabra registration process.':
+    'Get 10 points for completing the abracadabra registration process.',
   'Watch Sponsor’s Video Daily': 'Watch Sponsor’s Video Daily',
-  'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.': 'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.',
+  'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.':
+    'Get 50 points for you and 25 for your friend, when a friend uses your referral link to register an abracadabra account.',
   'Complete Survey Questions': 'Complete Survey Questions',
-  'Get 30 points for completing survey questions on “Survey Question” page.': 'Get 30 points for completing survey questions on “Survey Question” page.',
-  'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.': 'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.',
+  'Get 30 points for completing survey questions on “Survey Question” page.':
+    'Get 30 points for completing survey questions on “Survey Question” page.',
+  'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.':
+    'Enjoy backstage access online and receive 500 extra points to vote for your favorite videos.',
   'Click Here': 'Click Here',
   'Perform at the wePOP concert!': 'Perform at the wePOP concert!',
-  'Upload your music video. Get the most votes for your music video and join your idols on stage.': 'Upload your music video. Get the most votes for your music video and join your idols on stage.',
+  'Upload your music video. Get the most votes for your music video and join your idols on stage.':
+    'Upload your music video. Get the most votes for your music video and join your idols on stage.',
   'Grand prize includes…': 'Grand prize includes…',
-  'plus a Rp. 25,000,000 scholarship to a top music school.': 'plus a Rp. 25,000,000 scholarship to a top music school.',
-  'Accommodation and round-trip transport from anywhere in Indonesia for you and your band.': 'Accommodation and round-trip transport from anywhere in Indonesia for you and your band.',
-  'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info': 'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info',
+  'plus a Rp. 25,000,000 scholarship to a top music school.':
+    'plus a Rp. 25,000,000 scholarship to a top music school.',
+  'Accommodation and round-trip transport from anywhere in Indonesia for you and your band.':
+    'Accommodation and round-trip transport from anywhere in Indonesia for you and your band.',
+  'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info':
+    'Join us backstage at wePOP! Upgrade your profile to a Premium Membership and enjoy premium backstage access online with us live from the wePOP concert on August 6th. For more info',
   'click here.': 'click here',
   'Receive exclusive backstage content': 'Receive exclusive backstage content',
-  'Get exclusive access to photos and videos backstage as performers rehearse and prepare for the big event.': 'Get exclusive access to photos and videos backstage as performers rehearse and prepare for the big event.',
+  'Get exclusive access to photos and videos backstage as performers rehearse and prepare for the big event.':
+    'Get exclusive access to photos and videos backstage as performers rehearse and prepare for the big event.',
   '500 points': '500 points',
-  'Get 500 free points when you upgrade your membership.': 'Get 500 free points when you upgrade your membership.',
+  'Get 500 free points when you upgrade your membership.':
+    'Get 500 free points when you upgrade your membership.',
   'More chances to win': 'More chances to win',
-  'Each task you complete as a premium member will earn you double points.': 'Each task you complete as a premium member will earn you double points.',
+  'Each task you complete as a premium member will earn you double points.':
+    'Each task you complete as a premium member will earn you double points.',
   'Additional information': 'Additional information',
   'Change password': 'Change password',
   'Performer profile  & Add band member': 'Performer profile  & Add band member',
@@ -881,23 +896,23 @@ const en = {
   'Social media accounts': 'Social media accounts',
   'Exciting gifts from wePOP sponsors': 'Exciting gifts from wePOP sponsors',
   'Link copied to clipboard': 'Link copied to clipboard',
-  "You'll be logged out from abracadabra. Are you sure?": "You'll be logged out from abracadabra. Are you sure?",
-  'Collect as many points as you can! Use your points to vote for your favorite video and win amazing prizes every week!': 'Collect as many points as you can! Use your points to vote for your favorite video and win amazing prizes every week!',
+  "You'll be logged out from abracadabra. Are you sure?":
+    "You'll be logged out from abracadabra. Are you sure?",
+  'Collect as many points as you can! Use your points to vote for your favorite video and win amazing prizes every week!':
+    'Collect as many points as you can! Use your points to vote for your favorite video and win amazing prizes every week!',
   'Points awarded for completing your Registration.':
     'Points awarded for completing your Registration.',
-  'Points awarded for becoming Premium Member.':
-    'Points awarded for becoming Premium Member.',
+  'Points awarded for becoming Premium Member.': 'Points awarded for becoming Premium Member.',
   'Points awarded for referring a friend to abracadabra.':
     'Points awarded for referring a friend to abracadabra.',
   'Points awarded for signing up to abracadabra from your friend’s referral':
     'Points awarded for signing up to abracadabra from your friend’s referral',
-  'Points awarded for watching a sponsor video.':
-    'Points awarded for watching a sponsor video.',
+  'Points awarded for watching a sponsor video.': 'Points awarded for watching a sponsor video.',
   'Points awarded for completing the Additional Info section on your My Account page.':
     'Points awarded for completing the Additional Info section on your My Account page.',
   'Points awarded for completing Survey Questions section on your My Account page.':
     'Points awarded for completing Survey Questions section on your My Account page.',
-  'Never': 'Never',
+  Never: 'Never',
   'Once Year': 'Once Year',
   'Once a Month': 'Once a Month',
   'More than Once a Month': 'More than Once a Month',
@@ -905,14 +920,14 @@ const en = {
   'Once every 6 months': 'Once every 6 months',
   'Stadium/Larger Venue': 'Stadium/Larger Venue',
   'Smaller and More intimate Venue': 'Smaller and More intimate Venue',
-  'Both': 'Both',
-  'Youtube': 'Youtube',
-  'Instagram': 'Instagram',
-  'Tiktok': 'Tiktok',
-  'Twitter': 'Twitter',
-  'Facebook': 'Facebook',
-  'Line': 'Line',
-  'Other': 'Other',
+  Both: 'Both',
+  Youtube: 'Youtube',
+  Instagram: 'Instagram',
+  Tiktok: 'Tiktok',
+  Twitter: 'Twitter',
+  Facebook: 'Facebook',
+  Line: 'Line',
+  Other: 'Other',
   'From a friend': 'From a friend',
   'From the artist': 'From the artist',
   'From the news': 'From the news',
@@ -922,18 +937,20 @@ const en = {
   'From Twitter': 'From Twitter',
   'From Facebook': 'From Facebook',
   'From Line': 'From Line',
-  'Other': 'Other',
+  Other: 'Other',
   'Points awarded for buying points.': 'Points awarded for buying points.',
   'You don’t have any notification': 'You don’t have any notification',
   'This user haven’t uploaded a video': 'This user haven’t uploaded a video',
-  'Oops, there are no sponsor video at this time.': 'Oops, there are no sponsor video at this time.',
+  'Oops, there are no sponsor video at this time.':
+    'Oops, there are no sponsor video at this time.',
   'Purchase more points': 'Purchase more points',
   'Buy 500 points for only Rp 29,900.': 'Buy 500 points for only Rp 29,900.',
   'Waiting for membership payment': 'Waiting for membership payment',
   'Waiting for upload video payment': 'Waiting for upload video payment',
   'You received': 'You received',
-  'from': 'from',
-  'Please complete the payment with the information below before': 'Please complete the payment with the information below before',
+  from: 'from',
+  'Please complete the payment with the information below before':
+    'Please complete the payment with the information below before',
   'Buy Extra Points Now!': 'Buy Extra Points Now!',
   'Shower your favorite': 'Shower your favorite',
   'videos with extra votes!': 'videos with extra votes!',
@@ -1070,11 +1087,13 @@ const en = {
   '3 years ago': '3 years ago',
   '4 year ago': '4 years ago',
   '5 year ago': '5 years ago',
-  'The video you are looking for is not available.': 'The video you are looking for is not available.',
+  'The video you are looking for is not available.':
+    'The video you are looking for is not available.',
   'There is no event': 'There is no event',
-  '1. Open the application that has a QRIS scan feature': '1. Open the application that has a QRIS scan feature',
+  '1. Open the application that has a QRIS scan feature':
+    '1. Open the application that has a QRIS scan feature',
   'Buy More Points': 'Buy More Points',
-  'More': 'More',
+  More: 'More',
   'Video payment has expired': 'Video payment has expired',
   'Points payment has expired': 'Points payment has expired',
   'Waiting for points payment': 'Waiting for points payment',
@@ -1082,16 +1101,15 @@ const en = {
   'Mark all as read': 'Mark all as read',
   'Sponsor video has been played': 'Sponsor video has been played',
   'Video Vote History': 'Video Vote History',
-  'Activities': 'Activities',
+  Activities: 'Activities',
   'Point History': 'Point History',
   'Event List': 'Event List',
-  'History': 'History',
+  History: 'History',
   'Video payment has been cancelled': 'Video payment has been cancelled',
   'The current event has ended': 'The current event has ended',
   'Buy Ticket wePOP: Come Together Here': 'Buy Ticket wePOP: Come Together Here',
   'Buy Now': 'Buy Now',
-
-
+  'Latest video': 'Latest video'
 };
 
 export default en;
